@@ -77,7 +77,10 @@ public class Point3D {
      * @return a vector that starts from the given point to this point
      */
     public Vector subtract (Point3D other){
-        //TODO
+        double a=this.x.get()-other.getX().get();
+        double b=this.y.get()-other.getY().get();
+        double c=this.z.get()-other.getZ().get();
+        return new Vector(a,b,c);
     }
 
     /**
@@ -86,7 +89,10 @@ public class Point3D {
      * @return a new point after adding the vector
      */
     public Point3D add(Vector vec){
-        //TODO
+        double a=vec.getEndPoint().getX().get()+this.x.get();
+        double b=vec.getEndPoint().getY().get()+this.y.get();
+        double c=vec.getEndPoint().getZ().get()+this.z.get();
+        return new Point3D(a,b,c);
     }
 
     /**

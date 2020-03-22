@@ -8,7 +8,7 @@ import java.util.Objects;
  * class Point3D is the basic class representing a point for Cartesian
  * coordinate system.
  *
- * @author Yedidya Korn
+ * @author Yedidya Korn & Eliezer Horowitz
  */
 public class Point3D {
 
@@ -67,8 +67,7 @@ public class Point3D {
      * @return a "zero point"
      */
     public static Point3D Zero(){
-        Point3D temp = new Point3D(0, 0, 0);
-        return temp;
+        return new Point3D(0, 0, 0);
     }
 
     /**

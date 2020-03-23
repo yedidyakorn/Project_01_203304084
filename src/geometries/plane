@@ -1,1 +1,36 @@
+package geometries;
 
+import java.util.List;
+import primitives.*;
+import static primitives.Util.*;
+
+public class plane implements Geometry {
+    
+    
+    Point3D point;
+    Vector normal;
+    
+    
+    public plane(Coordinate xP, Coordinate yP, Coordinate zP, Coordinate xN, Coordinate yN, Coordinate zN) {
+        point = new Point3D(xP, yP, zP);
+        Vector tempN = new Vector(xN, yN, zN);
+        normal = tempN.normalized();
+    }
+    
+     public Point3D getPoint() {
+        return point;
+    }
+    
+    public Vector getVector() {
+        return normal;
+    }
+
+    
+    
+    @Override
+    public String toString(){
+        return ("point: " + point + " normal:" +normal + "\n");
+    }
+
+
+}

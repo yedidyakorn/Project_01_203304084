@@ -1,0 +1,19 @@
+package geometries;
+import primitives.*;
+import static primitives.Util.*;
+
+public class Triangle extends Polygon{
+	
+
+	public Point3D Point1;
+	public Point3D Point2;
+	public Point3D Point3;
+	public Triangle(Coordinate x1, Coordinate y1, Coordinate z1, Coordinate x2, Coordinate y2, Coordinate z2, Coordinate x3, Coordinate y3, Coordinate z3) {
+		
+		Point1 = new Point3D(x1,  y1, z1 );
+		Point2 = new Point3D(x2,  y2, z2 );
+		Point3 = new Point3D(x3,  y3, z3 );
+		
+		super(Point1, Point2, Point3 );
+	}
+}

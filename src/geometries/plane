@@ -4,7 +4,7 @@ import java.util.List;
 import primitives.*;
 import static primitives.Util.*;
 
-public class plane implements Geometry {
+public class plane{
     
     
     Point3D point;

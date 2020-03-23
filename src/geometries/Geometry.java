@@ -5,7 +5,7 @@ import primitives.Vector;
 
 public interface Geometry {
     
-    Vector getNormal(Point3D point){
+        public Vector getNormal(Point3D point){
         vector temp = new Point3D(point.z, 0, -point.x);
         return temp;
     }

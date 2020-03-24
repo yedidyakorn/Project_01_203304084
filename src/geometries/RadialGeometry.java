@@ -1,6 +1,6 @@
 package geometries;
 
-public abstract class RadialGeometry {
+public abstract class RadialGeometry implements Geometry {
 
     double radius;
 
@@ -16,5 +16,10 @@ public abstract class RadialGeometry {
         return radius;
     }
 
-
+    @Override
+    public String toString() {
+        return "RadialGeometry{" +
+                "radius=" + radius +
+                '}';
+    }
 }

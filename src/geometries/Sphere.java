@@ -1,16 +1,40 @@
 package geometries;
 
 import primitives.*;
+
 import static primitives.Util.*;
 
+
+/**
+ * Sphere class represents a sphere in 3D Cartesian coordinate
+ * system
+ * <p>
+ * extends the RadialGeometry class
+ *
+ * @author Yedidya Korn & Eliezer Horowitz
+ */
 public class Sphere extends RadialGeometry {
+
+    /**
+     * represents the sphere center point
+     */
     Point3D center;
 
-    public Sphere(Point3D p, double rad){
+    /**
+     * Sphere ctor that gets a point and a radius
+     *
+     * @param p- point
+     * @param rad -number
+     */
+    public Sphere(Point3D p, double rad) {
         super(rad);
-        center=p;
+        center = p;
     }
 
+    /**
+     * getter for the center point
+     *
+     */
     public Point3D getCenter() {
         return center;
     }
@@ -24,7 +48,7 @@ public class Sphere extends RadialGeometry {
     public String toString() {
         return "Sphere{" +
                 "center=" + center +
-                '}'+super.toString();
+                '}' + super.toString();
     }
 
     @Override

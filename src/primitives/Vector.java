@@ -56,6 +56,7 @@ public class Vector {
 
     /**
      * add two vectors
+     *
      * @param other-Vector
      * @return a new vector
      */
@@ -65,6 +66,7 @@ public class Vector {
 
     /**
      * subs two vectors
+     *
      * @param other-Vector
      * @return a new vector
      */
@@ -78,6 +80,7 @@ public class Vector {
 
     /**
      * multiples a vector by a number
+     *
      * @param num number
      * @return a new vector
      */
@@ -90,6 +93,7 @@ public class Vector {
 
     /**
      * dot Product between two vectors
+     *
      * @param other-Vector
      * @return a number
      */
@@ -102,6 +106,7 @@ public class Vector {
 
     /**
      * cross Product between two vectors
+     *
      * @param other-Vector
      * @return a Vector
      */
@@ -114,6 +119,7 @@ public class Vector {
 
     /**
      * calculates the vector length squared
+     *
      * @return the calculation
      */
     public double lengthSquared() {
@@ -122,6 +128,7 @@ public class Vector {
 
     /**
      * calculates the vector length
+     *
      * @return the calculation
      */
     public double length() {
@@ -131,6 +138,7 @@ public class Vector {
     /**
      * normalizes the vector so the length will be 1
      * changes the value of the vector
+     *
      * @return the normalized vector
      */
     public Vector normalize() {
@@ -141,16 +149,15 @@ public class Vector {
     /**
      * normalizes the vector so the length will be 1
      * does'n change the value of the vector
+     *
      * @return a new normalized vector
      */
     public Vector normalized() {
         double x = this.getEndPoint().getX().get() / this.length();
         double y = this.getEndPoint().getY().get() / this.length();
         double z = this.getEndPoint().getZ().get() / this.length();
-        return new Vector(x,y,z);
+        return new Vector(x, y, z);
     }
-
-
 
 
     @Override

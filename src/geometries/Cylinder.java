@@ -1,24 +1,44 @@
 package geometries;
 
-import primitives.Point3D;
-import primitives.Vector;
+import primitives.*;
 
-public class Cylinder extends RadialGeometry {
+/**
+ * Cylinder class represents a cylinder in 3D Cartesian coordinate
+ * system
+ * <p>
+ * extends the Tube class
+ *
+ * @author Yedidya Korn & Eliezer Horowitz
+ */
+public class Cylinder extends Tube {
 
-    double hight;
+    /**
+     * represents the cylinder height
+     */
+    double height;
 
-    public Cylinder (double h,double rad){
-        super(rad);
-        hight=h;
+    /**
+     * Cylinder ctor that gets two numbers and a ray
+     *
+     * @param r-   ray
+     * @param h-   height
+     * @param rad- radius
+     */
+    public Cylinder(double h, Ray r, double rad) {
+        super(r,rad);
+        height = h;
+    }
+
+    /**
+     * getter for the height
+     */
+    public double getHeight() {
+        return height;
     }
 
     @Override
     public double getRadius() {
         return super.getRadius();
-    }
-
-    public double getHight() {
-        return hight;
     }
 
 
@@ -30,7 +50,7 @@ public class Cylinder extends RadialGeometry {
     @Override
     public String toString() {
         return "Cylinder{" +
-                "hight=" + hight +
-                '}'+super.toString();
+                "hight=" + height +
+                '}' + super.toString();
     }
 }

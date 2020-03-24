@@ -1,16 +1,38 @@
 package geometries;
 
-import primitives.Point3D;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
+/**
+ * Tube class represents a tube in 3D Cartesian coordinate
+ * system
+ * <p>
+ * extends the RadialGeometry class
+ *
+ * @author Yedidya Korn & Eliezer Horowitz
+ */
 public class Tube extends RadialGeometry {
 
+    /**
+     * represents the Tube height
+     */
     Ray ray;
 
-    public Tube(Ray r,double rad){
+    /**
+     * tube ctor that gets a number and a ray
+     *
+     * @param r-   ray
+     * @param rad- number
+     */
+    public Tube(Ray r, double rad) {
         super(rad);
-        ray=r;
+        ray = r;
+    }
+
+    /**
+     * getter for the ray
+     */
+    public Ray getRay() {
+        return ray;
     }
 
     @Override
@@ -18,15 +40,11 @@ public class Tube extends RadialGeometry {
         return super.getRadius();
     }
 
-    public Ray getRay() {
-        return ray;
-    }
-
     @Override
     public String toString() {
         return "Tube{" +
                 "ray=" + ray +
-                '}'+super.toString();
+                '}' + super.toString();
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Ray {
 
     /**
-     *p begaing point
+     * p begaing point
      * v direction
      */
     Point3D p;
@@ -30,24 +30,31 @@ public class Ray {
     /**
      * Ray ctor receives a point and a vector
      */
-    public Ray(Point3D p,Vector v){
-    	this.p=p;
-    	this.v=v.normalized();
-	}
+    public Ray(Point3D p, Vector v) {
+        this.p = p;
+        this.v = v.normalized();
+    }
 
     /**
      * Ray copy ctor
      */
-	public Ray(Ray other) {
-		this.p = new Point3D(other.p);
-		this.v = new Vector(other.v);
-	}
+    public Ray(Ray other) {
+        this.p = new Point3D(other.p);
+        this.v = new Vector(other.v);
+    }
 
-
+    /**
+     * getter for beginning point
+     *
+     */
     public Point3D getPoint() {
         return p;
     }
 
+    /**
+     * getter for direction vector
+     *
+     */
     public Vector getDirection() {
         return v;
     }

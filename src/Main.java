@@ -1,5 +1,9 @@
-import primitives.*;
+/*
+  @author Eliezer Horowitz, 305739807, Eli191191@gmail.com
+ * @author Yedidya Korn, 203304084, yedidyas5@gmail.com
+ */
 
+import primitives.*;
 import static java.lang.System.out;
 import static primitives.Util.*;
 
@@ -7,7 +11,6 @@ import geometries.*;
 
 /**
  * Test program for the 1st stage
- *
  * @author Dan Zilberstein
  */
 public final class Main {

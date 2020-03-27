@@ -48,7 +48,7 @@ public class Plane {
 
         Vector temp = v1.crossProduct(v2);
 
-        return temp. normalized();
+        return temp.normalized();
     }
 
 

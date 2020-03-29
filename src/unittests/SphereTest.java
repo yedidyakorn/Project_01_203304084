@@ -26,8 +26,8 @@ public class SphereTest {
         Sphere s1 = new Sphere(new Point3D(0, 0, 0), 3);
         Sphere s2 = new Sphere(new Point3D(5, 4, -3.5), 4.1);
 
-        assertTrue("ERROR- the function does not return a true normal vector", isZero(s1.getNormal(new Point3D(0, 0, 6)).length() - new Vector(0, 0, 6).length()));
-        assertTrue("ERROR- the function does not return a true normal vector", isZero(s2.getNormal(new Point3D(9.1, 4, -3.5)).length() - new Vector(9.1 - 5, 4 - 4, -3.5 + 3.5).length()));
+        assertTrue("ERROR- the function does not return a true normal vector", isZero(s1.getNormal(new Point3D(0, 0, 6)).length() - new Vector(0, 0, 1).length()));
+        assertTrue("ERROR- the function does not return a true normal vector", isZero(s2.getNormal(new Point3D(9.1, 4, -3.5)).length() - new Vector(1,0,0).length()));
 
 
     }

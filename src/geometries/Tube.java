@@ -49,15 +49,15 @@ public class Tube extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point3D point) {
-        
-        Vector temp = new Vector(point.getX().get() - this.ray.p.getX().get(), point.getY().get() - this.ray.p.getY().get(), point.getZ().get() - this.ray.p.getZ().get()); 
-        double t = this.ray.v.dotProduct(temp);
-        
-        Vector temp2 = this.v.scala(t);
-        Vector o = new Vector(this.ray.p.getX().get() + temp2.endPoint.getX().get(), this.ray.p.getY().get() + temp2.endPoint.getY().get(), this.ray.p.getZ().get() + temp2.endPoint.getZ().get()); 
-        
-        Vector n = nwe Vector(this.ray.p.getX().get() - o.endPoint.getX().get(), this.ray.p.getY().get() - o.endPoint.getY().get(), this.ray.p.getZ().get() - o.endPoint.getZ().get());
-        
+
+        Vector temp = new Vector(point.getX().get() - this.ray.getPoint().getX().get(), point.getY().get() - this.ray.getPoint().getY().get(), point.getZ().get() - this.ray.getPoint().getZ().get());
+        double t = this.ray.getDirection().dotProduct(temp);
+
+        Vector temp2 = this.ray.getDirection().scale(t);
+        Vector o = new Vector(this.ray.getPoint().getX().get() + temp2.getEndPoint().getX().get(), this.ray.getPoint().getY().get() + temp2.getEndPoint().getY().get(), this.ray.getPoint().getZ().get() + temp2.getEndPoint().getZ().get());
+
+        Vector n = new Vector(this.ray.getPoint().getX().get() - o.getEndPoint().getX().get(), this.ray.getPoint().getY().get() - o.getEndPoint().getY().get(), this.ray.getPoint().getZ().get() - o.getEndPoint().getZ().get());
+
         return n.normalized();
     }
 }

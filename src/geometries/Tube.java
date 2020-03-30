@@ -49,6 +49,15 @@ public class Tube extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point3D point) {
-        return null;
+        
+        Vector temp = new Vector(point.getX().get() - this.ray.p.getX().get(), point.getY().get() - this.ray.p.getY().get(), point.getZ().get() - this.ray.p.getZ().get()); 
+        double t = this.ray.v.dotProduct(temp);
+        
+        Vector temp2 = this.v.scala(t);
+        Vector o = new Vector(this.ray.p.getX().get() + temp2.endPoint.getX().get(), this.ray.p.getY().get() + temp2.endPoint.getY().get(), this.ray.p.getZ().get() + temp2.endPoint.getZ().get()); 
+        
+        Vector n = nwe Vector(this.ray.p.getX().get() - o.endPoint.getX().get(), this.ray.p.getY().get() - o.endPoint.getY().get(), this.ray.p.getZ().get() - o.endPoint.getZ().get());
+        
+        return n.normalized();
     }
 }

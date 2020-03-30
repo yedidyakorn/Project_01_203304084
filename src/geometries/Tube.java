@@ -50,14 +50,13 @@ public class Tube extends RadialGeometry {
     @Override
     public Vector getNormal(Point3D point) {
 
-        Vector temp = new Vector(point.getX().get() - this.ray.getPoint().getX().get(), point.getY().get() - this.ray.getPoint().getY().get(), point.getZ().get() - this.ray.getPoint().getZ().get());
+        // t is the angle between the tubes ray direction and the vector between the point and the tubes rays base point
+        Vector temp = new Vector(point.subtract(this.ray.getPoint()));
         double t = this.ray.getDirection().dotProduct(temp);
-
-        Vector temp2 = this.ray.getDirection().scale(t);
-        Vector o = new Vector(this.ray.getPoint().getX().get() + temp2.getEndPoint().getX().get(), this.ray.getPoint().getY().get() + temp2.getEndPoint().getY().get(), this.ray.getPoint().getZ().get() + temp2.getEndPoint().getZ().get());
-
-        Vector n = new Vector(this.ray.getPoint().getX().get() - o.getEndPoint().getX().get(), this.ray.getPoint().getY().get() - o.getEndPoint().getY().get(), this.ray.getPoint().getZ().get() - o.getEndPoint().getZ().get());
-
-        return n.normalized();
+        //if t=0 the vectors are orthogonal
+        if (t == 0)
+            return temp.normalize();
+        Point3D o = (this.getRay().getPoint().add(this.ray.getDirection().scale(t)));
+        return new Vector(point.subtract(o)).normalize();
     }
 }

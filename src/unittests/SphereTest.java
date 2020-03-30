@@ -1,12 +1,9 @@
 package unittests;
 
 import geometries.Sphere;
-import org.junit.Test;
-import primitives.Point3D;
-import primitives.Vector;
+import primitives.*;
 
-import static org.junit.Assert.*;
-import static primitives.Util.isZero;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for Sphere class
@@ -26,9 +23,8 @@ public class SphereTest {
         Sphere s1 = new Sphere(new Point3D(0, 0, 0), 3);
         Sphere s2 = new Sphere(new Point3D(5, 4, -3.5), 4.1);
 
-        assertTrue("ERROR- the function does not return a true normal vector", isZero(s1.getNormal(new Point3D(0, 0, 6)).length() - new Vector(0, 0, 1).length()));
-        assertTrue("ERROR- the function does not return a true normal vector", isZero(s2.getNormal(new Point3D(9.1, 4, -3.5)).length() - new Vector(1,0,0).length()));
-
+        assertEquals("ERROR- the function does not return a true normal vector", new Vector(0, 0, 1).normalize(), s1.getNormal(new Point3D(0, 0, 6)));
+        assertEquals("ERROR- the function does not return a true normal vector", new Vector(1, 0, 0).normalize(), s2.getNormal(new Point3D(9.1, 4, -3.5)));
 
     }
 

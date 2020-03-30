@@ -1,6 +1,5 @@
 package unittests;
 
-import org.junit.*;
 import primitives.*;
 
 import static org.junit.Assert.*;
@@ -127,7 +126,7 @@ public class VectorTest {
     public void normalize() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple to check if the function creates a new vector or normalizes the same one
-        assertSame("ERROR: normalize() function creates a new vector", vCopy, vCopyNormalize);
+        assertEquals("ERROR: normalize() function creates a new vector", vCopy, vCopyNormalize);
 
         // TC02: There is a simple test for normalizing vector..
         assertTrue("ERROR: normalize() result is not a unit vector", isZero(vCopyNormalize.length() - 1));
@@ -143,7 +142,7 @@ public class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple to check if the function creates a new vector or normalizes the same one
         Vector u = v.normalized();
-        assertNotSame("ERROR: normalized() function does not create a new vector", u, v);
+        assertNotEquals("ERROR: normalized() function does not create a new vector", u, v);
     }
 
 

@@ -24,8 +24,8 @@ public class Cylinder extends Tube {
      * @param h-   height
      * @param rad- radius
      */
-    public Cylinder(double h, Ray r, double rad) {
-        super(r,rad);
+    public Cylinder(Ray r, double rad, double h) {
+        super(r, rad);
         height = h;
     }
 
@@ -44,7 +44,24 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point3D point) {
-        return null;
+        if(point.equals(this.ray.getPoint()))
+            return this.ray.getDirection().scale(-1).normalize();
+        // t is the angle between the tubes ray direction and the vector between the point and the tubes rays base point
+        Vector temp = new Vector(point.subtract(this.ray.getPoint()));
+        double t = this.ray.getDirection().dotProduct(temp);
+        //if t=0 the vectors are orthogonal
+        if (t == 0){
+            if(radius==(temp.length()))
+                return temp.normalize();
+            return this.ray.getDirection().scale(-1).normalize();
+        }
+        Point3D o = (this.getRay().getPoint().add(this.ray.getDirection().scale(t)));
+        if(point.equals(o))
+            return this.ray.getDirection().normalize();
+        Vector temp2 = new Vector(point.subtract(o));
+        if (temp2.length() == this.radius)
+            return temp2.normalize();
+        return this.ray.getDirection().normalize();
     }
 
     @Override

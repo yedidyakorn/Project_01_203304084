@@ -45,22 +45,22 @@ public class Cylinder extends Tube {
     @Override
     public Vector getNormal(Point3D point) {
         //Vertex on the base point of Cylinder
-        if(point.equals(this.ray.getPoint()))
+        if (point.equals(this.ray.getPoint()))
             return this.ray.getDirection().scale(-1).normalize();
         // t is the angle between the tubes ray direction and the vector between the point and the tubes rays base point
         Vector temp = new Vector(point.subtract(this.ray.getPoint()));
         double t = this.ray.getDirection().dotProduct(temp);
         //if t=0 the vectors are orthogonal
-        if (t == 0){
+        if (t == 0) {
             //Vertex on the Corner of the Cylinder base and tube
-            if(radius==(temp.length()))
+            if (radius == (temp.length()))
                 return temp.normalize();
             //Vertex on the Cylinder base
             return this.ray.getDirection().scale(-1).normalize();
         }
         Point3D o = (this.getRay().getPoint().add(this.ray.getDirection().scale(t)));
         //Vertex on the  Cylinder ray on the opposite base
-        if(point.equals(o))
+        if (point.equals(o))
             return this.ray.getDirection().normalize();
         Vector temp2 = new Vector(point.subtract(o));
         //Vertex on the Cylinder tube or on the Corner of the Cylinder opposite base with tube

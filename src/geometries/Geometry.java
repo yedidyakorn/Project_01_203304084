@@ -7,10 +7,11 @@ import primitives.*;
  *
  * @author Yedidya Korn & Eliezer Horowitz
  */
-interface Geometry {
+public interface Geometry {
 
     /**
-     * function that gets a point on a shape and returns the normal from that point
+     * function that gets a point on a shape surface and returns the normal from that point
+     * assumes the point is on the shape surface (no input check)
      *
      * @param point on a shape
      * @return the normal vector from that point

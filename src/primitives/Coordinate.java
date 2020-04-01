@@ -27,7 +27,6 @@ public final class Coordinate {
 
     /**
      * Copy constructor for coordinate
-     *
      */
     public Coordinate(Coordinate other) {
         _coord = other._coord;

@@ -16,7 +16,6 @@ public class Triangle extends Polygon {
      */
     public Triangle(Point3D a, Point3D b, Point3D c) {
         super(a, b, c);
-
     }
 
     /**
@@ -42,7 +41,6 @@ public class Triangle extends Polygon {
 
     @Override
     public String toString() {
-        String s = this._vertices.toString();
-        return s;
+        return this._vertices.toString();
     }
 }

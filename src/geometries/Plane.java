@@ -7,31 +7,40 @@ import primitives.*;
  *
  * @author Yedidya Korn & Eliezer Horowitz
  */
-public class Plane {
+public class Plane implements Geometry {
 
     /**
      * point represents a point on the plane
      * normal represents the normal vector to the plane
      */
-    Point3D point;
-    Vector normal;
+    private Point3D point;
+    private Vector normal;
 
     /**
      * plane ctor that gets three points
+     * can throw @IllegalArgumentException if the points are in one line
+     *
+     * @param a-point on plane
+     * @param b-point on plane
+     * @param c-point on plane
      */
     public Plane(Point3D a, Point3D b, Point3D c) {
         point = a;
-        Vector v1 = new Vector(b.getX().get()-a.getX().get(), b.getY().get()-a.getY().get(), b.getZ().get()-a.getZ().get());
-        Vector v2 = new Vector(c.getX().get()-a.getX().get(), c.getY().get()-a.getY().get(), c.getZ().get()-a.getZ().get());
-        normal= v1.crossProduct(v2).normalize();
+        Vector v1 = b.subtract(a);
+        Vector v2 = c.subtract(a);
+        normal = v1.crossProduct(v2).normalize();
     }
+
 
     /**
      * plane ctor that gets a point and normal vector
+     *
+     * @param p    point
+     * @param vec- some vector
      */
     public Plane(Point3D p, Vector vec) {
-        point = p;
-        normal = vec;
+        point = new Point3D(p);
+        normal = new Vector(vec).normalize();
     }
 
     /**
@@ -55,5 +64,10 @@ public class Plane {
                 "point=" + point +
                 ", normal=" + normal +
                 '}';
+    }
+
+    @Override
+    public Vector getNormal(Point3D point) {
+        return this.normal;
     }
 }

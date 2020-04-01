@@ -1,7 +1,5 @@
 package primitives;
 
-import primitives.Coordinate.*;
-
 import java.util.Objects;
 
 /**
@@ -12,9 +10,14 @@ import java.util.Objects;
  */
 public class Point3D {
 
-    Coordinate x;
-    Coordinate y;
-    Coordinate z;
+    private Coordinate x;
+    private Coordinate y;
+    private Coordinate z;
+
+    /**
+     * static filed to get the "zero point"
+     */
+    public static Point3D ZERO = new Point3D(0, 0, 0);
 
 
     /**
@@ -55,21 +58,22 @@ public class Point3D {
         return x;
     }
 
+    /**
+     * Point getters by parameter
+     *
+     * @return parmeter value
+     */
     public Coordinate getY() {
         return y;
     }
 
+    /**
+     * Point getters by parameter
+     *
+     * @return parmeter value
+     */
     public Coordinate getZ() {
         return z;
-    }
-
-    /**
-     * function to get the "zero point"
-     *
-     * @return a "zero point"
-     */
-    public static Point3D Zero() {
-        return new Point3D(0, 0, 0);
     }
 
     /**
@@ -79,9 +83,9 @@ public class Point3D {
      * @return a vector that starts from the given point to this point
      */
     public Vector subtract(Point3D other) {
-        double a = this.x.get() - other.getX().get();
-        double b = this.y.get() - other.getY().get();
-        double c = this.z.get() - other.getZ().get();
+        double a = this.x.get() - other.x.get();
+        double b = this.y.get() - other.y.get();
+        double c = this.z.get() - other.z.get();
         return new Vector(a, b, c);
     }
 
@@ -92,9 +96,9 @@ public class Point3D {
      * @return a new point after adding the vector
      */
     public Point3D add(Vector vec) {
-        double a = vec.getEndPoint().getX().get() + this.x.get();
-        double b = vec.getEndPoint().getY().get() + this.y.get();
-        double c = vec.getEndPoint().getZ().get() + this.z.get();
+        double a = vec.getEndPoint().x.get() + this.x.get();
+        double b = vec.getEndPoint().y.get() + this.y.get();
+        double c = vec.getEndPoint().z.get() + this.z.get();
         return new Point3D(a, b, c);
     }
 
@@ -105,10 +109,10 @@ public class Point3D {
      * @return the calculation
      */
     public double distanceSquared(Point3D other) {
-        double a = other.getX().get() - this.getX().get();
-        double b = other.getY().get() - this.getY().get();
-        double c = other.getZ().get() - this.getZ().get();
-        return a * a + b * b + c * c;
+        double deltaX = other.x.get() - this.x.get();
+        double deltaY = other.y.get() - this.y.get();
+        double deltaZ = other.z.get() - this.z.get();
+        return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
     }
 
     /**
@@ -124,7 +128,8 @@ public class Point3D {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null ) return false;
+        if (!(o instanceof Point3D)) return false;
         Point3D point3D = (Point3D) o;
         return Objects.equals(x, point3D.x) &&
                 Objects.equals(y, point3D.y) &&

@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.*;
 
+import static primitives.Util.isZero;
+
 /**
  * Tube class represents a tube in 3D Cartesian coordinate
  * system
@@ -15,7 +17,7 @@ public class Tube extends RadialGeometry {
     /**
      * represents the Tube height
      */
-    Ray ray;
+    private Ray ray;
 
     /**
      * tube ctor that gets a number and a ray
@@ -25,7 +27,7 @@ public class Tube extends RadialGeometry {
      */
     public Tube(Ray r, double rad) {
         super(rad);
-        ray = r;
+        ray = new Ray(r);
     }
 
     /**
@@ -54,7 +56,7 @@ public class Tube extends RadialGeometry {
         Vector temp = new Vector(point.subtract(this.ray.getPoint()));
         double t = this.ray.getDirection().dotProduct(temp);
         //if t=0 the vectors are orthogonal
-        if (t == 0)
+        if (isZero(t))
             return temp.normalize();
         Point3D o = (this.getRay().getPoint().add(this.ray.getDirection().scale(t)));
         return new Vector(point.subtract(o)).normalize();

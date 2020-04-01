@@ -1,8 +1,7 @@
 package geometries;
 
-import primitives.*;
-
-import static primitives.Util.*;
+import primitives.Point3D;
+import primitives.Vector;
 
 
 /**
@@ -18,12 +17,12 @@ public class Sphere extends RadialGeometry {
     /**
      * represents the sphere center point
      */
-    Point3D center;
+    private Point3D center;
 
     /**
      * Sphere ctor that gets a point and a radius
      *
-     * @param p- point
+     * @param p-  point
      * @param rad -number
      */
     public Sphere(Point3D p, double rad) {
@@ -33,7 +32,6 @@ public class Sphere extends RadialGeometry {
 
     /**
      * getter for the center point
-     *
      */
     public Point3D getCenter() {
         return center;
@@ -53,7 +51,6 @@ public class Sphere extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point3D point) {
-        Vector vec =new Vector(point.getX().get()-center.getX().get(),point.getY().get()-center.getY().get(),point.getZ().get()-center.getZ().get());
-        return vec.normalize();
+        return point.subtract(this.center).normalize();
     }
 }

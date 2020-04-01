@@ -41,7 +41,7 @@ public class VectorTest {
     public void add() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single add test..
-        assertEquals("ERROR: Point + Vector does not work correctly", Point3D.Zero(), p1.add(new Vector(-1, -2, -3)));
+        assertEquals("ERROR: Point + Vector does not work correctly", Point3D.ZERO, p1.add(new Vector(-1, -2, -3)));
     }
 
     /**
@@ -142,7 +142,7 @@ public class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple to check if the function creates a new vector or normalizes the same one
         Vector u = v.normalized();
-        assertNotEquals("ERROR: normalized() function does not create a new vector", u, v);
+        assertNotSame("ERROR: normalized() function does not create a new vector", u, v);
     }
 
 

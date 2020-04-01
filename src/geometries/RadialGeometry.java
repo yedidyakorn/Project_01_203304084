@@ -13,7 +13,7 @@ public abstract class RadialGeometry implements Geometry {
     /**
      * represents the radius of the shape
      */
-    double radius;
+    private double radius;
 
     /**
      * RadialGeometry ctor sets the radius
@@ -24,16 +24,9 @@ public abstract class RadialGeometry implements Geometry {
         radius = rad;
     }
 
-    /**
-     * copy ctor
-     */
-    public RadialGeometry(RadialGeometry other) {
-        radius = other.getRadius();
-    }
 
     /**
      * getter for radius
-     *
      */
     public double getRadius() {
         return radius;
@@ -46,8 +39,4 @@ public abstract class RadialGeometry implements Geometry {
                 '}';
     }
 
-    @Override
-    public Vector getNormal(Point3D point) {
-        return null;
-    }
 }

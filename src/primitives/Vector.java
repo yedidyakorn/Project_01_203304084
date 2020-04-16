@@ -13,14 +13,14 @@ public class Vector {
     /**
      * the vector starts from First the hinges and ends at the "endOfPoint" point
      */
-    Point3D endPoint;
+    private Point3D endPoint;
 
     /**
      * Vector ctor receives three Coordinates
      */
     public Vector(Coordinate x, Coordinate y, Coordinate z) {
         Point3D temp = new Point3D(x, y, z);
-        if (temp.equals(Point3D.Zero())) {
+        if (temp.equals(Point3D.ZERO)) {
             throw new IllegalArgumentException("a vector from zero point to zero point is illegal");
         }
         endPoint = temp;
@@ -31,7 +31,7 @@ public class Vector {
      */
     public Vector(double x, double y, double z) {
         Point3D temp = new Point3D(x, y, z);
-        if (temp.equals(Point3D.Zero())) {
+        if (temp.equals(Point3D.ZERO)) {
             throw new IllegalArgumentException("a vector from zero point to zero point is illegal");
         }
         endPoint = temp;
@@ -41,7 +41,7 @@ public class Vector {
      * Vector ctor a endig point
      */
     public Vector(Point3D point) {
-        if (point.equals(Point3D.Zero())) {
+        if (point.equals(Point3D.ZERO)) {
             throw new IllegalArgumentException("a vector from zero point to zero point is illegal");
         }
         endPoint = new Point3D(point);
@@ -51,7 +51,7 @@ public class Vector {
      * Vector copy ctor
      */
     public Vector(Vector vec) {
-        endPoint = new Point3D(vec.getEndPoint());
+        endPoint = new Point3D(vec.endPoint);
     }
 
     /**
@@ -61,7 +61,7 @@ public class Vector {
      * @return a new vector
      */
     public Vector add(Vector other) {
-        return new Vector(other.getEndPoint().add(this));
+        return new Vector(other.endPoint.add(this));
     }
 
     /**
@@ -71,9 +71,13 @@ public class Vector {
      * @return a new vector
      */
     public Vector subtract(Vector other) {
-        return new Vector(this.getEndPoint().subtract(other.getEndPoint()));
+        return this.endPoint.subtract(other.endPoint);
     }
 
+    /**
+     * getter for ending point
+     *
+     */
     public Point3D getEndPoint() {
         return endPoint;
     }
@@ -85,9 +89,9 @@ public class Vector {
      * @return a new vector
      */
     public Vector scale(double num) {
-        double x = this.getEndPoint().getX().get() * num;
-        double y = this.getEndPoint().getY().get() * num;
-        double z = this.getEndPoint().getZ().get() * num;
+        double x = this.endPoint.getX().get() * num;
+        double y = this.endPoint.getY().get() * num;
+        double z = this.endPoint.getZ().get() * num;
         return new Vector(x, y, z);
     }
 
@@ -98,10 +102,10 @@ public class Vector {
      * @return a number
      */
     public double dotProduct(Vector other) {
-        double x = this.getEndPoint().getX().get() * other.getEndPoint().getX().get();
-        double y = this.getEndPoint().getY().get() * other.getEndPoint().getY().get();
-        double z = this.getEndPoint().getZ().get() * other.getEndPoint().getZ().get();
-        return x + y + z;
+        double xx = this.endPoint.getX().get() * other.endPoint.getX().get();
+        double yy = this.endPoint.getY().get() * other.endPoint.getY().get();
+        double zz = this.endPoint.getZ().get() * other.endPoint.getZ().get();
+        return xx + yy + zz;
     }
 
     /**
@@ -111,10 +115,13 @@ public class Vector {
      * @return a Vector
      */
     public Vector crossProduct(Vector other) {
-        double x = this.getEndPoint().getY().get() * other.getEndPoint().getZ().get() - this.getEndPoint().getZ().get() * other.getEndPoint().getY().get();
-        double y = this.getEndPoint().getZ().get() * other.getEndPoint().getX().get() - this.getEndPoint().getX().get() * other.getEndPoint().getZ().get();
-        double z = this.getEndPoint().getX().get() * other.getEndPoint().getY().get() - this.getEndPoint().getY().get() * other.getEndPoint().getX().get();
-        return new Vector(x, y, z);
+        double thisX = this.endPoint.getX().get();
+        double thisY = this.endPoint.getY().get();
+        double thisZ = this.endPoint.getZ().get();
+        double otherX = other.endPoint.getX().get();
+        double otherY = other.endPoint.getY().get();
+        double otherZ = other.endPoint.getZ().get();
+        return new Vector(thisY * otherZ - thisZ * otherY, thisZ * otherX - thisX * otherZ, thisX * otherY - thisY * otherX);
     }
 
     /**
@@ -123,7 +130,10 @@ public class Vector {
      * @return the calculation
      */
     public double lengthSquared() {
-        return this.getEndPoint().distanceSquared(Point3D.Zero());
+        double x = this.endPoint.getX().get();
+        double y = this.endPoint.getY().get();
+        double z = this.endPoint.getZ().get();
+        return x * x + y * y + z * z;
     }
 
     /**
@@ -142,7 +152,11 @@ public class Vector {
      * @return the normalized vector
      */
     public Vector normalize() {
-        endPoint = this.normalized().getEndPoint();
+        double length = this.length();
+        double x = this.endPoint.getX().get() / length;
+        double y = this.endPoint.getY().get() / length;
+        double z = this.endPoint.getZ().get() / length;
+        this.endPoint = new Point3D(x, y, z);
         return this;
     }
 
@@ -153,17 +167,15 @@ public class Vector {
      * @return a new normalized vector
      */
     public Vector normalized() {
-        double x = this.getEndPoint().getX().get() / this.length();
-        double y = this.getEndPoint().getY().get() / this.length();
-        double z = this.getEndPoint().getZ().get() / this.length();
-        return new Vector(x, y, z);
+        return new Vector(this.normalize());
     }
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) return false;
+        if (!(o instanceof Vector)) return false;
         Vector vector = (Vector) o;
         return Objects.equals(endPoint, vector.endPoint);
     }

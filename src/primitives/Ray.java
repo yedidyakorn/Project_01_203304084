@@ -15,23 +15,14 @@ public class Ray {
      * p begaing point
      * v direction
      */
-    Point3D p;
-    Vector v;
-
-    /**
-     * Ray ctor receives six Coordinates
-     */
-    public Ray(Coordinate xP, Coordinate yP, Coordinate zP, Coordinate xV, Coordinate yV, Coordinate zV) {
-        p = new Point3D(xP, yP, zP);
-        Vector tempV = new Vector(xV, yV, zV);
-        v = tempV.normalized();
-    }
+    private Point3D p;
+    private Vector v;
 
     /**
      * Ray ctor receives a point and a vector
      */
     public Ray(Point3D p, Vector v) {
-        this.p = p;
+        this.p = new Point3D(p);
         this.v = v.normalized();
     }
 
@@ -45,7 +36,6 @@ public class Ray {
 
     /**
      * getter for beginning point
-     *
      */
     public Point3D getPoint() {
         return p;
@@ -53,7 +43,6 @@ public class Ray {
 
     /**
      * getter for direction vector
-     *
      */
     public Vector getDirection() {
         return v;
@@ -63,7 +52,8 @@ public class Ray {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) return false;
+        if (!(o instanceof Ray)) return false;
         Ray Ray = (Ray) o;
         return Objects.equals(p, Ray.p) &&
                 Objects.equals(v, Ray.v);

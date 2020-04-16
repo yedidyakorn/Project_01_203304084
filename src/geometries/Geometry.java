@@ -7,7 +7,7 @@ import primitives.*;
  *
  * @author Yedidya Korn & Eliezer Horowitz
  */
-public interface Geometry {
+public interface Geometry extends Intersectable {
 
     /**
      * function that gets a point on a shape surface and returns the normal from that point

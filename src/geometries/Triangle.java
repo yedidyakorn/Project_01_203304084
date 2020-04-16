@@ -1,6 +1,9 @@
 package geometries;
 
 import primitives.Point3D;
+import primitives.Ray;
+
+import java.util.List;
 
 /**
  * Plane Triangle represents a triangle in 3D Cartesian coordinate system
@@ -42,5 +45,10 @@ public class Triangle extends Polygon {
     @Override
     public String toString() {
         return this._vertices.toString();
+    }
+
+    @Override
+    public List<Point3D> findIntersections(Ray ray){
+        return null;
     }
 }

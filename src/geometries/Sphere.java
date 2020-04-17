@@ -57,8 +57,20 @@ public class Sphere extends RadialGeometry {
         return point.subtract(this.center).normalize();
     }
 
-    @Override
-    public List<Point3D> findIntersections(Ray ray){
-        return null;
-    }
+   public List<Point3D> findIntersections(Ray ray){
+        Vector u = center.subtract(ray.p);
+        double tM = u.dotProduct(ray.v);
+
+        double d = Math.sqrt(u.length()*u.length()- tM*tM);
+        if(d>radius){
+            return null;
+        }
+        double tH = Math.sqrt(ray.radius*ray.radius - d*d);
+
+        double t1 = tM + tH;
+        double t2 = tM - tH;
+
+        List<Point3D> list = new List<Point3D>( ray.p.add(ray.v.scale(t1)), ray.p.add(ray.v.scale(t2)) );
+
+        return list;
 }

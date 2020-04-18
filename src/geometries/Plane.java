@@ -4,6 +4,9 @@ import primitives.*;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 /**
  * Plane class represents a plane in 3D Cartesian coordinate system
  *
@@ -74,7 +77,22 @@ public class Plane implements Geometry {
     }
 
     @Override
-    public List<Point3D> findIntersections(Ray ray){
-        return null;
+    public List<Point3D> findIntersections(Ray ray) {
+        Vector n;
+        try {//Ray begins at the plane's point
+            n = point.subtract(ray.getPoint());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
+        double nv = normal.dotProduct(ray.getDirection());
+        if (isZero(nv))//Ray is parallel to the plane
+            return null;
+
+        double t = alignZero(normal.dotProduct(n) / nv);
+
+        if (t <= 0)
+            return null;
+        return List.of(ray.getPoint().add(ray.getDirection().scale(t)));
     }
 }

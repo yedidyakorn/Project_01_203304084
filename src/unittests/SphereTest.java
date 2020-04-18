@@ -77,8 +77,8 @@ public class SphereTest {
 
         // **** Group: Ray's line goes through the center
         // TC13: Ray starts before the sphere (2 points)
-        Point3D p5 = new Point3D(1, 1, 0);
-        Point3D p6 = new Point3D(1, -1, 0);
+        Point3D p5 = new Point3D(1, -1, 0);
+        Point3D p6 = new Point3D(1, 1, 0);
         result = sphere.findIntersections(new Ray(new Point3D(1, 2, 0), new Vector(0, -1, 0)));
         assertEquals("Wrong number of points", 2, result.size());
         if (result.get(0).getX().get() > result.get(1).getX().get())

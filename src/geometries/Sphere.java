@@ -4,7 +4,9 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.List;
+import java.util.*;
+
+import static primitives.Util.alignZero;
 
 
 /**
@@ -57,20 +59,37 @@ public class Sphere extends RadialGeometry {
         return point.subtract(this.center).normalize();
     }
 
-   public List<Point3D> findIntersections(Ray ray){
-        Vector u = center.subtract(ray.p);
-        double tM = u.dotProduct(ray.v);
+    public List<Point3D> findIntersections(Ray ray) {
+        Vector u;
+        try {
+            u = center.subtract(ray.getPoint());//Ray starts at the center
+        } catch (IllegalArgumentException e) {
+            return List.of((ray.getPoint().add(ray.getDirection().scale(this.getRadius()))));
+        }
+        double tM = alignZero(u.dotProduct(ray.getDirection()));
 
-        double d = Math.sqrt(u.length()*u.length()- tM*tM);
-        if(d>radius){
+        double d = alignZero(Math.sqrt(u.length() * u.length() - tM * tM));
+        if (d > this.getRadius()) {//Ray's line is outside the sphere
             return null;
         }
-        double tH = Math.sqrt(ray.radius*ray.radius - d*d);
+        double tH = alignZero(Math.sqrt(this.getRadius() * this.getRadius() - d * d));
 
-        double t1 = tM + tH;
-        double t2 = tM - tH;
+        double t1 = alignZero(tM + tH);
+        double t2 = alignZero(tM - tH);
 
-        List<Point3D> list = new List<Point3D>( ray.p.add(ray.v.scale(t1)), ray.p.add(ray.v.scale(t2)) );
+        if (u.length() < this.getRadius()) {//Ray starts inside the sphere
+            return List.of(ray.getPoint().add(ray.getDirection().scale(tM + tH)));
+        }
 
+        if (t1 <= 0 && t2 <= 0)//Ray's line is outside the sphere
+            return null;
+        List<Point3D> list = new ArrayList<Point3D>();
+        if (t1 > 0)
+            list.add(ray.getPoint().add(ray.getDirection().scale(t1)));
+        if (t2 > 0)
+            list.add(ray.getPoint().add(ray.getDirection().scale(t2)));
         return list;
+
+
+    }
 }

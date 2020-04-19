@@ -2,8 +2,11 @@ package geometries;
 
 import primitives.Point3D;
 import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
+
+import static primitives.Util.alignZero;
 
 /**
  * Plane Triangle represents a triangle in 3D Cartesian coordinate system
@@ -48,7 +51,26 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<Point3D> findIntersections(Ray ray){
+    public List<Point3D> findIntersections(Ray ray) {
+        List<Point3D> intersections = _plane.findIntersections(ray);
+        if (intersections == null)
+            return null;
+
+        Point3D p0 = ray.getPoint();
+        Vector v = ray.getDirection();
+
+        Vector v1 = _vertices.get(0).subtract(p0);
+        Vector v2 = _vertices.get(1).subtract(p0);
+        Vector v3 = _vertices.get(2).subtract(p0);
+
+        double n1 = alignZero(v1.crossProduct(v2).normalize().dotProduct(v));
+        double n2 = alignZero(v2.crossProduct(v3).normalize().dotProduct(v));
+        double n3 = alignZero(v3.crossProduct(v1).normalize().dotProduct(v));
+        if (n1 == 0 || n2 == 0 || n3 == 0)
+            return null;
+        if ((n1 > 0 && n2 > 0 && n3 > 0) || ((n1 < 0 && n2 < 0 && n3 < 0)))
+            return intersections;
         return null;
+
     }
 }

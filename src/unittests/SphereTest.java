@@ -6,6 +6,7 @@ import primitives.*;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests for Sphere class
@@ -39,8 +40,7 @@ public class SphereTest {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Ray's line is outside the sphere (0 points)
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(-1, 0, 0), new Vector(1, 1, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(-1, 0, 0), new Vector(1, 1, 0))));
 
         // TC02: Ray starts before and crosses the sphere (2 points)
         Point3D p1 = new Point3D(0.0651530771650466, 0.355051025721682, 0);
@@ -59,8 +59,7 @@ public class SphereTest {
         assertEquals("Ray crosses sphere", List.of(p3), result);
 
         // TC04: Ray starts after the sphere (0 points)
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(1.7, 2, 0), new Vector(1, 1, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(1.7, 2, 0), new Vector(1, 1, 0))));
 
         // =============== Boundary Values Tests ==================
 
@@ -72,8 +71,7 @@ public class SphereTest {
         assertEquals("Ray crosses sphere", List.of(p4), result);
 
         // TC12: Ray starts at sphere and goes outside (0 points)
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(1, 1, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(1, 1, 0))));
 
         // **** Group: Ray's line goes through the center
         // TC13: Ray starts before the sphere (2 points)
@@ -104,30 +102,24 @@ public class SphereTest {
         assertEquals("Ray crosses sphere", List.of(p9), result);
 
         // TC17: Ray starts at sphere and goes outside (0 points)
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(0, 1, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(0, 1, 0))));
 
         // TC18: Ray starts after sphere (0 points)
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(1, 2, 0), new Vector(0, 1, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(1, 2, 0), new Vector(0, 1, 0))));
 
         // **** Group: Ray's line is tangent to the sphere (all tests 0 points)
         // TC19: Ray starts before the tangent point
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(0, 1, 0), new Vector(1, 0, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(0, 1, 0), new Vector(1, 0, 0))));
 
         // TC20: Ray starts at the tangent point
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(1, 0, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(1, 0, 0))));
 
         // TC21: Ray starts after the tangent point
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(1.5, 1, 0), new Vector(1, 0, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(1.5, 1, 0), new Vector(1, 0, 0))));
 
         // **** Group: Special cases
         // TC22: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
-        assertEquals("Ray's line out of sphere", null,
-                sphere.findIntersections(new Ray(new Point3D(1, 1.5, 0), new Vector(1, 0, 0))));
+        assertNull("Ray's line out of sphere", sphere.findIntersections(new Ray(new Point3D(1, 1.5, 0), new Vector(1, 0, 0))));
 
     }
 

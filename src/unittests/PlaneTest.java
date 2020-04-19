@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests for Plane class
@@ -35,7 +36,7 @@ public class PlaneTest {
     @org.junit.Test
     public void testFindIntersections() {
         Plane plane=new Plane(new Point3D(0,1,0),new Vector(new Point3D(0,1,0)));
-        List<Point3D> result=new ArrayList<Point3D>();
+        List<Point3D> result;
 
         // ============ Equivalence Partitions Tests ==============
 
@@ -46,19 +47,16 @@ public class PlaneTest {
         assertEquals("Ray crosses plane", List.of(p1), result);
 
         // TC02: Ray does not intersect the plane (0 points)
-        assertEquals("Ray's line out of plane", null,
-                plane.findIntersections(new Ray(new Point3D(1, 0, 0), new Vector(1, -1, 0))));
+        assertNull("Ray's line out of plane", plane.findIntersections(new Ray(new Point3D(1, 0, 0), new Vector(1, -1, 0))));
 
         // =============== Boundary Values Tests ==================
 
         // **** Group: Ray is parallel to the plane
         // TC11: the ray is included in the plane (0 points)
-        assertEquals("Ray is included in the plane", null,
-                plane.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(1, 0, 1))));
+        assertNull("Ray is included in the plane", plane.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(1, 0, 1))));
 
         // TC12: the ray is not included in the plane (0 points)
-        assertEquals("Ray is parallel to the plane", null,
-                plane.findIntersections(new Ray(new Point3D(1, 0, 0), new Vector(1, 0, 1))));
+        assertNull("Ray is parallel to the plane", plane.findIntersections(new Ray(new Point3D(1, 0, 0), new Vector(1, 0, 1))));
 
         // **** Group: Ray is orthogonal to the plane
         // TC13: the ray is before the plane (1 point)
@@ -68,22 +66,18 @@ public class PlaneTest {
         assertEquals("Ray crosses plane", List.of(p2), result);
 
         // TC14: the ray starts is in the plane (0 points)
-        assertEquals("Ray is orthogonal to the plane", null,
-                plane.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(0, 1, 0))));
+        assertNull("Ray is orthogonal to the plane", plane.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(0, 1, 0))));
 
         // TC15: the ray is after the plane (0 points)
-        assertEquals("Ray is orthogonal to the plane", null,
-                plane.findIntersections(new Ray(new Point3D(1, 2, 0), new Vector(0, 1, 0))));
+        assertNull("Ray is orthogonal to the plane", plane.findIntersections(new Ray(new Point3D(1, 2, 0), new Vector(0, 1, 0))));
 
         // **** Group: Special cases
         // TC16: Ray is neither orthogonal nor parallel to plane but begins at the plane (0 points)
-        assertEquals("Ray begins at the plane", null,
-                plane.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(1, 1, 0))));
+        assertNull("Ray begins at the plane", plane.findIntersections(new Ray(new Point3D(1, 1, 0), new Vector(1, 1, 0))));
 
         //TC17: Ray is neither orthogonal nor parallel to the plane and begins in
         //the same point which appears as reference point in the plane (0 points)
-        assertEquals("Ray begins at the plane's point", null,
-                plane.findIntersections(new Ray(new Point3D(0, 1, 0), new Vector(0, 1, 0))));
+        assertNull("Ray begins at the plane's point", plane.findIntersections(new Ray(new Point3D(0, 1, 0), new Vector(0, 1, 0))));
 
 
     }

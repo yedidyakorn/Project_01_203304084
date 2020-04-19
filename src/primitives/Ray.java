@@ -48,6 +48,14 @@ public class Ray {
         return v;
     }
 
+    /**
+     * finds a point on the ray
+     * @param t - the distance between the base point and the wanted point
+     * @return the result point
+     */
+    public Point3D getPoint(double t){
+        return new Point3D(p.add(v.scale(t)));
+    }
 
     @Override
     public boolean equals(Object o) {

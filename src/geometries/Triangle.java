@@ -68,7 +68,7 @@ public class Triangle extends Polygon {
         double n3 = alignZero(v3.crossProduct(v1).normalize().dotProduct(v));
         if (n1 == 0 || n2 == 0 || n3 == 0)
             return null;
-        if ((n1 > 0 && n2 > 0 && n3 > 0) || ((n1 < 0 && n2 < 0 && n3 < 0)))
+        if ((n1 > 0 && n2 > 0 && n3 > 0) || ((n1 < 0 && n2 < 0 && n3 < 0)))// the ray meets the triangle
             return intersections;
         return null;
 

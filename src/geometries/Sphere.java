@@ -61,33 +61,34 @@ public class Sphere extends RadialGeometry {
 
     public List<Point3D> findIntersections(Ray ray) {
         Vector u;
+        double rad=this.getRadius();
         try {
             u = center.subtract(ray.getPoint());//Ray starts at the center
         } catch (IllegalArgumentException e) {
-            return List.of((ray.getPoint().add(ray.getDirection().scale(this.getRadius()))));
+            return List.of((ray.getPoint(rad)));
         }
         double tM = alignZero(u.dotProduct(ray.getDirection()));
 
         double d = alignZero(Math.sqrt(u.length() * u.length() - tM * tM));
-        if (d > this.getRadius()) {//Ray's line is outside the sphere
+        if (d > rad) {//Ray's line is outside the sphere
             return null;
         }
-        double tH = alignZero(Math.sqrt(this.getRadius() * this.getRadius() - d * d));
+        double tH = alignZero(Math.sqrt(rad * rad - d * d));
 
         double t1 = alignZero(tM + tH);
         double t2 = alignZero(tM - tH);
 
-        if (u.length() < this.getRadius()) {//Ray starts inside the sphere
-            return List.of(ray.getPoint().add(ray.getDirection().scale(tM + tH)));
+        if (u.length() < rad) {//Ray starts inside the sphere
+            return List.of(ray.getPoint(tM + tH));
         }
 
         if (t1 <= 0 && t2 <= 0)//Ray's line is outside the sphere
             return null;
         List<Point3D> list = new ArrayList<Point3D>();
         if (t1 > 0)
-            list.add(ray.getPoint().add(ray.getDirection().scale(t1)));
+            list.add(ray.getPoint(t1));
         if (t2 > 0)
-            list.add(ray.getPoint().add(ray.getDirection().scale(t2)));
+            list.add(ray.getPoint(t2));
         return list;
 
 

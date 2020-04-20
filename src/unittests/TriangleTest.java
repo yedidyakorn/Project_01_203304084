@@ -28,6 +28,9 @@ public class TriangleTest {
         assertEquals("ERROR- the function does not return a true normal vector", new Vector(-1, -9, 12).normalize(), t.getNormal(new Point3D(1, 1, 1)));
     }
 
+    /**
+     * Test method for {@link geometries.Triangle#findIntersections(primitives.Ray)}.
+     */
     @org.junit.Test
     public void testFindIntersections() {
         Triangle triangle = new Triangle(new Point3D(1, 1, 0), new Point3D(2, 2, 0), new Point3D(3, 1, 0));

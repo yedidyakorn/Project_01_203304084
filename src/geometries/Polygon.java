@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import primitives.*;
@@ -88,7 +89,41 @@ public class Polygon implements Geometry {
     }
 
     @Override
-    public List<Point3D> findIntersections(Ray ray){
+    public List<Point3D> findIntersections(Ray ray) {
+
+        List<Point3D> intersections = _plane.findIntersections(ray);
+        int positive = 0, negtive = 0, size = _vertices.size();
+        Vector[] vecs = new Vector[size];
+        double[] n = new double[_vertices.size()];
+
+        if (intersections == null)
+            return null;
+
+        Point3D p0 = ray.getPoint();
+        Vector v = ray.getDirection();
+
+        for (int i = 0; i < size; ++i) {
+            vecs[i] = _vertices.get(i).subtract(p0);
+        }
+
+        for (int i = 0; i < size; ++i) {
+            if (i < size - 1) {
+                n[i] = alignZero(vecs[i].crossProduct(vecs[i + 1]).normalize().dotProduct(v));
+            } else {
+                n[i] = alignZero(vecs[i].crossProduct(vecs[0]).normalize().dotProduct(v));
+            }
+            if (n[i] == 0)
+                return null;
+            if (n[i] > 0) {
+                positive++;
+            } else {
+                negtive++;
+            }
+        }
+
+        if ((positive == 0) || (negtive == 0))// the ray meets the triangle
+            return intersections;
+
         return null;
     }
 }

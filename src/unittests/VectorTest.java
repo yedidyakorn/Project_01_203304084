@@ -1,5 +1,6 @@
 package unittests;
 
+import org.junit.Test;
 import primitives.*;
 
 import static org.junit.Assert.*;
@@ -24,7 +25,7 @@ public class VectorTest {
     /**
      * Test method for {@link primitives.Vector#Vector(double, double, double)}  (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void testCtor() {
         try { // test zero vector
             new Vector(0, 0, 0);
@@ -37,7 +38,7 @@ public class VectorTest {
     /**
      * Test method for {@link primitives.Vector#add(Vector)}  (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void add() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single add test..
@@ -47,7 +48,7 @@ public class VectorTest {
     /**
      * Test method for {@link primitives.Vector#subtract(primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void subtract() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single subtract test..
@@ -57,7 +58,7 @@ public class VectorTest {
     /**
      * Test method for {@link primitives.Vector#scale(double)}  (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void scale() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single scale test..
@@ -67,7 +68,7 @@ public class VectorTest {
     /**
      * Test method for {@link primitives.Vector#dotProduct(Vector)} (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void dotProduct() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: dotProduct() for orthogonal vectors test
@@ -80,7 +81,7 @@ public class VectorTest {
     /**
      * Test method for {@link primitives.Vector#crossProduct(Vector)} (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void crossProduct() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: crossProduct() for parallel vectors test
@@ -102,7 +103,7 @@ public class VectorTest {
     /**
      * Test method for {@link Vector#lengthSquared()}  (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void lengthSquared() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single length test..
@@ -112,7 +113,7 @@ public class VectorTest {
     /**
      * Test method for {@link primitives.Vector#length} (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void length() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single length test..
@@ -122,7 +123,7 @@ public class VectorTest {
     /**
      * Test method for {@link Vector#normalize()}  (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void normalize() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple to check if the function creates a new vector or normalizes the same one
@@ -137,7 +138,7 @@ public class VectorTest {
     /**
      * Test method for {@link Vector#normalized()}  (primitives.Vector)}.
      */
-    @org.junit.Test
+    @Test
     public void normalized() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple to check if the function creates a new vector or normalizes the same one

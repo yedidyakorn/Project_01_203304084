@@ -92,12 +92,13 @@ public class Polygon implements Geometry {
     public List<Point3D> findIntersections(Ray ray) {
 
         List<Point3D> intersections = _plane.findIntersections(ray);
+        if (intersections == null)
+            return null;
         int positive = 0, negtive = 0, size = _vertices.size();
         Vector[] vecs = new Vector[size];
         double[] n = new double[_vertices.size()];
 
-        if (intersections == null)
-            return null;
+
 
         Point3D p0 = ray.getPoint();
         Vector v = ray.getDirection();

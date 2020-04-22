@@ -21,7 +21,7 @@ public class TubeTest {
      * Test method for {@link geometries.Tube#getNormal(Point3D)}  (Geometry.Sphere) }.
      */
 
-    @org.junit.Test
+    @Test
     public void getNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single normal test..

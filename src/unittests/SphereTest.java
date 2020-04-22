@@ -1,6 +1,7 @@
 package unittests;
 
 import geometries.Sphere;
+import org.junit.Test;
 import primitives.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class SphereTest {
     /**
      * Test method for {@link geometries.Sphere#getNormal(Point3D)}  (Geometry.Sphere) }.
      */
-    @org.junit.Test
+    @Test
     public void getNormal() {
 
         // ============ Equivalence Partitions Tests ==============
@@ -33,7 +34,7 @@ public class SphereTest {
     /**
      * Test method for {@link geometries.Sphere#findIntersections(primitives.Ray)}.
      */
-    @org.junit.Test
+    @Test
     public void testFindIntersections() {
         Sphere sphere = new Sphere( new Point3D(1, 0, 0),1d);
 

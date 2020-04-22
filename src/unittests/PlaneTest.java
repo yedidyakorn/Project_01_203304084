@@ -5,11 +5,11 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import org.junit.Test;
 
 /**
  * Unit tests for Plane class
@@ -22,7 +22,7 @@ public class PlaneTest {
     /**
      * Test method for {@link geometries.Plane#getNormal()}  (Geometry.Plane) }.
      */
-    @org.junit.Test
+    @Test
     public void getNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single normal test..
@@ -33,7 +33,7 @@ public class PlaneTest {
     /**
      * Test method for {@link geometries.Plane#findIntersections(primitives.Ray)}.
      */
-    @org.junit.Test
+    @Test
     public void testFindIntersections() {
         Plane plane=new Plane(new Point3D(0,1,0),new Vector(new Point3D(0,1,0)));
         List<Point3D> result;

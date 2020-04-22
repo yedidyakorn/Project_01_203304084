@@ -10,6 +10,9 @@ import static org.junit.Assert.assertEquals;
 
 public class CylinderTest {
 
+    /**
+     * Test method for {@link geometries.Cylinder#getNormal(Point3D)}.
+     */
     @Test
     public void getNormal() {
 

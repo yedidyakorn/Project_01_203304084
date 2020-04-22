@@ -103,7 +103,7 @@ public class PolygonTests {
     /**
      * Test method for {@link geometries.Polygon#findIntersections(primitives.Ray)}.
      */
-    @org.junit.Test
+    @Test
     public void testFindIntersections() {
         Polygon polygon = new Polygon(new Point3D(1, 1, 0), new Point3D(2, 2, 0), new Point3D(3, 1, 0), new Point3D(2, 0, 0));
         List<Point3D> result;

@@ -70,7 +70,7 @@ public class Sphere extends RadialGeometry {
         double tM = alignZero(u.dotProduct(ray.getDirection()));
 
         double d = alignZero(Math.sqrt(u.length() * u.length() - tM * tM));
-        if (d > rad) {//Ray's line is outside the sphere
+        if (alignZero(d - rad) >= 0) {//Ray's line is outside the sphere
             return null;
         }
         double tH = alignZero(Math.sqrt(rad * rad - d * d));
@@ -78,9 +78,6 @@ public class Sphere extends RadialGeometry {
         double t1 = alignZero(tM + tH);
         double t2 = alignZero(tM - tH);
 
-        if (u.length() < rad) {//Ray starts inside the sphere
-            return List.of(ray.getPoint(t1));
-        }
 
         if (t1 <= 0 && t2 <= 0)//Ray's line is outside the sphere
             return null;

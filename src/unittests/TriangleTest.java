@@ -1,6 +1,7 @@
 package unittests;
 
 import geometries.Triangle;
+import org.junit.Test;
 import primitives.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class TriangleTest {
     /**
      * Test method for {@link geometries.Triangle#getNormal(Point3D)}  (Geometry.Triangle) }.
      */
-    @org.junit.Test
+    @Test
     public void getNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single normal test..
@@ -31,7 +32,7 @@ public class TriangleTest {
     /**
      * Test method for {@link geometries.Triangle#findIntersections(primitives.Ray)}.
      */
-    @org.junit.Test
+    @Test
     public void testFindIntersections() {
         Triangle triangle = new Triangle(new Point3D(1, 1, 0), new Point3D(2, 2, 0), new Point3D(3, 1, 0));
         List<Point3D> result;

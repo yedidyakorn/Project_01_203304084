@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import org.junit.Test;
 
 /**
  * Unit tests for Geometries class
@@ -17,7 +18,10 @@ import static org.junit.Assert.assertNull;
  */
 public class GeometriesTests {
 
-    @org.junit.Test
+    /**
+     * Test method for {@link geometries.Geometries#findIntersections(Ray)}.
+     */
+    @Test
     public void testFindIntersections() {
         Geometries geometries = new Geometries();
         geometries.add(new Triangle(new Point3D(3, 3, 8), new Point3D(4, 4, 8), new Point3D(5, 3, 8)));

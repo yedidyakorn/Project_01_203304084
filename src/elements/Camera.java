@@ -4,7 +4,7 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.awt.*;
+import static primitives.Util.isZero;
 
 /**
  * a class that represents a camera
@@ -65,10 +65,30 @@ public class Camera {
         vRight=vTo.crossProduct(vUp).normalize();
     }
 
+    /**
+     * builds a Ray from the camera point through a specific pixel on view plane
+     * @param nX - number of cells left to right
+     * @param nY - number of cells up to down
+     * @param j - index of width cell
+     * @param i - index of height cell
+     * @param screenDistance - the distance between the camera and the view plane
+     * @param screenWidth - width of view plane in pixels
+     * @param screenHeight - height of view plane in pixels
+     * @return - a new Ray
+     */
     public Ray constructRayThroughPixel (int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight){
-        return null;
+        Point3D pC=p.add(vTo.scale(screenDistance));
+        double rY=screenHeight/nY;
+        double rX=screenWidth/nX;
+        double yi =  ((i - (nY)/2d)*rY + rY/2d);
+        double xj=   ((j - (nX)/2d)*rX + rX/2d);
+        Point3D Pij=pC;
+        if(!isZero(xj))
+            Pij=pC.add(vRight.scale(xj));
+        if(!isZero(yi))
+            Pij=Pij.add(vUp.scale(-yi));
+        Vector Vij=Pij.subtract(p);
+        return new Ray(p,Vij.normalize());
     }
-
-
 
 }

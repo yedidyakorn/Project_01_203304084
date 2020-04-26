@@ -9,7 +9,8 @@ import geometries.Triangle;
 import org.junit.Test;
 
 import elements.Camera;
-import primitives.*;
+import primitives.Point3D;
+import primitives.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,7 @@ public class CameraRaysTest {
 
 
     /**
-     * tests for integration of rays from Camera and rays {@link geometries.Sphere#findIntersections(primitives.Ray)}
+     * tests for integration of rays from Camera and rays {@link geometries.Triangle#findIntersections(primitives.Ray)}
      */
     @Test
     public void triangleIntegrationTest() {

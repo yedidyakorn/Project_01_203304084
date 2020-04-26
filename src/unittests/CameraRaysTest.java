@@ -24,14 +24,15 @@ public class CameraRaysTest {
 
     Camera camera = new Camera(new Point3D(0, 0, -0.5), new Vector(0, 0, 1), new Vector(0, -1, 0));
     List<Point3D> temp;
-    List<Point3D> result=new ArrayList<>();
+    List<Point3D> result = new ArrayList<>();
 
     /**
      * function that sums the number of intersections points of a Geometry shape and a camera from all pixels
+     *
      * @param obj a Geometry 3D shape
      * @return number of intersections points
      */
-    private int checkAllPixels(Geometry obj){
+    private int checkAllPixels(Geometry obj) {
         result.clear();
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
@@ -51,7 +52,7 @@ public class CameraRaysTest {
 
         // TC01: small sphere in front of view plane (2 points)
         Sphere sphere1 = new Sphere(new Point3D(0, 0, 3), 1);
-        assertEquals("number of intersections isn't equal",checkAllPixels(sphere1), 2);
+        assertEquals("number of intersections isn't equal", checkAllPixels(sphere1), 2);
 
         // TC02: big Sphere that covers the all pixels but does not get to camera (18 points)
         Sphere sphere2 = new Sphere(new Point3D(0, 0, 2.5), 2.5);
@@ -62,11 +63,11 @@ public class CameraRaysTest {
         assertEquals("number of intersections isn't equal", checkAllPixels(sphere3), 10);
 
         // TC04: big Sphere that covers the view plane and camera (9 points)
-        Sphere sphere4 = new Sphere( Point3D.ZERO, 4);
+        Sphere sphere4 = new Sphere(Point3D.ZERO, 4);
         assertEquals("number of intersections isn't equal", checkAllPixels(sphere4), 9);
 
         // TC05: small Sphere in back of camera (0 points)
-        Sphere sphere5 = new Sphere( new Point3D(0, 0, -1), 0.5);
+        Sphere sphere5 = new Sphere(new Point3D(0, 0, -1), 0.5);
         assertEquals("number of intersections isn't equal", checkAllPixels(sphere5), 0);
 
     }
@@ -97,11 +98,11 @@ public class CameraRaysTest {
     public void triangleIntegrationTest() {
         //TC01: small Triangle (1 point)
         Triangle triangle1 = new Triangle(new Point3D(-1, 1, 2), new Point3D(1, 1, 2), new Point3D(0, -1, 2));
-        assertEquals("number of intersections isn't equal",checkAllPixels(triangle1), 1);
+        assertEquals("number of intersections isn't equal", checkAllPixels(triangle1), 1);
 
         //TC02: small Triangle (2 points)
         Triangle triangle2 = new Triangle(new Point3D(-1, 1, 2), new Point3D(1, 1, 2), new Point3D(0, -20, 2));
-        assertEquals("number of intersections isn't equal",checkAllPixels(triangle2), 2);
+        assertEquals("number of intersections isn't equal", checkAllPixels(triangle2), 2);
     }
 }
 

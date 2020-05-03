@@ -132,7 +132,7 @@ public class Scene {
      *
      * @param geometries
      */
-    void addGeometries(Intersectable... geometries) {
+    public void addGeometries(Intersectable... geometries) {
         this.geometries.add(geometries);
     }
 }

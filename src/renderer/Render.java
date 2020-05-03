@@ -81,7 +81,7 @@ public class Render {
      * @param intersectionPoints- list of intersection Points of a ray in a single pixel
      * @return Closest Point to camera
      */
-    private Point3D getClosestPoint(List<Point3D> intersectionPoints) {
+    public Point3D getClosestPoint(List<Point3D> intersectionPoints) {
         double min = Double.MAX_VALUE;
         int result = 0;
         for (int i = 0; i < intersectionPoints.size(); i++) {
@@ -103,9 +103,9 @@ public class Render {
     public void printGrid(int interval, java.awt.Color color) {
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        for (int i = 0; i < nX; i++) {
-            for (int j = 0; j < nY; j++) {
-                if ((i % interval == 0) && (i > 0) || (j % interval == 0) && (j > 0))
+        for (int i = 1; i < nX; i++) {
+            for (int j = 1; j < nY; j++) {
+                if ((i % interval == 0) || (j % interval == 0))
                     imageWriter.writePixel(i, j, new Color(188, 250, 94));
             }
         }

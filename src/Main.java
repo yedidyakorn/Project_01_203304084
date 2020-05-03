@@ -9,6 +9,8 @@ import static primitives.Util.*;
 
 import geometries.*;
 
+import java.util.List;
+
 /**
  * Test program for the 1st stage
  * @author Dan Zilberstein
@@ -76,6 +78,7 @@ public final class Main {
             out.println("ERROR: Point - Point does not work correctly");
 
         out.println("If there were no any other outputs - all tests succeeded!");
+
 
 
     }

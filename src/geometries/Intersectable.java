@@ -18,5 +18,10 @@ public interface Intersectable {
      * @return a List of 3D Points with the values of all the Intersections points of the ray and the shape or shapes.
      *          if there are no Intersections points, the function returns null
      */
+    public class GeoPoint{
+        public Geometry geometry;
+        public Point3D point;
+
+    }
     List<Point3D> findIntersections(Ray ray);
 }

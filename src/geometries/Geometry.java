@@ -23,15 +23,15 @@ public abstract class Geometry implements Intersectable{
      * punction that gets a
      * @return
      */
-    Color get_emmission(){
+    public Color get_emmission(){
         return _emmission;
     }
 
-    Geometry(Color c){
+    public Geometry(Color c){
         _emmission = c;
     }
 
-    Geometry(){
+    public Geometry(){
         _emmission = Color.BLACK;
     }
 }

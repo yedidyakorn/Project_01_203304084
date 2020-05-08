@@ -7,7 +7,7 @@ import primitives.*;
  *
  * @author Yedidya Korn & Eliezer Horowitz
  */
-public interface Geometry extends Intersectable {
+public abstract class Geometry implements Intersectable{
 
     /**
      * function that gets a point on a shape surface and returns the normal from that point
@@ -16,5 +16,22 @@ public interface Geometry extends Intersectable {
      * @param point on a shape
      * @return the normal vector from that point
      */
-    Vector getNormal(Point3D point);
+    protected  Color _emmission;
+    public abstract Vector getNormal(Point3D point);
+
+    /**
+     * punction that gets a
+     * @return
+     */
+    Color get_emmission(){
+        return _emmission;
+    }
+
+    Geometry(Color c){
+        _emmission = c;
+    }
+
+    Geometry(){
+        _emmission = Color.BLACK;
+    }
 }

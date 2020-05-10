@@ -23,15 +23,17 @@ public abstract class Geometry implements Intersectable {
      * @param c- color
      */
     public Geometry(Color c) {
-        emmission = c;
+        this(c, new Material(0,0,0));
     }
 
     /**
      * default ctor. sets color as black
      */
     public Geometry() {
-        emmission = Color.BLACK;
+        this(Color.BLACK, new Material(0,0,0));
     }
+    
+    public Geometry(Color c, Material m){_emmission = c; _material =m;}
 
     public abstract Vector getNormal(Point3D point);
 

@@ -1,6 +1,7 @@
 package unittests;
 
 import geometries.Triangle;
+import geometries.Intersectable.GeoPoint;
 import org.junit.Test;
 import primitives.*;
 
@@ -35,12 +36,12 @@ public class TriangleTest {
     @Test
     public void testFindIntersections() {
         Triangle triangle = new Triangle(new Point3D(1, 1, 0), new Point3D(2, 2, 0), new Point3D(3, 1, 0));
-        List<Point3D> result;
+        List<GeoPoint> result;
 
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Ray intersects the triangle (1 point)
-        Point3D p1 = new Point3D(2, 1.5, 0);
+        GeoPoint p1= new GeoPoint(triangle , new Point3D(2, 1.5, 0));
         result = triangle.findIntersections(new Ray(new Point3D(2, 1.5, 3), new Vector(0, 0, -1)));
         assertEquals("Wrong number of points", 1, result.size());
         assertEquals("Ray crosses plane", List.of(p1), result);

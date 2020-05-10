@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Color;
 import primitives.Point3D;
 import primitives.Vector;
 
@@ -24,6 +25,16 @@ public abstract class RadialGeometry extends Geometry {
         radius = rad;
     }
 
+    /**
+     * RadialGeometry ctor sets the radius and color
+     *
+     * @param c-   color
+     * @param rad- number
+     */
+    public RadialGeometry(Color c, double rad) {
+        super(c);
+        radius = rad;
+    }
 
     /**
      * getter for radius

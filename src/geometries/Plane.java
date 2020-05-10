@@ -49,6 +49,18 @@ public class Plane extends Geometry {
     }
 
     /**
+     * plane ctor that gets a point and normal vector and color
+     *
+     * @param color - color
+     * @param p     point
+     * @param vec-  some vector
+     */
+    public Plane(Color color, Point3D p, Vector vec) {
+        this(p, vec);
+        this.emmission = color;
+    }
+
+    /**
      * getter for a point on the plane
      */
     public Point3D getPoint() {
@@ -77,7 +89,7 @@ public class Plane extends Geometry {
     }
 
     @Override
-    public List<Point3D> findIntersections(Ray ray) {
+    public List<GeoPoint> findIntersections(Ray ray) {
         Vector n;
         try {//Ray begins at the plane's point
             n = point.subtract(ray.getPoint());
@@ -93,6 +105,7 @@ public class Plane extends Geometry {
 
         if (t <= 0)
             return null;
-        return List.of(ray.getPoint(t));
+        return List.of(new GeoPoint(this, ray.getPoint(t)));
+
     }
 }

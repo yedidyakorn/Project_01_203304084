@@ -2,11 +2,9 @@ package unittests;
 
 import static org.junit.Assert.*;
 
-import geometries.Geometry;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.Triangle;
+import geometries.*;
 import org.junit.Test;
+import geometries.Intersectable.GeoPoint;
 
 import elements.Camera;
 import primitives.Point3D;
@@ -23,8 +21,8 @@ import java.util.List;
 public class CameraRaysTest {
 
     Camera camera = new Camera(new Point3D(0, 0, -0.5), new Vector(0, 0, 1), new Vector(0, -1, 0));
-    List<Point3D> temp;
-    List<Point3D> result = new ArrayList<>();
+    List<GeoPoint> temp;
+    List<GeoPoint> result = new ArrayList<>();
 
     /**
      * function that sums the number of intersections points of a Geometry shape and a camera from all pixels

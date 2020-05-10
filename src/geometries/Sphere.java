@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Color;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -36,6 +37,18 @@ public class Sphere extends RadialGeometry {
     }
 
     /**
+     * Sphere ctor that gets a point and a radius and color
+     *
+     * @param c   - color
+     * @param p-  point
+     * @param rad -number
+     */
+    public Sphere(Color c, Point3D p, double rad) {
+        this(p, rad);
+        this.emmission = c;
+    }
+
+    /**
      * getter for the center point
      */
     public Point3D getCenter() {
@@ -59,13 +72,13 @@ public class Sphere extends RadialGeometry {
         return point.subtract(this.center).normalize();
     }
 
-    public List<Point3D> findIntersections(Ray ray) {
+    public List<GeoPoint> findIntersections(Ray ray) {
         Vector u;
         double rad = this.getRadius();
         try {
             u = center.subtract(ray.getPoint());//Ray starts at the center
         } catch (IllegalArgumentException e) {
-            return List.of((ray.getPoint(rad)));
+            return List.of(new GeoPoint(this, ray.getPoint(rad)));
         }
         double tM = alignZero(u.dotProduct(ray.getDirection()));
 
@@ -82,11 +95,11 @@ public class Sphere extends RadialGeometry {
         if (t1 <= 0 && t2 <= 0)//Ray's line is outside the sphere
             return null;
 
-        List<Point3D> list = new ArrayList<Point3D>();
+        List<GeoPoint> list = new ArrayList<>();
         if (t1 > 0)
-            list.add(ray.getPoint(t1));
+            list.add(new GeoPoint(this, ray.getPoint(t1)));
         if (t2 > 0)
-            list.add(ray.getPoint(t2));
+            list.add(new GeoPoint(this, ray.getPoint(t2)));
         return list;
 
 

@@ -1,6 +1,5 @@
 package geometries;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import primitives.*;
@@ -83,21 +82,31 @@ public class Polygon extends Geometry {
         }
     }
 
+    /**
+     * Polygon constructor based on vertices list. calls the Polygon ctor
+     *
+     * @param c        - color
+     * @param vertices - list of vertices according to their order by edge path
+     */
+    public Polygon(Color c, Point3D... vertices) {
+        this(vertices);
+        this.emmission = c;
+    }
+
     @Override
     public Vector getNormal(Point3D point) {
         return _plane.getNormal();
     }
 
     @Override
-    public List<Point3D> findIntersections(Ray ray) {
+    public List<GeoPoint> findIntersections(Ray ray) {
 
-        List<Point3D> intersections = _plane.findIntersections(ray);
+        List<GeoPoint> intersections = _plane.findIntersections(ray);
         if (intersections == null)
             return null;
         int positive = 0, negtive = 0, size = _vertices.size();
         Vector[] vecs = new Vector[size];
         double[] n = new double[_vertices.size()];
-
 
 
         Point3D p0 = ray.getPoint();
@@ -122,8 +131,10 @@ public class Polygon extends Geometry {
             }
         }
 
-        if ((positive == 0) || (negtive == 0))// the ray meets the triangle
+        if ((positive == 0) || (negtive == 0)) {         // the ray meets the triangle
+            intersections.get(0).geometry = this;
             return intersections;
+        }
 
         return null;
     }

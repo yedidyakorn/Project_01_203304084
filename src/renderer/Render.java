@@ -2,6 +2,7 @@ package renderer;
 
 import elements.Camera;
 import geometries.Intersectable;
+import geometries.Intersectable.GeoPoint;
 import primitives.Point3D;
 import primitives.Ray;
 import scene.Scene;
@@ -54,11 +55,11 @@ public class Render {
         for (int i = 0; i < nX; i++) {
             for (int j = 0; j < nY; j++) {
                 Ray ray = camera.constructRayThroughPixel(nX, nY, i, j, distance, width, height);
-                List<Point3D> intersectionPoints = geometries.findIntersections(ray);
+                List<GeoPoint> intersectionPoints = geometries.findIntersections(ray);
                 if (intersectionPoints == null) {
                     imageWriter.writePixel(i, j, background);
                 } else {
-                    Point3D closestPoint = getClosestPoint(intersectionPoints);
+                    GeoPoint closestPoint = getClosestPoint(intersectionPoints);
                     imageWriter.writePixel(i, j, calcColor(closestPoint).getColor());
                 }
             }
@@ -71,7 +72,9 @@ public class Render {
      * @param p - a point that we want to calculate it's color
      * @return color of Ambient Light
      */
-    public primitives.Color calcColor(Point3D p) {
+    public primitives.Color calcColor(GeoPoint p) {
+        if (p.geometry.getEmmission() != null)
+            return p.geometry.getEmmission();
         return scene.getAmbientLight().GetIntensity();
     }
 
@@ -81,11 +84,11 @@ public class Render {
      * @param intersectionPoints- list of intersection Points of a ray in a single pixel
      * @return Closest Point to camera
      */
-    public Point3D getClosestPoint(List<Point3D> intersectionPoints) {
+    public GeoPoint getClosestPoint(List<GeoPoint> intersectionPoints) {
         double min = Double.MAX_VALUE;
         int result = 0;
         for (int i = 0; i < intersectionPoints.size(); i++) {
-            double temp = intersectionPoints.get(i).distance(scene.getCamera().getP());
+            double temp = intersectionPoints.get(i).point.distance(scene.getCamera().getP());
             if (temp < min) {
                 min = temp;
                 result = i;
@@ -106,7 +109,7 @@ public class Render {
         for (int i = 1; i < nX; i++) {
             for (int j = 1; j < nY; j++) {
                 if ((i % interval == 0) || (j % interval == 0))
-                    imageWriter.writePixel(i, j, new Color(188, 250, 94));
+                    imageWriter.writePixel(i, j, color);
             }
         }
     }

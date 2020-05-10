@@ -1,6 +1,7 @@
 package unittests;
 
 import geometries.*;
+import geometries.Intersectable.GeoPoint;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -27,7 +28,7 @@ public class GeometriesTests {
         geometries.add(new Triangle(new Point3D(3, 3, 8), new Point3D(4, 4, 8), new Point3D(5, 3, 8)));
         geometries.add(new Sphere(new Point3D(3, 3, 4), 2));
         geometries.add(new Plane(new Point3D(3, 3, 1), new Vector(new Point3D(0, 0, 1))));
-        List<Point3D> result;
+        List<GeoPoint> result;
 
 
         // ============ Equivalence Partitions Tests ==============

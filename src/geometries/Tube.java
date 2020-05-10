@@ -33,6 +33,18 @@ public class Tube extends RadialGeometry {
     }
 
     /**
+     * tube ctor that gets a number and a ray and color
+     *
+     * @param c    - color
+     * @param r-   ray
+     * @param rad- number
+     */
+    public Tube(Color c, Ray r, double rad) {
+        this(r, rad);
+        this.emmission = c;
+    }
+
+    /**
      * getter for the ray
      */
     public Ray getRay() {
@@ -65,7 +77,7 @@ public class Tube extends RadialGeometry {
     }
 
     @Override
-    public List<Point3D> findIntersections(Ray ray){
+    public List<GeoPoint> findIntersections(Ray ray) {
         return null;
     }
 }

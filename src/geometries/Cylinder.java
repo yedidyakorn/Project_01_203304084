@@ -32,6 +32,19 @@ public class Cylinder extends Tube {
     }
 
     /**
+     * Cylinder ctor that gets two numbers and a ray
+     *
+     * @param c    - color
+     * @param r-   ray
+     * @param h-   height
+     * @param rad- radius
+     */
+    public Cylinder(Color c, Ray r, double rad, double h) {
+        this(r, rad, h);
+        this.emmission = c;
+    }
+
+    /**
      * getter for the height
      */
     public double getHeight() {
@@ -80,7 +93,7 @@ public class Cylinder extends Tube {
     }
 
     @Override
-    public List<Point3D> findIntersections(Ray ray){
+    public List<GeoPoint> findIntersections(Ray ray) {
         return null;
     }
 }

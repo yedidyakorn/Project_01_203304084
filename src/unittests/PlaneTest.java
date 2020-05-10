@@ -1,5 +1,6 @@
 package unittests;
 
+import geometries.Intersectable.GeoPoint;
 import geometries.Plane;
 import primitives.Point3D;
 import primitives.Ray;
@@ -36,12 +37,12 @@ public class PlaneTest {
     @Test
     public void testFindIntersections() {
         Plane plane=new Plane(new Point3D(0,1,0),new Vector(new Point3D(0,1,0)));
-        List<Point3D> result;
+        List<GeoPoint> result;
 
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Ray intersects the plane (1 point)
-        Point3D p1 = new Point3D(2, 1, 0);
+        GeoPoint p1 = new GeoPoint(plane ,new Point3D(2, 1, 0));
         result=plane.findIntersections(new Ray(new Point3D(1,0,0),new Vector(1,1,0)));
         assertEquals("Wrong number of points", 1, result.size());
         assertEquals("Ray crosses plane", List.of(p1), result);
@@ -60,7 +61,7 @@ public class PlaneTest {
 
         // **** Group: Ray is orthogonal to the plane
         // TC13: the ray is before the plane (1 point)
-        Point3D p2 = new Point3D(1, 1, 0);
+        GeoPoint p2 = new GeoPoint(plane ,new Point3D(1, 1, 0));
         result=plane.findIntersections(new Ray(new Point3D(1,0,0),new Vector(0,1,0)));
         assertEquals("Wrong number of points", 1, result.size());
         assertEquals("Ray crosses plane", List.of(p2), result);

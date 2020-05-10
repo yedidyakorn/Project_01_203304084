@@ -95,7 +95,7 @@ public class Sphere extends RadialGeometry {
         if (t1 <= 0 && t2 <= 0)//Ray's line is outside the sphere
             return null;
 
-        List<GeoPoint> list = new ArrayList<>();
+        List<GeoPoint> list = new LinkedList<>();
         if (t1 > 0)
             list.add(new GeoPoint(this, ray.getPoint(t1)));
         if (t2 > 0)

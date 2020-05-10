@@ -5,7 +5,6 @@ import geometries.Intersectable.GeoPoint;
 import org.junit.Test;
 import primitives.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +40,7 @@ public class TriangleTest {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Ray intersects the triangle (1 point)
-        GeoPoint p1= new GeoPoint(triangle , new Point3D(2, 1.5, 0));
+        GeoPoint p1 = new GeoPoint(triangle, new Point3D(2, 1.5, 0));
         result = triangle.findIntersections(new Ray(new Point3D(2, 1.5, 3), new Vector(0, 0, -1)));
         assertEquals("Wrong number of points", 1, result.size());
         assertEquals("Ray crosses plane", List.of(p1), result);

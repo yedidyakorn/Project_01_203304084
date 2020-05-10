@@ -3,11 +3,10 @@ package renderer;
 import elements.Camera;
 import geometries.Intersectable;
 import geometries.Intersectable.GeoPoint;
-import primitives.Point3D;
+import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -20,8 +19,8 @@ public class Render {
      * imageWriter- the image that we are printing to
      * scene- the scene that the camera is looking at
      */
-    ImageWriter imageWriter;
-    Scene scene;
+    private ImageWriter imageWriter;
+    private Scene scene;
 
     /**
      * ctor that gets all parameters
@@ -70,12 +69,12 @@ public class Render {
      * calculates the Ambient Light in the scene
      *
      * @param p - a point that we want to calculate it's color
-     * @return color of Ambient Light
+     * @return color of shape or of Ambient Light if there is no shape
      */
     public primitives.Color calcColor(GeoPoint p) {
-        if (p.geometry.getEmmission() != null)
-            return p.geometry.getEmmission();
-        return scene.getAmbientLight().GetIntensity();
+        Color color = scene.getAmbientLight().getIntensity();
+        color = color.add(p.geometry.getEmmission());
+        return color;
     }
 
     /**

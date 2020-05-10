@@ -4,16 +4,12 @@ import primitives.Color;
 
 
 /**
- * a class that represents the Ambient Lighting
+ * a class that represents the Ambient Lighting extends @Light class
  *
  * @author Yedidya Korn & Eliezer Horowitz
  */
-public class AmbientLight {
+public class AmbientLight extends Light {
 
-    /**
-     * represents the intensity of the Ambient Lighting
-     */
-    Color intensity;
 
     /**
      * ctor calculates the Ambient Lighting
@@ -21,13 +17,7 @@ public class AmbientLight {
      * @param kA
      */
     public AmbientLight(Color iA, double kA){
-        intensity=iA.scale(kA);
+        super(iA.scale(kA));
     }
 
-    /**
-     * getter for the Ambient light
-     */
-    public Color GetIntensity(){
-        return this.intensity;
-    }
 }

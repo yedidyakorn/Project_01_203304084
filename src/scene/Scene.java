@@ -2,9 +2,13 @@ package scene;
 
 import elements.AmbientLight;
 import elements.Camera;
+import elements.LightSource;
 import geometries.Geometries;
 import geometries.Intersectable;
 import primitives.Color;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * a class that represents a scene
@@ -19,13 +23,16 @@ public class Scene {
      * ambientLight- scene ambientLight
      * geometries- list of geometry shapes
      * camera- the camera that is watching the scene
+     * lights- list of the Light Sources
      */
-    String name;
-    Color background;
-    AmbientLight ambientLight;
-    Geometries geometries;
-    Camera camera;
-    double distance;
+    private String name;
+    private Color background;
+    private AmbientLight ambientLight;
+    private Geometries geometries;
+    private Camera camera;
+    private double distance;
+    private List<LightSource> lights;
+
 
     /**
      * ctor sets the name only
@@ -35,6 +42,7 @@ public class Scene {
     public Scene(String name) {
         this.name = name;
         geometries = new Geometries();
+        lights = new LinkedList<LightSource>();
     }
 
     /**
@@ -83,12 +91,31 @@ public class Scene {
     }
 
     /**
+     * add light sources to scene
+     *
+     * @param lights- collection of lights
+     */
+    public void addLights(LightSource... lights) {
+        this.lights.addAll(List.of(lights));
+    }
+
+
+    /**
      * getter for name
      *
      * @return
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * getter for lights
+     *
+     * @return returns a linkedList
+     */
+    public List<LightSource> getLights() {
+        return lights;
     }
 
     /**

@@ -17,10 +17,10 @@ public class Camera {
      * p- position of camera
      * three vectors that start from the camera to up, right and to the view plane
      */
-    Point3D p;
-    Vector vUp;
-    Vector vTo;
-    Vector vRight;
+    private Point3D p;
+    private Vector vUp;
+    private Vector vTo;
+    private Vector vRight;
 
     /**
      * getter for camera position

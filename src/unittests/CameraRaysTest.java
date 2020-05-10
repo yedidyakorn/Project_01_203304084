@@ -11,6 +11,7 @@ import primitives.Point3D;
 import primitives.Vector;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class CameraRaysTest {
 
     Camera camera = new Camera(new Point3D(0, 0, -0.5), new Vector(0, 0, 1), new Vector(0, -1, 0));
     List<GeoPoint> temp;
-    List<GeoPoint> result = new ArrayList<>();
+    List<GeoPoint> result = new LinkedList<>();
 
     /**
      * function that sums the number of intersections points of a Geometry shape and a camera from all pixels

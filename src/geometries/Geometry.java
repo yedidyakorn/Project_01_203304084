@@ -21,17 +21,19 @@ public abstract class Geometry implements Intersectable {
      *
      * @param c- color
      */
-    public Geometry(Color c) {
-        emmission = c;
-        material= new Material(0,0,0);
+    
+    public Geometry(Color c){
+
+        this(c, new Material(0,0,0));
     }
 
     /**
      * default ctor. sets color as black
      */
-    public Geometry() {
-        emmission = Color.BLACK;
-        material= new Material(0,0,0);
+     public Geometry(){
+
+        this(Color.BLACK, new Material(0,0,0));
+
     }
 
     /**

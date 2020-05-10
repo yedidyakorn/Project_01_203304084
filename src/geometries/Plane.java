@@ -61,6 +61,19 @@ public class Plane extends Geometry {
     }
 
     /**
+     * plane ctor that gets a point and normal vector and color and material
+     *
+     * @param color    - color
+     * @param material - material
+     * @param p        - point
+     * @param vec-     some vector
+     */
+    public Plane(Color color, Material material, Point3D p, Vector vec) {
+        this(color, p, vec);
+        this.material = material;
+    }
+
+    /**
      * getter for a point on the plane
      */
     public Point3D getPoint() {

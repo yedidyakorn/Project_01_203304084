@@ -45,6 +45,19 @@ public class Tube extends RadialGeometry {
     }
 
     /**
+     * tube ctor that gets a number and a ray and color and material
+     *
+     * @param c        - color
+     * @param material - material
+     * @param r-       ray
+     * @param rad-     number
+     */
+    public Tube(Color c, Material material, Ray r, double rad) {
+        this(c, r, rad);
+        this.material = material;
+    }
+
+    /**
      * getter for the ray
      */
     public Ray getRay() {

@@ -22,7 +22,7 @@ public class ImageWriterTest {
         double height = 1000;
         int x = 800;
         int y = 500;
-        ImageWriter img = new ImageWriter("first", width, height, x, y);
+        ImageWriter img = new ImageWriter("grid test", width, height, x, y);
 
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {

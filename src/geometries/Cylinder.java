@@ -45,6 +45,20 @@ public class Cylinder extends Tube {
     }
 
     /**
+     * Cylinder ctor that gets two numbers and a ray and material
+     *
+     * @param c        - color
+     * @param material - material
+     * @param r-       ray
+     * @param h-       height
+     * @param rad-     radius
+     */
+    public Cylinder(Color c, Material material, Ray r, double rad, double h) {
+        this(c, r, rad, h);
+        this.material = material;
+    }
+
+    /**
      * getter for the height
      */
     public double getHeight() {

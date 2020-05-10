@@ -1,8 +1,6 @@
 package geometries;
 
-import primitives.Color;
-import primitives.Point3D;
-import primitives.Ray;
+import primitives.*;
 import primitives.Vector;
 
 import java.util.*;
@@ -46,6 +44,19 @@ public class Sphere extends RadialGeometry {
     public Sphere(Color c, Point3D p, double rad) {
         this(p, rad);
         this.emmission = c;
+    }
+
+    /**
+     * Sphere ctor that gets a point and a radius and color and material
+     *
+     * @param c        - color
+     * @param material - material
+     * @param p        - point
+     * @param rad      - number
+     */
+    public Sphere(Color c, Material material, Point3D p, double rad) {
+        this(c, p, rad);
+        this.material = material;
     }
 
     /**

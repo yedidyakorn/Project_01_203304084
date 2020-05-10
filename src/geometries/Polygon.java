@@ -93,6 +93,18 @@ public class Polygon extends Geometry {
         this.emmission = c;
     }
 
+    /**
+     * Polygon constructor based on vertices list. calls the Polygon ctor and material
+     *
+     * @param c        - color
+     * @param material - material
+     * @param vertices - list of vertices according to their order by edge path
+     */
+    public Polygon(Color c, Material material, Point3D... vertices) {
+        this(c, vertices);
+        this.material = material;
+    }
+
     @Override
     public Vector getNormal(Point3D point) {
         return _plane.getNormal();

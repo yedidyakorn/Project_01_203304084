@@ -71,12 +71,28 @@ public class Render {
      * @param p - a point that we want to calculate it's color
      * @return color of shape or of Ambient Light if there is no shape
      */
-    public primitives.Color calcColor(GeoPoint p) {
+     public primitives.Color calcColor(GeoPoint p) {
         Color color = scene.getAmbientLight().getIntensity();
         color = color.add(p.geometry.getEmmission());
+        for (LightSource lightSource : _scene.getLights()) {
+            Vector l = lightSource.getL(geopoint.point);
+            if (sign(n.dotProduct(l)) == sign(n.dotProduct(v))) {
+                if (unshaded(l, n, geopoint)) {
+                    Color lightIntensity = lightSource.getIntensity(geopoint.point);
+                    color = color.add(calcDiffusive(kd, l, n, lightIntensity),
+                            calcSpecular(ks, l, n, v, nShininess, lightIntensity));
+                }
+            }
+        }
         return color;
     }
 
+    private boolean unshaded(Vector l, GeoPoint geopoint) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Ray lightRay = new Ray(geopoint.point, lightDirection);
+        List<GeoPoint> intersections = _scene.getGeometries().findIntersections(lightRay);
+        return intersections.isEmpty();
+    }
     /**
      * calculates the Closest Point to camera from list of intersection Points
      *

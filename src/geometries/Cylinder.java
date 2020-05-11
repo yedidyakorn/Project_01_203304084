@@ -27,8 +27,8 @@ public class Cylinder extends Tube {
      * @param rad- radius
      */
     public Cylinder(Ray r, double rad, double h) {
-        super(r, rad);
-        height = h;
+        this(new Color(Color.BLACK),new Material(0,0,0),r, rad, h);
+
     }
 
     /**
@@ -40,8 +40,7 @@ public class Cylinder extends Tube {
      * @param rad- radius
      */
     public Cylinder(Color c, Ray r, double rad, double h) {
-        this(r, rad, h);
-        this.emmission = c;
+        this(c,new Material(0,0,0),r, rad, h);
     }
 
     /**
@@ -54,8 +53,10 @@ public class Cylinder extends Tube {
      * @param rad-     radius
      */
     public Cylinder(Color c, Material material, Ray r, double rad, double h) {
-        this(c, r, rad, h);
+        super(r, rad);
+        this.emmission=c;
         this.material = material;
+        height = h;
     }
 
     /**

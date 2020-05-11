@@ -89,8 +89,7 @@ public class Polygon extends Geometry {
      * @param vertices - list of vertices according to their order by edge path
      */
     public Polygon(Color c, Point3D... vertices) {
-        this(vertices);
-        this.emmission = c;
+        this(c,new Material(0,0,0),vertices);
     }
 
     /**
@@ -101,7 +100,8 @@ public class Polygon extends Geometry {
      * @param vertices - list of vertices according to their order by edge path
      */
     public Polygon(Color c, Material material, Point3D... vertices) {
-        this(c, vertices);
+        this(vertices);
+        this.emmission = c;
         this.material = material;
     }
 

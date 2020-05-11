@@ -30,8 +30,7 @@ public class Sphere extends RadialGeometry {
      * @param rad -number
      */
     public Sphere(Point3D p, double rad) {
-        super(rad);
-        center = p;
+        this(new Color(Color.BLACK),new Material(0,0,0),p, rad);
     }
 
     /**
@@ -42,8 +41,7 @@ public class Sphere extends RadialGeometry {
      * @param rad -number
      */
     public Sphere(Color c, Point3D p, double rad) {
-        this(p, rad);
-        this.emmission = c;
+        this(c,new Material(0,0,0),p, rad);
     }
 
     /**
@@ -55,7 +53,9 @@ public class Sphere extends RadialGeometry {
      * @param rad      - number
      */
     public Sphere(Color c, Material material, Point3D p, double rad) {
-        this(c, p, rad);
+        super(rad);
+        center = p;
+        this.emmission = c;
         this.material = material;
     }
 

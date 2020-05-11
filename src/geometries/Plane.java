@@ -30,10 +30,8 @@ public class Plane extends Geometry {
      * @param c-point on plane
      */
     public Plane(Point3D a, Point3D b, Point3D c) {
-        point = a;
-        Vector v1 = b.subtract(a);
-        Vector v2 = c.subtract(a);
-        normal = v1.crossProduct(v2).normalize();
+        this(new Color(Color.BLACK),new Material(0,0,0),a,
+                b.subtract(a).crossProduct( c.subtract(a)).normalize());
     }
 
 
@@ -44,8 +42,7 @@ public class Plane extends Geometry {
      * @param vec- some vector
      */
     public Plane(Point3D p, Vector vec) {
-        point = new Point3D(p);
-        normal = new Vector(vec).normalize();
+        this(new Color(Color.BLACK),new Material(0,0,0),p, vec);
     }
 
     /**
@@ -56,8 +53,7 @@ public class Plane extends Geometry {
      * @param vec-  some vector
      */
     public Plane(Color color, Point3D p, Vector vec) {
-        this(p, vec);
-        this.emmission = color;
+        this(color,new Material(0,0,0),p, vec);
     }
 
     /**
@@ -69,8 +65,10 @@ public class Plane extends Geometry {
      * @param vec-     some vector
      */
     public Plane(Color color, Material material, Point3D p, Vector vec) {
-        this(color, p, vec);
+        this.emmission = color;
         this.material = material;
+        point = new Point3D(p);
+        normal = vec.normalized();
     }
 
     /**

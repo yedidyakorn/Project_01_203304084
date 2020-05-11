@@ -19,7 +19,7 @@ public class Triangle extends Polygon {
      * Triangle ctor that gets three points
      */
     public Triangle(Point3D a, Point3D b, Point3D c) {
-        super(a, b, c);
+        this(new Color(Color.BLACK),new Material(0,0,0), a, b, c);
     }
 
     /**
@@ -28,7 +28,7 @@ public class Triangle extends Polygon {
      * @param color - color
      */
     public Triangle(Color color, Point3D a, Point3D b, Point3D c) {
-        super(color, a, b, c);
+        this(color,new Material(0,0,0), a, b, c);
     }
 
     /**

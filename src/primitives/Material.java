@@ -19,14 +19,14 @@ public class Material {
     /**
      * ctor for Material
      *
-     * @param d - Material Diffuse
-     * @param s - Material Specular
-     * @param n - Material Shininess
+     * @param Diffuse - Material Diffuse
+     * @param Specular - Material Specular
+     * @param Shininess - Material Shininess
      */
-    public Material(double d, double s, int n) {
-        kD = d;
-        kS = s;
-        nShininess = n;
+    public Material(double Diffuse, double Specular, int Shininess) {
+        kD = Diffuse;
+        kS = Specular;
+        nShininess = Shininess;
     }
 
     /**

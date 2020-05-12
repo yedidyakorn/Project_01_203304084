@@ -1,13 +1,17 @@
 package renderer;
 
 import elements.Camera;
+import elements.LightSource;
 import geometries.Intersectable;
 import geometries.Intersectable.GeoPoint;
 import primitives.Color;
 import primitives.Ray;
+import primitives.Vector;
 import scene.Scene;
 
 import java.util.List;
+
+import static primitives.Util.alignZero;
 
 /**
  * a class that represents the Render engine
@@ -71,28 +75,86 @@ public class Render {
      * @param p - a point that we want to calculate it's color
      * @return color of shape or of Ambient Light if there is no shape
      */
-     public primitives.Color calcColor(GeoPoint p) {
+    public primitives.Color calcColor(GeoPoint p) {
         Color color = scene.getAmbientLight().getIntensity();
         color = color.add(p.geometry.getEmmission());
-        for (LightSource lightSource : _scene.getLights()) {
-            Vector l = lightSource.getL(geopoint.point);
-            if (sign(n.dotProduct(l)) == sign(n.dotProduct(v))) {
-                if (unshaded(l, n, geopoint)) {
-                    Color lightIntensity = lightSource.getIntensity(geopoint.point);
-                    color = color.add(calcDiffusive(kd, l, n, lightIntensity),
-                            calcSpecular(ks, l, n, v, nShininess, lightIntensity));
-                }
+        Vector v = p.point.subtract(scene.getCamera().getP()).normalize();
+        Vector n = p.geometry.getNormal(p.point);
+        int nShininess = p.geometry.getMaterial().getnShininess();
+        double kD = p.geometry.getMaterial().getkD();
+        double kS = p.geometry.getMaterial().getkS();
+
+        for (LightSource lightSource : scene.getLights()) {
+            Vector l = lightSource.getL(p.point);
+            double nl = alignZero(n.dotProduct(l));
+            double nv = alignZero(n.dotProduct(v));
+            if (sign(nl) == sign(nv)) {
+                Color lightIntensity = lightSource.getIntensity(p.point);
+                color=color.add(calcDiffusive(kD, nl, lightIntensity),
+                        calcSpecular(kS, l, n, nl, v, nShininess, lightIntensity));
             }
         }
         return color;
     }
 
-    private boolean unshaded(Vector l, GeoPoint geopoint) {
-        Vector lightDirection = l.scale(-1); // from point to light source
-        Ray lightRay = new Ray(geopoint.point, lightDirection);
-        List<GeoPoint> intersections = _scene.getGeometries().findIntersections(lightRay);
-        return intersections.isEmpty();
+    /**
+     * function that returns true if a number is positive
+     * @param num
+     * @return
+     */
+    private boolean sign(double num) {
+        return (num > 0d);
     }
+
+    /**
+     * Calculate Specular component of light reflection.
+     *
+     * @param ks         specular component coef
+     * @param l          direction from light to point
+     * @param n          normal to surface at the point
+     * @param nl         dot-product n*l
+     * @param v          direction from point of view to point
+     * @param nShininess shininess level
+     * @param ip         light intensity at the point
+     * @return specular component light effect at the point
+     * @author Dan Zilberstein
+     * <p>
+     * Finally, the Phong model has a provision for a highlight, or specular, component, which reflects light in a
+     * shiny way. This is defined by [rs,gs,bs](-V.R)^p, where R is the mirror reflection direction vector we discussed
+     * in class (and also used for ray tracing), and where p is a specular power. The higher the value of p, the shinier
+     * the surface.
+     */
+    private Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v, int nShininess, Color ip) {
+        double p = nShininess;
+
+        Vector R = l.add(n.scale(-2 * nl)); // nl must not be zero!
+        double minusVR = -alignZero(R.dotProduct(v));
+        if (minusVR <= 0) {
+            return Color.BLACK; // view from direction opposite to r vector
+        }
+        return ip.scale(ks * Math.pow(minusVR, p));
+    }
+
+    /**
+     * Calculate Diffusive component of light reflection.
+     *
+     * @param kd diffusive component coef
+     * @param nl dot-product n*l
+     * @param ip light intensity at the point
+     * @return diffusive component of light reflection
+     * @author Dan Zilberstein
+     * <p>
+     * The diffuse component is that dot product n•L that we discussed in class. It approximates light, originally
+     * from light source L, reflecting from a surface which is diffuse, or non-glossy. One example of a non-glossy
+     * surface is paper. In general, you'll also want this to have a non-gray color value, so this term would in general
+     * be a color defined as: [rd,gd,bd](n•L)
+     */
+    private Color calcDiffusive(double kd, double nl, Color ip) {
+        if (nl < 0) nl = -nl;
+        return ip.scale(nl * kd);
+    }
+
+
     /**
      * calculates the Closest Point to camera from list of intersection Points
      *

@@ -214,11 +214,39 @@ public class LightsTests {
                         new Point3D(-150, 150, 150), new Point3D(-70, -70, 50), new Point3D(75, -75, 150)));
 
         scene.addLights(new SpotLight(new Color(500, 250, 250),
-                new Point3D(10, 10, 130), new Vector(-2, 2, 1),
+                new Point3D(10, 50, 130), new Vector(-2, 2, 1),
                 1, 0.0001, 0.000005),
-                new DirectionalLight(new Color(250,47,12),new Vector(2,2,1)));
+                new DirectionalLight(new Color(250,47,12),new Vector(2,2,1)),
+                new PointLight(new Color(10,145,5),new Point3D(30,-40,40),1, 0.0001, 0.000005));
 
         ImageWriter imageWriter = new ImageWriter("trianglesAll", 200, 200, 500, 500);
+        Render render = new Render(imageWriter, scene);
+
+        render.renderImage();
+        render.writeToImage();
+    }
+
+    /**
+     * Produce a picture of a sphere lighted by a point light
+     */
+    @Test
+    public void neta() {
+        Scene scene = new Scene("Test scene");
+        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
+        scene.setDistance(1000);
+        scene.setBackground(Color.BLACK);
+        scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
+
+        scene.addGeometries(
+                new Sphere(new Color(java.awt.Color.BLUE), new Material(0.5, 0.5, 100), new Point3D(-25, -25, 50), 30),
+                new Sphere(new Color(java.awt.Color.GREEN), new Material(0.5, 0.5, 100), new Point3D(25, 25, 50), 30),
+                new Sphere(new Color(java.awt.Color.RED), new Material(0.5, 0.5, 100), new Point3D(-25, 25, 50), 30),
+                new Sphere(new Color(java.awt.Color.CYAN), new Material(0.5, 0.5, 100), new Point3D(25, -25, 50), 30),
+                new Sphere(new Color(java.awt.Color.YELLOW), new Material(0.5, 0.5, 100), new Point3D(0, 0, 60), 40));
+
+        scene.addLights(new PointLight(new Color(500, 200, 300), new Point3D(0, 0, 0), 1, 0.00001, 0.000001));
+
+        ImageWriter imageWriter = new ImageWriter("neta", 150, 150, 500, 500);
         Render render = new Render(imageWriter, scene);
 
         render.renderImage();

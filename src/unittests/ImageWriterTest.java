@@ -5,7 +5,6 @@ import renderer.ImageWriter;
 
 import java.awt.*;
 
-
 /**
  * tests ImageWriter class checks basic images
  *

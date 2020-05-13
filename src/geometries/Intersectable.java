@@ -34,15 +34,14 @@ public interface Intersectable {
 
         /**
          * ctor for GeoPoint
+         *
          * @param geometry - a geometry shape
-         * @param point - a point on the shape
+         * @param point    - a point on the shape
          */
-        public GeoPoint(Geometry geometry,Point3D point){
-            this.geometry=geometry;
-            this.point=point;
+        public GeoPoint(Geometry geometry, Point3D point) {
+            this.geometry = geometry;
+            this.point = point;
         }
-
-
 
         @Override
         public boolean equals(Object o) {
@@ -50,8 +49,8 @@ public interface Intersectable {
             if (o == null) return false;
             if (!(o instanceof GeoPoint)) return false;
             GeoPoint geoPoint = (GeoPoint) o;
-            return Objects.equals(geometry, geoPoint.geometry) &&
-                    Objects.equals(point, geoPoint.point);
+            return geoPoint.geometry == ((GeoPoint) o).geometry &&
+                    geoPoint.point == ((GeoPoint) o).point;
         }
     }
 }

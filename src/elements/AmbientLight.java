@@ -10,7 +10,6 @@ import primitives.Color;
  */
 public class AmbientLight extends Light {
 
-
     /**
      * ctor calculates the Ambient Lighting
      * @param iA

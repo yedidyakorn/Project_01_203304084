@@ -109,7 +109,7 @@ public class Render {
     /**
      * Calculate Specular component of light reflection.
      *
-     * @param ks         specular component coef
+     * @param ks         specular component
      * @param l          direction from light to point
      * @param n          normal to surface at the point
      * @param nl         dot-product n*l
@@ -117,40 +117,26 @@ public class Render {
      * @param nShininess shininess level
      * @param ip         light intensity at the point
      * @return specular component light effect at the point
-     * @author Dan Zilberstein
-     * <p>
-     * Finally, the Phong model has a provision for a highlight, or specular, component, which reflects light in a
-     * shiny way. This is defined by [rs,gs,bs](-V.R)^p, where R is the mirror reflection direction vector we discussed
-     * in class (and also used for ray tracing), and where p is a specular power. The higher the value of p, the shinier
-     * the surface.
      */
     private Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v, int nShininess, Color ip) {
         double p = nShininess;
-
-        Vector R = l.add(n.scale(-2 * nl)); // nl must not be zero!
+        Vector R = l.add(n.scale(-2 * nl)).normalize();
         double minusVR = -alignZero(R.dotProduct(v));
-        if (minusVR <= 0) {
-            return Color.BLACK; // view from direction opposite to r vector
-        }
+        if (minusVR <= 0)
+            return Color.BLACK;
         return ip.scale(ks * Math.pow(minusVR, p));
     }
 
     /**
      * Calculate Diffusive component of light reflection.
      *
-     * @param kd diffusive component coef
+     * @param kd diffusive component
      * @param nl dot-product n*l
      * @param ip light intensity at the point
-     * @return diffusive component of light reflection
-     * @author Dan Zilberstein
-     * <p>
-     * The diffuse component is that dot product n•L that we discussed in class. It approximates light, originally
-     * from light source L, reflecting from a surface which is diffuse, or non-glossy. One example of a non-glossy
-     * surface is paper. In general, you'll also want this to have a non-gray color value, so this term would in general
-     * be a color defined as: [rd,gd,bd](n•L)
+     * @return diffusive of light reflection
      */
     private Color calcDiffusive(double kd, double nl, Color ip) {
-        if (nl < 0) nl = -nl;
+        nl=Math.abs(nl);
         return ip.scale(nl * kd);
     }
 

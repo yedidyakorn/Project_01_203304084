@@ -84,13 +84,13 @@ public class Camera {
         double rX = screenWidth / nX;
         double yi = ((i - (nY) / 2d) * rY + rY / 2d);//10-250*2+2/2=-489
         double xj = ((j - (nX) / 2d) * rX + rX / 2d);//10-400*2+2/2=-789
-        Point3D Pij = pC;
+        Point3D pij = pC;
         if (!isZero(xj))
-            Pij = pC.add(vRight.scale(xj));
+            pij = pC.add(vRight.scale(xj));
         if (!isZero(yi))
-            Pij = Pij.add(vUp.scale(-yi));
-        Vector Vij = Pij.subtract(p);
-        return new Ray(p, Vij.normalize());
+            pij = pij.add(vUp.scale(-yi));
+        Vector vij = pij.subtract(p);
+        return new Ray(p, vij.normalize());
     }
 
 }

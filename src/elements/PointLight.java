@@ -14,6 +14,7 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * position- the position of the light source
+     *kC,kL,kQ - Factors for attenuation with distance
      */
     protected Point3D position;
     protected double kC, kL, kQ;
@@ -23,9 +24,9 @@ public class PointLight extends Light implements LightSource {
      *
      * @param color-    intensity light
      * @param position- position of light
-     * @param c
-     * @param l
-     * @param q
+     * @param c - number
+     * @param l - number
+     * @param q - number
      */
     public PointLight(Color color, Point3D position, double c, double l, double q) {
         super(color);

@@ -90,7 +90,7 @@ public class Render {
             double nv = alignZero(n.dotProduct(v));
             if (sign(nl) == sign(nv)) {
                 Color lightIntensity = lightSource.getIntensity(p.point);
-                color=color.add(calcDiffusive(kD, nl, lightIntensity),
+                color = color.add(calcDiffusive(kD, nl, lightIntensity),
                         calcSpecular(kS, l, n, nl, v, nShininess, lightIntensity));
             }
         }
@@ -99,6 +99,7 @@ public class Render {
 
     /**
      * function that returns true if a number is positive
+     *
      * @param num
      * @return
      */
@@ -136,7 +137,7 @@ public class Render {
      * @return diffusive of light reflection
      */
     private Color calcDiffusive(double kd, double nl, Color ip) {
-        nl=Math.abs(nl);
+        nl = Math.abs(nl);
         return ip.scale(nl * kd);
     }
 

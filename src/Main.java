@@ -3,83 +3,107 @@
  * @author Yedidya Korn, 203304084, yedidyas5@gmail.com
  */
 
+import elements.*;
 import primitives.*;
+
 import static java.lang.System.out;
 import static primitives.Util.*;
 
 import geometries.*;
+import renderer.ImageWriter;
+import renderer.Render;
+import scene.Scene;
 
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Test program for the 1st stage
- * @author Dan Zilberstein
- */
 public final class Main {
 
     /**
-     * Main program to tests initial functionality of the 1st stage
+     * function that builds a squared house
      *
-     * @param args irrelevant here
+     * @param x         - coordinate
+     * @param y         - coordinate
+     * @param z         - coordinate
+     * @param size      - size of the each wall
+     * @param wallColor - wall Color
+     * @param roofColor - roof Color
+     * @param material  - house material
+     * @return a list of Geometries
+     */
+    public static Intersectable buildHouse(double x, double y, double z, double size, Color wallColor, Color roofColor, Material material) {
+        Geometries list = new Geometries();
+        list.add(new Polygon(wallColor, material,
+                new Point3D(x, y, z), new Point3D(x - size, y, z), new Point3D(x - size, y + size, z), new Point3D(x, y + size, z)));
+        list.add(new Polygon(wallColor, material,
+                new Point3D(x, y, z), new Point3D(x, y + size, z), new Point3D(x, y + size, z + size), new Point3D(x, y, z + size)));
+        list.add(new Polygon(wallColor, material,
+                new Point3D(x - size, y + size, z + size), new Point3D(x, y + size, z + size), new Point3D(x, y + size, z), new Point3D(x - size, y + size, z)));
+        list.add(new Polygon(wallColor, material,
+                new Point3D(x - size, y + size, z), new Point3D(x - size, y + size, z + size), new Point3D(x - size, y, z + size), new Point3D(x - size, y, z)));
+        list.add(new Polygon(wallColor, material,
+                new Point3D(x, y, z), new Point3D(x, y, z + size), new Point3D(x - size, y, z + size), new Point3D(x - size, y, z)));
+        list.add(new Triangle(roofColor, material,
+                new Point3D(x - size, y, z + size), new Point3D(x, y, z + size), new Point3D(x - size / 2, y + size / 2, z + size + size / 2)));
+        list.add(new Triangle(roofColor, material,
+                new Point3D(x, y + size, z + size), new Point3D(x, y, z + size), new Point3D(x - size / 2, y + size / 2, z + size + size / 2)));
+        list.add(new Triangle(roofColor, material,
+                new Point3D(x - size, y + size, z + size), new Point3D(x, y + size, z + size), new Point3D(x - size / 2, y + size / 2, z + size + size / 2)));
+        list.add(new Triangle(roofColor, material,
+                new Point3D(x - size, y + size, z + size), new Point3D(x - size, y, z + size), new Point3D(x - size / 2, y + size / 2, z + size + size / 2)));
+        return list;
+    }
+
+    /**
+     * function that builds a road
+     *
+     * @param x - coordinate
+     * @param y - coordinate
+     * @param z - coordinate
+     * @return
+     */
+    private static Intersectable road(double x, double y, double z, double houseSize, double streetWidth, double housesDistance) {
+        double roadWidth = streetWidth - houseSize;
+        Geometries list = new Geometries();
+        list.add(new Polygon(new Color(java.awt.Color.GRAY),
+                new Point3D(x, y, z), new Point3D(x - housesDistance, y, z), new Point3D(x - housesDistance, y + roadWidth, z), new Point3D(x, y + roadWidth, z)));
+        list.add(new Polygon(new Color(java.awt.Color.WHITE),
+                new Point3D(x, y + roadWidth / 2 - 2, z + 0.1), new Point3D(x - housesDistance / 4, y + roadWidth / 2 - 2, z + 0.1),
+                new Point3D(x - housesDistance / 4, y + roadWidth / 2 + 2, z + 0.1), new Point3D(x, y + roadWidth / 2 + 2, z + 0.1)));
+        return list;
+    }
+
+    /**
+     * function that builds a road with houses on the sides
+     *
+     * @param args
      */
     public static void main(String[] args) {
 
-        try { // test zero vector
-            new Vector(0, 0, 0);
-            out.println("ERROR: zero vector does not throw an exception");
-        } catch (Exception e) {
+        Scene scene = new Scene("road");
+        scene.setCamera(new Camera(new Point3D(1000, 0, 200), new Vector(-10, 0, -2), new Vector(-0.1, 0, 0.50)));
+        scene.setDistance(1000);
+        scene.setBackground(Color.BLACK);
+        scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
+        double x = 450, y = -41, z = 15, houseSize = 20, streetWidth = 70, housesDistance = 80;
+
+        for (int i = 1; i <= 10; i++) {
+            scene.addGeometries(buildHouse(x - i * housesDistance, y, z, houseSize, new Color(20, 15, 150), new Color(java.awt.Color.RED), new Material(0.5, 0.5, 100)));
+            scene.addGeometries(buildHouse(x - i * housesDistance, y + streetWidth, z, houseSize, new Color(20, 15, 150), new Color(java.awt.Color.RED), new Material(0.5, 0.5, 100)));
+            scene.addGeometries(road(x - i * housesDistance, y + houseSize, z, houseSize, streetWidth, housesDistance));
         }
 
-        Vector v1 = new Vector(1, 2, 3);
-        Vector v2 = new Vector(-2, -4, -6);
-        Vector v3 = new Vector(0, 3, -2);
 
-        // test length..
-        if (!isZero(v1.lengthSquared() - 14))
-            out.println("ERROR: lengthSquared() wrong value");
-        if (!isZero(new Vector(0, 3, 4).length() - 5))
-            out.println("ERROR: length() wrong value");
+        scene.addLights(new DirectionalLight(new Color(500, 200, 300), new Vector(1, -100, -500)));
 
-        // test Dot-Product
-        if (!isZero(v1.dotProduct(v3)))
-            out.println("ERROR: dotProduct() for orthogonal vectors is not zero");
-        if (!isZero(v1.dotProduct(v2) + 28))
-            out.println("ERROR: dotProduct() wrong value");
+        ImageWriter imageWriter = new ImageWriter("road", 150, 150, 500, 500);
+        Render render = new Render(imageWriter, scene);
 
-        // test Cross-Product
-        try { // test zero vector
-            v1.crossProduct(v2);
-            out.println("ERROR: crossProduct() for parallel vectors does not throw an exception");
-        } catch (Exception e) {
-        }
-        Vector vr = v1.crossProduct(v3);
-        if (!isZero(vr.length() - v1.length() * v3.length()))
-            out.println("ERROR: crossProduct() wrong result length");
-        if (!isZero(vr.dotProduct(v1)) || !isZero(vr.dotProduct(v3)))
-            out.println("ERROR: crossProduct() result is not orthogonal to its operands");
-
-        // test vector normalization vs vector length and cross-product
-        Vector v = new Vector(1, 2, 3);
-        Vector vCopy = new Vector(v);
-        Vector vCopyNormalize = vCopy.normalize();
-        if (vCopy != vCopyNormalize)
-            out.println("ERROR: normalize() function creates a new vector");
-        if (!isZero(vCopyNormalize.length() - 1))
-            out.println("ERROR: normalize() result is not a unit vector");
-        Vector u = v.normalized();
-        if (u == v)
-            out.println("ERROR: normalizated() function does not create a new vector");
-
-        // Test operations with points and vectors
-        Point3D p1 = new Point3D(1, 2, 3);
-        if (!Point3D.ZERO.equals(p1.add(new Vector(-1, -2, -3))))
-            out.println("ERROR: Point + Vector does not work correctly");
-        if (!new Vector(1, 1, 1).equals(new Point3D(2, 3, 4).subtract(p1)))
-            out.println("ERROR: Point - Point does not work correctly");
-
-        out.println("If there were no any other outputs - all tests succeeded!");
-
-
+        render.renderImage();
+        render.writeToImage();
+        out.println("mission accomplished");
 
     }
+
+
 }

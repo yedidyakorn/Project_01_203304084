@@ -13,27 +13,23 @@ public abstract class Geometry implements Intersectable {
      * Emmission - Geometry Color
      * Material - Geometry material
      */
-    protected Color emmission;
+    protected Color emission;
     protected Material material;
+
+    /**
+     * default ctor. sets color as black
+     */
+    public Geometry() {
+        this(Color.BLACK, new Material(0, 0, 0));
+    }
 
     /**
      * ctor taht sets a color
      *
      * @param c- color
      */
-    
-    public Geometry(Color c){
-
-        this(c, new Material(0,0,0));
-    }
-
-    /**
-     * default ctor. sets color as black
-     */
-     public Geometry(){
-
-        this(Color.BLACK, new Material(0,0,0));
-
+    public Geometry(Color c) {
+        this(c, new Material(0, 0, 0));
     }
 
     /**
@@ -43,7 +39,7 @@ public abstract class Geometry implements Intersectable {
      * @param material
      */
     public Geometry(Color color, Material material) {
-        this.emmission = color;
+        this.emission = color;
         this.material = material;
     }
 
@@ -61,8 +57,8 @@ public abstract class Geometry implements Intersectable {
      *
      * @return emmission color
      */
-    public Color getEmmission() {
-        return emmission;
+    public Color getEmission() {
+        return emission;
     }
 
     /**

@@ -34,7 +34,6 @@ public class Plane extends Geometry {
                 b.subtract(a).crossProduct( c.subtract(a)).normalize());
     }
 
-
     /**
      * plane ctor that gets a point and normal vector
      *
@@ -65,7 +64,7 @@ public class Plane extends Geometry {
      * @param vec-     some vector
      */
     public Plane(Color color, Material material, Point3D p, Vector vec) {
-        this.emmission = color;
+        this.emission = color;
         this.material = material;
         point = new Point3D(p);
         normal = vec.normalized();

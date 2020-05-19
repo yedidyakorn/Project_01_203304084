@@ -55,7 +55,7 @@ public class Sphere extends RadialGeometry {
     public Sphere(Color c, Material material, Point3D p, double rad) {
         super(rad);
         center = p;
-        this.emmission = c;
+        this.emission = c;
         this.material = material;
     }
 

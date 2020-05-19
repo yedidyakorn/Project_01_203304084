@@ -101,7 +101,7 @@ public class Polygon extends Geometry {
      */
     public Polygon(Color c, Material material, Point3D... vertices) {
         this(vertices);
-        this.emmission = c;
+        this.emission = c;
         this.material = material;
     }
 

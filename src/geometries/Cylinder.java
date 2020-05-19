@@ -54,7 +54,7 @@ public class Cylinder extends Tube {
      */
     public Cylinder(Color c, Material material, Ray r, double rad, double h) {
         super(r, rad);
-        this.emmission=c;
+        this.emission =c;
         this.material = material;
         height = h;
     }

@@ -62,6 +62,4 @@ public class Geometries implements Intersectable {
         return intersections;
     }
 
-    int arr[]={1,2,3};
-
 }

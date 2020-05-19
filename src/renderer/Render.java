@@ -77,7 +77,7 @@ public class Render {
      */
     public primitives.Color calcColor(GeoPoint p) {
         Color color = scene.getAmbientLight().getIntensity();
-        color = color.add(p.geometry.getEmmission());
+        color = color.add(p.geometry.getEmission());
         Vector v = p.point.subtract(scene.getCamera().getP()).normalize();
         Vector n = p.geometry.getNormal(p.point);
         int nShininess = p.geometry.getMaterial().getnShininess();

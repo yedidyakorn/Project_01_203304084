@@ -16,16 +16,16 @@ public class SpotLight extends PointLight {
     /**
      * direction- direction of the spot light
      */
-    private Vector direction;
+    protected Vector direction;
 
     /**
      * ctor for SpotLight
      *
      * @param color-    intensity light
      * @param position- position of light
-     * @param c
-     * @param l
-     * @param q
+     * @param c - number
+     * @param l - number
+     * @param q - number
      * @param direction - direction of spot light
      */
     public SpotLight(Color color, Point3D position,Vector direction, double c, double l, double q ) {
@@ -44,8 +44,6 @@ public class SpotLight extends PointLight {
 
     @Override
     public Vector getL(Point3D p) {
-        if(p.equals(position))
-            return null;
-        return p.subtract(position).normalize();
+        return super.getL(p);
     }
 }

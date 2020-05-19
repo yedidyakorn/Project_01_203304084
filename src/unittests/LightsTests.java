@@ -102,7 +102,7 @@ public class LightsTests {
                 new Sphere(new Color(java.awt.Color.BLUE), new Material(0.5, 0.5, 100), new Point3D(0, 0, 50), 50));
 
         scene.addLights(new FlashLight(new Color(500, 300, 0), new Point3D(-50, 50, -50),
-                new Vector(1, -1, 2),45, 1, 0.00001, 0.00000001));
+                new Vector(1, -1, 2),90, 1, 0.00001, 0.00000001));
 
         ImageWriter imageWriter = new ImageWriter("sphereFlash", 150, 150, 500, 500);
         Render render = new Render(imageWriter, scene);
@@ -211,7 +211,7 @@ public class LightsTests {
                         new Point3D(-150, 150, 150), new Point3D(-70, -70, 50), new Point3D(75, -75, 150)));
 
         scene.addLights(new FlashLight(new Color(500, 250, 250),
-                new Point3D(10, 10, 130), new Vector(-2, 2, 1),45,
+                new Point3D(10, 10, 130), new Vector(-2, 2, 1),90,
                 1, 0.0001, 0.000005));
 
         ImageWriter imageWriter = new ImageWriter("trianglesFslah", 200, 200, 500, 500);

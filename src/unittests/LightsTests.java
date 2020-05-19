@@ -334,4 +334,31 @@ public class LightsTests {
         render.renderImage();
         render.writeToImage();
     }
+    @Test
+    public void face() {
+        Scene scene = new Scene("Test scene");
+        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
+        scene.setDistance(1000);
+        scene.setBackground(Color.BLACK);
+        scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
+
+        scene.addGeometries(
+                new Sphere(new Color(java.awt.Color.WHITE), new Material(0.5, 0.5, 100), new Point3D(-30, 0, 50), 20),
+                new Sphere(new Color(java.awt.Color.WHITE), new Material(1,1,200),new Point3D(30, 0, 50), 20),
+                new Sphere(new Color(150, 75,0), new Material(0.5, 0.5, 100), new Point3D(-30, 0, 30), 10),
+                new Sphere(new Color(150, 75,0), new Material(1,1,200),new Point3D(30, 0, 30), 10),
+                new Sphere(new Color(java.awt.Color.RED), new Material(1,1,200),new Point3D(0, 30, 50), 25),
+                new Sphere(new Color(245,245,220), new Material(1,1,200),new Point3D(0, 25, 45), 25)
+                ,
+                new Sphere(new Color(245,245,220), new Material(1,1,200),new Point3D(0, 0, 150), 80),
+                new Sphere(new Color(java.awt.Color.BLACK), new Material(1,1,200), new Point3D(15,25,15), 5),
+                new Sphere(new Color(java.awt.Color.BLACK), new Material(1,1,200), new Point3D(-15,25,15), 5) );
+              1, 0.00001, 0.00000001));
+
+        ImageWriter imageWriter = new ImageWriter("temp2", 150, 150, 500, 500);
+        Render render = new Render(imageWriter, scene);
+
+        render.renderImage();
+        render.writeToImage();
+    }
 }

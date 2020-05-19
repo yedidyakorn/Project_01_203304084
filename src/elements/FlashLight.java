@@ -21,24 +21,24 @@ public class FlashLight extends SpotLight {
 
     /**
      * ctor for FlashLight
+     *
      * @param color-    intensity light
      * @param position- position of light
      * @param direction - direction of spot light
-     * @param angle - number of degrees
-     * @param c - number
-     * @param l - number
-     * @param q - number
-
+     * @param angle     - number of degrees
+     * @param c         - number
+     * @param l         - number
+     * @param q         - number
      */
-    public FlashLight(Color color, Point3D position, Vector direction, double angle, double c, double l, double q ){
-        super(color,position,direction,c,l,q);
-        this.angle=angle/360;
+    public FlashLight(Color color, Point3D position, Vector direction, double angle, double c, double l, double q) {
+        super(color, position, direction, c, l, q);
+        this.angle = angle / 360;
     }
 
     @Override
     public Color getIntensity(Point3D p) {
         double projection = direction.dotProduct(getL(p));
-        if (Util.isZero(projection)||projection<0||projection<1-angle)
+        if (Util.isZero(projection) || projection < 0 || projection < 1 - angle)
             return Color.BLACK;
         Color pointIntensity = super.getIntensity(p);
         return (pointIntensity.scale(projection));

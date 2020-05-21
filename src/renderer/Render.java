@@ -88,23 +88,13 @@ public class Render {
             Vector l = lightSource.getL(p.point);
             double nl = alignZero(n.dotProduct(l));
             double nv = alignZero(n.dotProduct(v));
-            if (sign(nl) == sign(nv)) {
+            if ((nl > 0 && nv > 0) || (nl < 0 && nv < 0)) {
                 Color lightIntensity = lightSource.getIntensity(p.point);
                 color = color.add(calcDiffusive(kD, nl, lightIntensity),
                         calcSpecular(kS, l, n, nl, v, nShininess, lightIntensity));
             }
         }
         return color;
-    }
-
-    /**
-     * function that returns true if a number is positive
-     *
-     * @param num
-     * @return
-     */
-    private boolean sign(double num) {
-        return (num > 0d);
     }
 
     /**
@@ -121,8 +111,8 @@ public class Render {
      */
     private Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v, int nShininess, Color ip) {
         double p = nShininess;
-        Vector R = l.add(n.scale(-2 * nl)).normalize();
-        double minusVR = -alignZero(R.dotProduct(v));
+        Vector r = l.add(n.scale(-2 * nl)).normalize();
+        double minusVR = -alignZero(r.dotProduct(v));
         if (minusVR <= 0)
             return Color.BLACK;
         return ip.scale(ks * Math.pow(minusVR, p));
@@ -137,10 +127,10 @@ public class Render {
      * @return diffusive of light reflection
      */
     private Color calcDiffusive(double kd, double nl, Color ip) {
-        nl = Math.abs(nl);
+        if (nl < 0)
+            nl = nl * (-1);
         return ip.scale(nl * kd);
     }
-
 
     /**
      * calculates the Closest Point to camera from list of intersection Points
@@ -148,7 +138,7 @@ public class Render {
      * @param intersectionPoints- list of intersection Points of a ray in a single pixel
      * @return Closest Point to camera
      */
-    public GeoPoint getClosestPoint(List<GeoPoint> intersectionPoints) {
+    private GeoPoint getClosestPoint(List<GeoPoint> intersectionPoints) {
         double min = Double.MAX_VALUE;
         int result = 0;
         for (int i = 0; i < intersectionPoints.size(); i++) {

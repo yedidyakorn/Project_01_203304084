@@ -16,7 +16,7 @@ public class SpotLight extends PointLight {
     /**
      * direction- direction of the spot light
      */
-    protected Vector direction;
+    private Vector direction;
 
     /**
      * ctor for SpotLight
@@ -35,15 +35,13 @@ public class SpotLight extends PointLight {
 
     @Override
     public Color getIntensity(Point3D p) {
-        double projection = direction.dotProduct(getL(p));
-        if (Util.isZero(projection)||projection<0)
+        Vector l = getL(p);
+        if (l == null)
+            return Color.BLACK;
+        double projection = direction.dotProduct(l);
+        if (Util.isZero(projection) || projection < 0)
             return Color.BLACK;
         Color pointIntensity = super.getIntensity(p);
-        return (pointIntensity.scale(Math.max(0, projection)));
-    }
-
-    @Override
-    public Vector getL(Point3D p) {
-        return super.getL(p);
+        return (pointIntensity.scale(projection));
     }
 }

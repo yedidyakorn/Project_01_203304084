@@ -54,7 +54,7 @@ public class Ray {
      * @return the result point
      */
     public Point3D getPoint(double t){
-        return new Point3D(p.add(v.scale(t)));
+        return p.add(v.scale(t));
     }
 
     @Override

@@ -1,10 +1,9 @@
 package geometries;
 
-import primitives.Point3D;
 import primitives.Ray;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public class Geometries implements Intersectable {
      * ctor that builds a empty list
      */
     public Geometries() {
-        geometries = new ArrayList<>();
+        geometries = new LinkedList<>();
     }
 
     /**
@@ -42,20 +41,17 @@ public class Geometries implements Intersectable {
      * @param geometries - a Geometry shape or a group of shapes given as a array
      */
     public void add(Intersectable... geometries) {
-        for (Intersectable item : geometries) {
-            this.geometries.add(item);
-        }
+        Collections.addAll(this.geometries, geometries);
     }
-
 
     @Override
     public List<GeoPoint> findIntersections(Ray ray) {
         List<GeoPoint> intersections = null;
         for (Intersectable item : geometries) {
             List<GeoPoint> temp = item.findIntersections(ray);
-            if (temp != null){
-                if(intersections==null)
-                    intersections=new ArrayList<GeoPoint>();
+            if (temp != null) {
+                if (intersections == null)
+                    intersections = new LinkedList<>();
                 intersections.addAll(temp);
             }
         }

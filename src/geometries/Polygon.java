@@ -1,10 +1,11 @@
 package geometries;
 
-import java.util.List;
-
 import primitives.*;
 
-import static primitives.Util.*;
+import java.util.List;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /**
  * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
@@ -23,6 +24,30 @@ public class Polygon extends Geometry {
     protected Plane _plane;
 
     /**
+     * Polygon constructor based on vertices list. calls the Polygon ctor
+     *
+     * @param vertices
+     */
+    public Polygon(Point3D... vertices) {
+        this(Color.BLACK, new Material(0, 0, 0), vertices);
+    }
+
+    /**
+     * Polygon constructor based on vertices list. calls the Polygon ctor
+     *
+     * @param c        - color
+     * @param vertices - list of vertices according to their order by edge path
+     */
+    public Polygon(Color c, Point3D... vertices) {
+        this(c, new Material(0, 0, 0), vertices);
+    }
+
+    /**
+     * Polygon constructor based on vertices list. calls the Polygon ctor and material
+     *
+     * @param c        - color
+     * @param material - material
+     * @param vertices - list of vertices according to their order by edge path
      * Polygon constructor based on vertices list. The list must be ordered by edge
      * path. The polygon must be convex.
      *
@@ -43,7 +68,8 @@ public class Polygon extends Geometry {
      *                                  <li>The polygon is concave (not convex></li>
      *                                  </ul>
      */
-    public Polygon(Point3D... vertices) {
+    public Polygon(Color c, Material material, Point3D... vertices) {
+        super(c, material);
         if (vertices.length < 3)
             throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
         _vertices = List.of(vertices);
@@ -80,29 +106,6 @@ public class Polygon extends Geometry {
             if (positive != (edge1.crossProduct(edge2).dotProduct(n) > 0))
                 throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
         }
-    }
-
-    /**
-     * Polygon constructor based on vertices list. calls the Polygon ctor
-     *
-     * @param c        - color
-     * @param vertices - list of vertices according to their order by edge path
-     */
-    public Polygon(Color c, Point3D... vertices) {
-        this(c,new Material(0,0,0),vertices);
-    }
-
-    /**
-     * Polygon constructor based on vertices list. calls the Polygon ctor and material
-     *
-     * @param c        - color
-     * @param material - material
-     * @param vertices - list of vertices according to their order by edge path
-     */
-    public Polygon(Color c, Material material, Point3D... vertices) {
-        this(vertices);
-        this.emission = c;
-        this.material = material;
     }
 
     @Override

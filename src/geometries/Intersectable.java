@@ -20,7 +20,6 @@ public interface Intersectable {
      * @return a List of 3D Points with the values of all the Intersections points of the ray and the shape or shapes.
      * if there are no Intersections points, the function returns null
      */
-
     List<GeoPoint> findIntersections(Ray ray);
 
     /**
@@ -49,8 +48,8 @@ public interface Intersectable {
             if (o == null) return false;
             if (!(o instanceof GeoPoint)) return false;
             GeoPoint geoPoint = (GeoPoint) o;
-            return geoPoint.geometry == ((GeoPoint) o).geometry &&
-                    geoPoint.point == ((GeoPoint) o).point;
+            return geometry == geoPoint.geometry &&
+                    Objects.equals(point, geoPoint.point);
         }
     }
 }

@@ -2,7 +2,6 @@ package elements;
 
 import primitives.Color;
 import primitives.Point3D;
-import primitives.Util;
 import primitives.Vector;
 
 /**
@@ -12,12 +11,13 @@ import primitives.Vector;
  *
  * @author Yedidya Korn & Eliezer Horowitz
  */
-public class FlashLight extends SpotLight {
+public class FlashLight extends PointLight {
 
     /**
      * angle- the angle in degrees that the flash light lights to
      */
     private double angle;
+    private Vector direction;
 
     /**
      * ctor for FlashLight
@@ -31,17 +31,18 @@ public class FlashLight extends SpotLight {
      * @param q         - number
      */
     public FlashLight(Color color, Point3D position, Vector direction, double angle, double c, double l, double q) {
-        super(color, position, direction, c, l, q);
-        this.angle = angle / 360;
+        super(color, position, c, l, q);
+        this.direction = direction.normalized();
+        this.angle = angle / 180;
     }
 
     @Override
     public Color getIntensity(Point3D p) {
         double projection = direction.dotProduct(getL(p));
-        if (Util.isZero(projection) || projection < 0 || projection < 1 - angle)
+        if ((projection < (1 - angle)))
             return Color.BLACK;
         Color pointIntensity = super.getIntensity(p);
-        return (pointIntensity.scale(projection));
+        return (pointIntensity.scale(Math.abs(projection)));
     }
 
     @Override

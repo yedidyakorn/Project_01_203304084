@@ -1,9 +1,9 @@
 package geometries;
 
 import primitives.*;
-import primitives.Vector;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import static primitives.Util.alignZero;
 
@@ -30,7 +30,7 @@ public class Sphere extends RadialGeometry {
      * @param rad -number
      */
     public Sphere(Point3D p, double rad) {
-        this(new Color(Color.BLACK),new Material(0,0,0),p, rad);
+        this(Color.BLACK, new Material(0, 0, 0), p, rad);
     }
 
     /**
@@ -53,10 +53,8 @@ public class Sphere extends RadialGeometry {
      * @param rad      - number
      */
     public Sphere(Color c, Material material, Point3D p, double rad) {
-        super(rad);
+        super(c, material, rad);
         center = p;
-        this.emission = c;
-        this.material = material;
     }
 
     /**

@@ -1,8 +1,7 @@
 package geometries;
 
 import primitives.Color;
-import primitives.Point3D;
-import primitives.Vector;
+import primitives.Material;
 
 /**
  * RadialGeometry class is a abstract class for difrint radial shapes in 3D Cartesian coordinate system
@@ -22,7 +21,7 @@ public abstract class RadialGeometry extends Geometry {
      * @param rad - number
      */
     public RadialGeometry(double rad) {
-        radius = rad;
+        this(Color.BLACK, new Material(0, 0, 0), rad);
     }
 
     /**
@@ -32,7 +31,18 @@ public abstract class RadialGeometry extends Geometry {
      * @param rad- number
      */
     public RadialGeometry(Color c, double rad) {
-        super(c);
+        this(c, new Material(0, 0, 0), rad);
+    }
+
+    /**
+     * RadialGeometry ctor sets the radius, material and color
+     *
+     * @param color    - color
+     * @param material - material
+     * @param rad-     radius
+     */
+    public RadialGeometry(Color color, Material material, double rad) {
+        super(color, material);
         radius = rad;
     }
 

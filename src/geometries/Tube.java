@@ -28,7 +28,7 @@ public class Tube extends RadialGeometry {
      * @param rad- number
      */
     public Tube(Ray r, double rad) {
-        this(new Color(Color.BLACK),new Material(0,0,0),r, rad);
+        this(Color.BLACK, new Material(0, 0, 0), r, rad);
     }
 
     /**
@@ -51,10 +51,8 @@ public class Tube extends RadialGeometry {
      * @param rad-     number
      */
     public Tube(Color c, Material material, Ray r, double rad) {
-        super(rad);
+        super(c, material, rad);
         ray = new Ray(r);
-        this.emission = c;
-        this.material = material;
     }
 
     /**

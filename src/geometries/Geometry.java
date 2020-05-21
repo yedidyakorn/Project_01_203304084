@@ -1,6 +1,9 @@
 package geometries;
 
-import primitives.*;
+import primitives.Color;
+import primitives.Material;
+import primitives.Point3D;
+import primitives.Vector;
 
 /**
  * interface that will be used in all Geometry shapes
@@ -26,10 +29,10 @@ public abstract class Geometry implements Intersectable {
     /**
      * ctor taht sets a color
      *
-     * @param c- color
+     * @param color- color
      */
-    public Geometry(Color c) {
-        this(c, new Material(0, 0, 0));
+    public Geometry(Color color) {
+        this(color, new Material(0, 0, 0));
     }
 
     /**

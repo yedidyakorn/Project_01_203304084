@@ -82,8 +82,8 @@ public class Camera {
         Point3D pC = p.add(vTo.scale(screenDistance));
         double rY = screenHeight / nY;
         double rX = screenWidth / nX;
-        double yi = ((i - (nY) / 2d) * rY + rY / 2d);//10-250*2+2/2=-489
-        double xj = ((j - (nX) / 2d) * rX + rX / 2d);//10-400*2+2/2=-789
+        double yi = ((i - (nY) / 2d) * rY + rY / 2d);
+        double xj = ((j - (nX) / 2d) * rX + rX / 2d);
         Point3D pij = pC;
         if (!isZero(xj))
             pij = pC.add(vRight.scale(xj));

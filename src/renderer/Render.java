@@ -5,6 +5,7 @@ import elements.LightSource;
 import geometries.Intersectable;
 import geometries.Intersectable.GeoPoint;
 import primitives.Color;
+import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 import scene.Scene;
@@ -25,6 +26,11 @@ public class Render {
      */
     private ImageWriter imageWriter;
     private Scene scene;
+
+    /**
+     * DELTA- represents a small move of rays to calculate she shade
+     */
+    private static final double DELTA = 0.1;
 
     /**
      * ctor that gets all parameters
@@ -89,9 +95,11 @@ public class Render {
             double nl = alignZero(n.dotProduct(l));
             double nv = alignZero(n.dotProduct(v));
             if ((nl > 0 && nv > 0) || (nl < 0 && nv < 0)) {
-                Color lightIntensity = lightSource.getIntensity(p.point);
-                color = color.add(calcDiffusive(kD, nl, lightIntensity),
-                        calcSpecular(kS, l, n, nl, v, nShininess, lightIntensity));
+                if (unshaded(l, n, p, lightSource)) {
+                    Color lightIntensity = lightSource.getIntensity(p.point);
+                    color = color.add(calcDiffusive(kD, nl, lightIntensity),
+                            calcSpecular(kS, l, n, nl, v, nShininess, lightIntensity));
+                }
             }
         }
         return color;
@@ -166,6 +174,30 @@ public class Render {
                     imageWriter.writePixel(i, j, color);
             }
         }
+    }
+
+    /**
+     * checks if a point on a shape is shaded
+     *
+     * @param l  - the vector from the  the light source to point
+     * @param n  - the vector that represents shapes normal
+     * @param gP - the point on a specific shape
+     * @ true if the point in not shaded and false if not
+     */
+    private boolean unshaded(Vector l, Vector n, GeoPoint gP, LightSource lightSource) {
+        Vector lightDirection = l.scale(-1);
+        Vector deltaVector = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
+        Point3D point = gP.point.add(deltaVector);
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.getGeometries().findIntersections(lightRay);
+        if (intersections == null)
+            return true;
+        double lightDistance = lightSource.getDistance(gP.point);
+        for (GeoPoint geoPoint : intersections) {
+            if (alignZero((geoPoint.point.distance(point)) - lightDistance) <= 0)
+                return false;
+        }
+        return true;
     }
 
     /**

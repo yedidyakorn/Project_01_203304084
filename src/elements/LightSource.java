@@ -14,6 +14,7 @@ public interface LightSource {
 
     /**
      * getter for intensity from @Light
+     *
      * @param p- a lighted point
      * @return the Color
      */
@@ -21,10 +22,19 @@ public interface LightSource {
 
     /**
      * getter for light direction at a specific point
+     *
      * @param p
      * @return a normalized vector at direction
      */
     public Vector getL(Point3D p);
+
+    /**
+     * checks the Distance between the light source abd a point
+     *
+     * @param point
+     * @return
+     */
+    public double getDistance(Point3D point);
 
 
 }

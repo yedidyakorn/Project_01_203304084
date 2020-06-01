@@ -19,11 +19,33 @@ public class Ray {
     private Vector v;
 
     /**
+     * DELTA- represents a small move of rays point
+     */
+    private static final double DELTA = 0.1;
+
+    /**
      * Ray ctor receives a point and a vector
      */
     public Ray(Point3D p, Vector v) {
         this.p = new Point3D(p);
         this.v = v.normalized();
+    }
+
+    /**
+     * Ray ctor receives a point and a vector and a normal vector
+     * moves of rays point in  direction of normal by DELTA
+     *
+     * @param p      - rays point
+     * @param v      - rays vector
+     * @param normal - normal vector
+     */
+    public Ray(Point3D p, Vector v, Vector normal) {
+        this.v = new Vector(v).normalized();
+        double nv = v.dotProduct(normal);
+        if (nv == 0)
+            this.p = p;
+        else
+            this.p = p.add(normal.scale(nv > 0 ? DELTA : -DELTA));
     }
 
     /**

@@ -41,11 +41,11 @@ public class Ray {
      */
     public Ray(Point3D p, Vector v, Vector normal) {
         this.v = new Vector(v).normalized();
-        double nv = v.dotProduct(normal);
+        double nv = normal.dotProduct(v);
         if (nv == 0)
-            this.p = p;
+            this.p = new Point3D(p);
         else
-            this.p = p.add(normal.scale(nv > 0 ? DELTA : -DELTA));
+            this.p = new Point3D(p.add(normal.scale(nv > 0 ? DELTA : -DELTA)));
     }
 
     /**

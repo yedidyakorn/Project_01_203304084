@@ -99,7 +99,6 @@ public class Scene {
         this.lights.addAll(List.of(lights));
     }
 
-
     /**
      * getter for name
      *

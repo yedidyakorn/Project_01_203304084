@@ -38,7 +38,7 @@ public class Material {
      * @param reflection - Material reflection
      * @param refraction - Material refraction
      */
-    public Material(double Diffuse, double Specular, int Shininess, double reflection, double refraction) {
+    public Material(double Diffuse, double Specular, int Shininess, double refraction, double reflection) {
         kD = Diffuse;
         kS = Specular;
         nShininess = Shininess;

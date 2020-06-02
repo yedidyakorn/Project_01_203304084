@@ -142,4 +142,40 @@ public class ReflectionRefractionTests {
 //		render.renderImage();
 //		render.writeToImage();
 //	}
+	 @Test
+    public void shemes() {
+        Scene scene = new Scene("Test scene");
+        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
+        scene.setDistance(1000);
+        scene.setBackground(new Color(0,0,255));
+        scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
+
+        scene.addGeometries( //
+            //    new Triangle(new Color(0,255,0), new Material(0.5, 0.5, 60), //
+            //            new Point3D(-150, 150, 115), new Point3D(150, 150, 115), new Point3D(75, -75, 115)), //
+            //    new Triangle(new Color(0,300,0), new Material(0.5, 0.5, 60), //
+             //           new Point3D(-150, 150, 115), new Point3D(-70, -70, 115), new Point3D(75, -75, 115)), //
+                new Polygon(Color.BLACK, new Material(0.5,0.5,60,0,0.2),new Point3D(200,200,100), new Point3D(-200,200,100),new Point3D(-200,200,5000),new Point3D(200,200,5000)),
+                new Sphere(new Color(java.awt.Color.yellow), new Material(0.2, 0.2, 30, 1, 0), //
+                        new Point3D(0, -70, 300), 30),
+                new Sphere(new Color(255,165,0), new Material(0.2, 0.2, 30, 1, 0), //
+                        new Point3D(0, -70, 300), 10),
+                new Sphere(new Color(255,165,0), new Material(0.2, 0.2, 30, 1, 0), //
+                        new Point3D(-25, 100, 2500), 10),
+                new Sphere(new Color(java.awt.Color.WHITE), new Material(0.2, 0.2, 30, 1, 0), //
+                        new Point3D(0, 100, 2500), 10),
+                
+
+                new Polygon(new Color(java.awt.Color.RED), new Material(0.2, 0.2, 30, 0.3, 0),new Point3D(50,25,100), new Point3D(-50,25,100),new Point3D(-100,45,5000),new Point3D(100,45,5000))
+     );
+
+        scene.addLights(new PointLight(new Color(700, 400, 400), //
+                new Point3D(0, -70, 300),  1, 4E-5, 2E-7));
+
+        ImageWriter imageWriter = new ImageWriter("shemesh", 200, 200, 600, 600);
+        Render render = new Render(imageWriter, scene);
+
+        render.renderImage();
+        render.writeToImage();
+    }
 }

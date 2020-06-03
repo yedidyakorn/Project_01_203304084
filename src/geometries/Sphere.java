@@ -81,36 +81,38 @@ public class Sphere extends RadialGeometry {
         return point.subtract(this.center).normalize();
     }
 
+    @Override
     public List<GeoPoint> findIntersections(Ray ray) {
-        Vector u;
+        List<GeoPoint> result = null;
+        boolean finished = false;
+        Vector u = null;
         double rad = this.getRadius();
         try {
             u = center.subtract(ray.getPoint());//Ray starts at the center
         } catch (IllegalArgumentException e) {
-            return List.of(new GeoPoint(this, ray.getPoint(rad)));
+            result = List.of(new GeoPoint(this, ray.getPoint(rad)));
+            finished = true;
         }
-        double tM = alignZero(u.dotProduct(ray.getDirection()));
+        if (!finished) {
+            double tM = alignZero(u.dotProduct(ray.getDirection()));
 
-        double d = alignZero(Math.sqrt(u.length() * u.length() - tM * tM));
-        if (alignZero(d - rad) >= 0) {//Ray's line is outside the sphere
-            return null;
+            double d = alignZero(Math.sqrt(u.length() * u.length() - tM * tM));
+            //Ray's line is outside the sphere
+            if (!(alignZero(d - rad) >= 0)) {
+                double tH = alignZero(Math.sqrt(rad * rad - d * d));
+                double t1 = alignZero(tM + tH);
+                double t2 = alignZero(tM - tH);
+                if (!(t1 <= 0) || !(t2 <= 0))//Ray's line is outside the sphere
+                {
+                    List<GeoPoint> list = new LinkedList<>();
+                    if (t1 > 0)
+                        list.add(new GeoPoint(this, ray.getPoint(t1)));
+                    if (t2 > 0)
+                        list.add(new GeoPoint(this, ray.getPoint(t2)));
+                    result = list;
+                }
+            }
         }
-        double tH = alignZero(Math.sqrt(rad * rad - d * d));
-
-        double t1 = alignZero(tM + tH);
-        double t2 = alignZero(tM - tH);
-
-
-        if (t1 <= 0 && t2 <= 0)//Ray's line is outside the sphere
-            return null;
-
-        List<GeoPoint> list = new LinkedList<>();
-        if (t1 > 0)
-            list.add(new GeoPoint(this, ray.getPoint(t1)));
-        if (t2 > 0)
-            list.add(new GeoPoint(this, ray.getPoint(t2)));
-        return list;
-
-
+        return result;
     }
 }

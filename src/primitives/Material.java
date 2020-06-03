@@ -7,7 +7,7 @@ package primitives;
  */
 public class Material {
 
-    /**
+    /*
      * kD- Material Diffuse
      * kS - Material Specular
      * nShininess - Material Shininess
@@ -22,6 +22,7 @@ public class Material {
 
     /**
      * ctor for Material
+     * refraction and reflection value are 0
      *
      * @param Diffuse   - Material Diffuse
      * @param Specular  - Material Specular
@@ -32,6 +33,8 @@ public class Material {
     }
 
     /**
+     * ctor for Material
+     *
      * @param Diffuse    - Material Diffuse
      * @param Specular   - Material Specular
      * @param Shininess  - Material Shininess
@@ -49,7 +52,6 @@ public class Material {
     /**
      * getter for Material Specular
      *
-     * @return
      */
     public double getkS() {
         return kS;
@@ -58,7 +60,6 @@ public class Material {
     /**
      * getter for Material Diffuse
      *
-     * @return
      */
     public double getkD() {
         return kD;
@@ -67,7 +68,6 @@ public class Material {
     /**
      * getter for Material Shininess
      *
-     * @return
      */
     public int getnShininess() {
         return nShininess;
@@ -76,7 +76,6 @@ public class Material {
     /**
      * getter for Material reflection
      *
-     * @return
      */
     public double getkR() {
         return kR;
@@ -85,7 +84,6 @@ public class Material {
     /**
      * getter for Material refraction
      *
-     * @return
      */
     public double getkT() {
         return kT;

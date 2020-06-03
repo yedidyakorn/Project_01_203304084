@@ -2,7 +2,6 @@ package renderer;
 
 import elements.Camera;
 import elements.LightSource;
-import geometries.Intersectable;
 import geometries.Intersectable.GeoPoint;
 import primitives.*;
 import scene.Scene;
@@ -34,8 +33,8 @@ public class Render {
     /**
      * ctor that gets all parameters
      *
-     * @param img
-     * @param sc
+     * @param img - Image Writer
+     * @param sc  - Scene
      */
     public Render(ImageWriter img, Scene sc) {
         imageWriter = img;
@@ -49,7 +48,7 @@ public class Render {
      */
     public void renderImage() {
         Camera camera = scene.getCamera();
-        Intersectable geometries = scene.getGeometries();
+        //Intersectable geometries = scene.getGeometries();
         java.awt.Color background = scene.getBackground().getColor();
 
         // nX,nY number of pixels
@@ -72,9 +71,9 @@ public class Render {
     /**
      * calculates the color of a specific point. calls the recursive calcColor function
      *
-     * @param geoPoint
-     * @param ray
-     * @return
+     * @param geoPoint - the current point that is calculated
+     * @param ray      - the current ray of point of view
+     * @return - color value
      */
     private Color calcColor(GeoPoint geoPoint, Ray ray) {
         Color color = calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, 1.0);
@@ -89,8 +88,8 @@ public class Render {
      * @param geoPoint - the current point that is calculated
      * @param inRay    - the current ray of point of view
      * @param level    - level of how many times the function will run
-     * @param k        -
-     * @return
+     * @param k        - the level of k
+     * @return - color value
      */
     private Color calcColor(GeoPoint geoPoint, Ray inRay, int level, double k) {
         Color result = geoPoint.geometry.getEmission();
@@ -103,10 +102,6 @@ public class Render {
         int nShininess = material.getnShininess();
         double kd = material.getkD();
         double ks = material.getkS();
-        double kr = geoPoint.geometry.getMaterial().getkR();
-        double kt = geoPoint.geometry.getMaterial().getkT();
-        double kkr = k * kr;
-        double kkt = k * kt;
         double nv = alignZero(n.dotProduct(v));
 
         List<LightSource> lightSources = scene.getLights();
@@ -125,18 +120,24 @@ public class Render {
             }
         }
 
+        double kr = geoPoint.geometry.getMaterial().getkR();
+        double kt = geoPoint.geometry.getMaterial().getkT();
+        double kkr = k * kr;
+        double kkt = k * kt;
         if (kkr > MIN_CALC_COLOR_K) {
             Ray reflectedRay = calcReflectionRay(geoPoint, v, n, nv);
-            GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
-            if (reflectedPoint != null)
-                result = result.add(calcColor(reflectedPoint, reflectedRay, level - 1, kkr).scale(kr));
+            if (reflectedRay != null) {
+                GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
+                if (reflectedPoint != null)
+                    result = result.add(calcColor(reflectedPoint, reflectedRay, level - 1, kkr).scale(kr));
+            }
         }
+
         if (kkt > MIN_CALC_COLOR_K) {
             Ray refractedRay = calcRefractionRay(geoPoint, v, n);
             GeoPoint refractedPoint = findClosestIntersection(refractedRay);
             if (refractedPoint != null)
                 result = result.add(calcColor(refractedPoint, refractedRay, level - 1, kkt).scale(kt));
-
         }
         return result;
     }
@@ -154,12 +155,11 @@ public class Render {
      * @return specular component light effect at the point
      */
     private Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v, int nShininess, Color ip) {
-        double p = nShininess;
         Vector r = l.add(n.scale(-2 * nl)).normalize();
         double minusVR = -alignZero(r.dotProduct(v));
         if (minusVR <= 0)
             return Color.BLACK;
-        return ip.scale(ks * Math.pow(minusVR, p));
+        return ip.scale(ks * Math.pow(minusVR, nShininess));
     }
 
     /**
@@ -251,7 +251,7 @@ public class Render {
      * @param l  - light direction
      * @param n  - normal of shape
      * @param gp - point
-     * @return
+     * @return - transparency value
      */
     private double transparency(LightSource ls, Vector l, Vector n, GeoPoint gp) {
         Vector lightDirection = l.scale(-1);

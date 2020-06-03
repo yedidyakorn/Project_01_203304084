@@ -12,8 +12,8 @@ import primitives.Vector;
  */
 public abstract class Geometry implements Intersectable {
 
-    /**
-     * Emmission - Geometry Color
+    /*
+     * Emission - Geometry Color
      * Material - Geometry material
      */
     protected Color emission;
@@ -36,10 +36,10 @@ public abstract class Geometry implements Intersectable {
     }
 
     /**
-     * ctor taht sets a color and material
+     * ctor that sets a color and material
      *
-     * @param color
-     * @param material
+     * @param color    - shapes color
+     * @param material - shapes material
      */
     public Geometry(Color color, Material material) {
         this.emission = color;
@@ -67,7 +67,6 @@ public abstract class Geometry implements Intersectable {
     /**
      * getter for the shapes Material
      *
-     * @return
      */
     public Material getMaterial() {
         return material;

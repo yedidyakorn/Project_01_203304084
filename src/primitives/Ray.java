@@ -3,6 +3,8 @@ package primitives;
 
 import java.util.Objects;
 
+import static primitives.Util.alignZero;
+
 /**
  * class Ray is the basic class representing a ray for Cartesian
  * coordinate system.
@@ -11,7 +13,7 @@ import java.util.Objects;
  */
 public class Ray {
 
-    /**
+    /*
      * p begaing point
      * v direction
      */
@@ -33,15 +35,15 @@ public class Ray {
 
     /**
      * Ray ctor receives a point and a vector and a normal vector
-     * moves of rays point in  direction of normal by DELTA
+     * moves of rays point on normal vector by DELTA
      *
      * @param p      - rays point
      * @param v      - rays vector
      * @param normal - normal vector
      */
     public Ray(Point3D p, Vector v, Vector normal) {
-        this.v = new Vector(v).normalized();
-        double nv = normal.dotProduct(v);
+        this.v = v.normalized();
+        double nv = alignZero(normal.dotProduct(v));
         if (nv == 0)
             this.p = new Point3D(p);
         else

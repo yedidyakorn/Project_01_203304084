@@ -100,10 +100,9 @@ public final class Main {
         scene.addLights(new DirectionalLight(new Color(500, 200, 300), new Vector(1, -100, -500)));
 
         ImageWriter imageWriter = new ImageWriter("road1", 150, 150, 500, 500);
-        imageWriter.setAperture(10);
-        imageWriter.setFocalDistance(200);
-        imageWriter.setNumOfRays(5);
+        scene.getCamera().setDepthOfFiled(100, 1, 15);
         Render render = new Render(imageWriter, scene);
+        render.setDebugPrint();
 
         render.renderImage();
         render.writeToImage();

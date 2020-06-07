@@ -3,19 +3,26 @@ package unittests;
 import elements.AmbientLight;
 import elements.Camera;
 import elements.SpotLight;
-import geometries.*;
+import geometries.Sphere;
 import org.junit.Test;
-import primitives.Color;
-import primitives.Material;
-import primitives.Point3D;
-import primitives.Vector;
+import primitives.*;
 import renderer.ImageWriter;
 import renderer.Render;
 import scene.Scene;
 
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+
+/**
+ * tests for Depth of filed
+ *
+ * @author Yedidya Korn & Eliezer Horowitz
+ */
 public class beamTest {
     /**
-     * Produce a picture of a sphere as a sun and and a beach
+     * Produce a picture of a row of spheres lighted by a spot light.
+     * with Depth of filed with focal distance of 10, aperture 0f 1 and than 0.5, and 15 rays in the beam
      */
     @Test
     public void depth10() {
@@ -35,21 +42,26 @@ public class beamTest {
                     new Sphere(new Color(java.awt.Color.GREEN), new Material(0.4, 0.3, 100, 0.3, 0),
                             new Point3D(x - 3, y - 2 * i, z + i * 5), 2));
         }
-        //scene.addGeometries(buildHouse(x, y, z- i * 500 ,20, new Color(20, 15, 150), new Color(java.awt.Color.RED), new Material(0.5, 0.5, 100)));
 
         scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
                 0.0004, 0.0000006));
 
 
-        ImageWriter imageWriter = new ImageWriter("depth10", 30, 30, 500, 500);
+        ImageWriter imageWriter = new ImageWriter("depth10_1", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);
+        render.renderImage();
+        render.writeToImage();
 
+        scene.getCamera().setDepthOfFiled(10, 0.5, 15);
+        ImageWriter imageWriter1 = new ImageWriter("depth10_0.5", 30, 30, 500, 500);
+        render = new Render(imageWriter1, scene);
         render.renderImage();
         render.writeToImage();
     }
 
     /**
-     * Produce a picture of a sphere as a sun and and a beach
+     * Produce a picture of a row of spheres lighted by a spot light.
+     * with Depth of filed with focal distance of 5, aperture 0f 1 and than 0.5, and 15 rays in the beam
      */
     @Test
     public void depth5() {
@@ -69,21 +81,26 @@ public class beamTest {
                     new Sphere(new Color(java.awt.Color.GREEN), new Material(0.4, 0.3, 100, 0.3, 0),
                             new Point3D(x - 3, y - 2 * i, z + i * 5), 2));
         }
-        //scene.addGeometries(buildHouse(x, y, z- i * 500 ,20, new Color(20, 15, 150), new Color(java.awt.Color.RED), new Material(0.5, 0.5, 100)));
 
         scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
                 0.0004, 0.0000006));
 
 
-        ImageWriter imageWriter = new ImageWriter("depth5", 30, 30, 500, 500);
+        ImageWriter imageWriter = new ImageWriter("depth5_1", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);
+        render.renderImage();
+        render.writeToImage();
 
+        scene.getCamera().setDepthOfFiled(5, 0.5, 15);
+        ImageWriter imageWriter1 = new ImageWriter("depth5_0.5", 30, 30, 500, 500);
+        render = new Render(imageWriter1, scene);
         render.renderImage();
         render.writeToImage();
     }
 
     /**
-     * Produce a picture of a sphere as a sun and and a beach
+     * Produce a picture of a row of spheres lighted by a spot light.
+     * with Depth of filed with focal distance of 20, aperture 0f 1 and than 0.5, and 15 rays in the beam
      */
     @Test
     public void depth20() {
@@ -103,52 +120,38 @@ public class beamTest {
                     new Sphere(new Color(java.awt.Color.GREEN), new Material(0.4, 0.3, 100, 0.3, 0),
                             new Point3D(x - 3, y - 2 * i, z + i * 5), 2));
         }
-        //scene.addGeometries(buildHouse(x, y, z- i * 500 ,20, new Color(20, 15, 150), new Color(java.awt.Color.RED), new Material(0.5, 0.5, 100)));
 
         scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
                 0.0004, 0.0000006));
 
-
-        ImageWriter imageWriter = new ImageWriter("depth20", 30, 30, 500, 500);
+        ImageWriter imageWriter = new ImageWriter("depth20_1", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);
+        render.renderImage();
+        render.writeToImage();
 
+        scene.getCamera().setDepthOfFiled(20, 0.5, 15);
+        ImageWriter imageWriter1 = new ImageWriter("depth20_0.5", 30, 30, 500, 500);
+        render = new Render(imageWriter1, scene);
         render.renderImage();
         render.writeToImage();
     }
 
-
     /**
-     * function that builds a squared house
-     *
-     * @param x         - coordinate
-     * @param y         - coordinate
-     * @param z         - coordinate
-     * @param size      - size of the each wall
-     * @param wallColor - wall Color
-     * @param roofColor - roof Color
-     * @param material  - house material
-     * @return a list of Geometries
+     * checks if all the rays in the beam of a specific pixel start from the size of the aperture.
+     * builds a beam from one pixel with 150 rays, aperture radius size is 1.
+     * No  picture produced
      */
-    public static Intersectable buildHouse(double x, double y, double z, double size, Color wallColor, Color roofColor, Material material) {
-        Geometries list = new Geometries();
-        list.add(new Polygon(wallColor, material,
-                new Point3D(x, y, z), new Point3D(x + size, y, z), new Point3D(x + size, y - size, z), new Point3D(x, y - size, z)));
-        list.add(new Polygon(wallColor, material,
-                new Point3D(x, y, z), new Point3D(x, y - size, z), new Point3D(x, y - size, z + size), new Point3D(x, y, z + size)));
-        list.add(new Polygon(wallColor, material,
-                new Point3D(x + size, y - size, z + size), new Point3D(x, y - size, z + size), new Point3D(x, y - size, z), new Point3D(x + size, y - size, z)));
-        list.add(new Polygon(wallColor, material,
-                new Point3D(x + size, y - size, z), new Point3D(x + size, y - size, z + size), new Point3D(x + size, y, z + size), new Point3D(x + size, y, z)));
-        list.add(new Polygon(wallColor, material,
-                new Point3D(x, y, z), new Point3D(x, y, z + size), new Point3D(x + size, y, z + size), new Point3D(x + size, y, z)));
-        list.add(new Triangle(roofColor, material,
-                new Point3D(x + size, y, z + size), new Point3D(x, y, z + size), new Point3D(x + size / 2, y - size - size / 2, z + size / 2)));
-        list.add(new Triangle(roofColor, material,
-                new Point3D(x, y - size, z + size), new Point3D(x, y, z + size), new Point3D(x + size / 2, y - size - size / 2, z + size / 2)));
-        list.add(new Triangle(roofColor, material,
-                new Point3D(x + size, y - size, z + size), new Point3D(x, y - size, z + size), new Point3D(x + size / 2, y - size - size / 2, z + size / 2)));
-        list.add(new Triangle(roofColor, material,
-                new Point3D(x + size, y - size, z + size), new Point3D(x + size, y, z + size), new Point3D(x + size / 2, y - size - size / 2, z + size / 2)));
-        return list;
+    @Test
+    public void testBeamRays() {
+        Scene scene = new Scene("Test scene");
+        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
+        scene.setDistance(1000);
+        scene.getCamera().setDepthOfFiled(10, 1, 150);
+        List<Ray> rays = scene.getCamera().constructRaysThroughPixel(1000, 1000, 16, 16, 1000, 30, 30);
+        Ray ray = scene.getCamera().constructRayThroughPixel(1000, 1000, 16, 16, 1000, 30, 30);
+        Point3D pij = ray.getPoint(1000 / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
+        for (Ray temp : rays)
+            assertTrue(temp.getPoint().distance(pij) <= 1);
     }
+
 }

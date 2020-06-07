@@ -83,61 +83,14 @@ public class Render {
         if (_print) System.out.printf("\r100%%\n");
     }
 
-//    /**
-//     * writes the scene on the ImageWriter
-//     * the function constructs a Ray Through every Pixel and writes the color in ImageWriter
-//     * using {link@constructRayThroughPixel}
-//     */
-//    public void renderImage() {
-//        Camera camera = scene.getCamera();
-//        java.awt.Color background = scene.getBackground().getColor();
-//
-//        // nX,nY number of pixels
-//        int nX = imageWriter.getNx();
-//        int nY = imageWriter.getNy();
-//        // width, height size in units
-//        double width = imageWriter.getWidth();
-//        double height = imageWriter.getHeight();
-//        double distance = scene.getDistance();
-//
-//        for (int i = 0; i < nX; i++) {
-//            for (int j = 0; j < nY; j++) {
-//                Ray ray = camera.constructRayThroughPixel(nX, nY, i, j, distance, width, height);
-//                if (imageWriter.getNumOfRays() > 1) {
-//                    imageWriter.writePixel(i, j, beam(ray).getColor());
-//                } else {
-//                    GeoPoint intersectionPoint = findClosestIntersection(ray);
-//                    imageWriter.writePixel(i, j, intersectionPoint == null ? background : calcColor(intersectionPoint, ray).getColor());
-//                }
-//            }
-//        }
-//    }
-//
-//
-//    //TODO
-//    private Color beam(Ray ray) {
-//        Color background = scene.getBackground();
-//        Point3D pij = ray.getPoint(scene.getDistance() / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
-//        Point3D f = ray.getPoint((imageWriter.getFocalDistance() + scene.getDistance()) / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
-//        int num = imageWriter.getNumOfRays();
-//        double size = imageWriter.getAperture();
-//        GeoPoint intersectionPoint = findClosestIntersection(ray);
-//        Color avg = intersectionPoint == null ? background : calcColor(intersectionPoint, ray);
-//
-//        for (int i = 0; i < num; i++) {
-//            double x = Math.random() * size * 2 - size;
-//            double temp = Math.sqrt(size - x * x);
-//            double y = Math.random() * 2 * temp - temp;
-//            Point3D p = pij.add(scene.getCamera().getvRight().scale(x));
-//            p.add(scene.getCamera().getvTo().scale(y));
-//            Ray focalRay = new Ray(pij, f.subtract(p).normalize());
-//            intersectionPoint = findClosestIntersection(focalRay);
-//            avg = avg.add(intersectionPoint == null ? background : calcColor(intersectionPoint, focalRay));
-//        }
-//        return avg.reduce(num);
-//    }
-
-    //TODO
+    /**
+     * calculates the color of a specific point, by calculating the average color from the list of rays- beam of rays.
+     * the average gives the effect of depth of filed.
+     * calls the recursive calcColor function
+     *
+     * @param rays - beam of rays from the area of one pixel
+     * @return - the average color from all rays- the final color that will be whited.
+     */
     private Color calcColor(List<Ray> rays) {
         Color background = scene.getBackground();
         Color avg = new Color(0, 0, 0);
@@ -264,7 +217,7 @@ public class Render {
      */
     private GeoPoint findClosestIntersection(Ray ray) {
         List<GeoPoint> intersectionPoints = scene.getGeometries().findIntersections(ray);
-        if (intersectionPoints == null || intersectionPoints.size() == 0)//TODO - לבדוק למה זה מחזיר רשימה ריקה ולא NULL
+        if (intersectionPoints == null)
             return null;
         double min = Double.MAX_VALUE;
         int result = 0;
@@ -443,7 +396,6 @@ public class Render {
             return false;
         }
     }
-
 
     /**
      * Set multithreading <br>

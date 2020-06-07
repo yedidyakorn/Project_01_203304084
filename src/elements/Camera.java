@@ -16,7 +16,7 @@ import static primitives.Util.isZero;
  */
 public class Camera {
 
-    /**
+    /*
      * p- position of camera
      * three vectors that start from the camera to up, right and to the view plane
      */
@@ -25,6 +25,11 @@ public class Camera {
     private Vector vTo;
     private Vector vRight;
 
+    /*
+     *  focalDistance - the distance of the  focus.
+     *  aperture      - the radius of the aperture.
+     *  numOfRays     - number of rays that will be in the beam from every pixels area (in addition to the original ray).
+     */
     private double focalDistance;
     private double aperture;
     private int numOfRays;
@@ -73,7 +78,14 @@ public class Camera {
         vRight = vTo.crossProduct(vUp).normalize();
     }
 
-    //TODO
+    /**
+     * setter of Depth of filed. if Depth of filed function is called the camera will be focused for a specific distance.
+     * if Depth of filed will not be called the camera will be focused on the whole scene equally.
+     *
+     * @param focalDistance - the distance of the  focus.
+     * @param aperture      - the radius of the aperture.
+     * @param numOfRays     - number of rays that will be in the beam from every pixels area (in addition to the original ray).
+     */
     public void setDepthOfFiled(double focalDistance, double aperture, int numOfRays) {
         this.focalDistance = focalDistance;
         this.aperture = aperture;
@@ -107,15 +119,26 @@ public class Camera {
         return new Ray(p, vij.normalize());
     }
 
-    //TODO
-    public List<Ray> constructRaysThroughPixel(int nX, int nY, int col, int row, double dist, double width, double height) {
+    /**
+     * builds a beam of Rays from the area of a pixel through a specific point on the focal plane
+     *
+     * @param nX             - number of cells left to right
+     * @param nY             - number of cells up to down
+     * @param j              - index of width cell
+     * @param i              - index of height cell
+     * @param screenDistance - the distance between the camera and the view plane
+     * @param screenWidth    - width of view plane in pixels
+     * @param screenHeight   - height of view plane in pixels
+     * @return - a list of rays that contains the beam of rays
+     */
+    public List<Ray> constructRaysThroughPixel(int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight) {
         List<Ray> result = new LinkedList<>();
-        Ray ray = constructRayThroughPixel(nX, nY, col, row, dist, width, height);
-        result.add(ray);
-        Point3D pij = ray.getPoint(dist / (vTo.dotProduct(ray.getDirection())));
-        Point3D f = ray.getPoint((focalDistance + dist) / (vTo.dotProduct(ray.getDirection())));
+        Ray ray = constructRayThroughPixel(nX, nY, j, i, screenDistance, screenWidth, screenHeight);
+        Point3D pij = ray.getPoint(screenDistance / (vTo.dotProduct(ray.getDirection())));
+        Point3D f = ray.getPoint((focalDistance + screenDistance) / (vTo.dotProduct(ray.getDirection())));
+        result.add(new Ray(pij, ray.getDirection()));
 
-        for (int i = 0; i < numOfRays; i++) {
+        for (int k = 0; k < numOfRays; k++) {
             double x = Math.random() * aperture * 2 - aperture;
             double temp = Math.sqrt(aperture - x * x);
             double y = Math.random() * temp * 2 - temp;

@@ -4,6 +4,9 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static primitives.Util.isZero;
 
 /**
@@ -21,6 +24,10 @@ public class Camera {
     private Vector vUp;
     private Vector vTo;
     private Vector vRight;
+
+    private double focalDistance;
+    private double aperture;
+    private int numOfRays;
 
     /**
      * getter for camera position
@@ -66,6 +73,13 @@ public class Camera {
         vRight = vTo.crossProduct(vUp).normalize();
     }
 
+    //TODO
+    public void setDepthOfFiled(double focalDistance, double aperture, int numOfRays) {
+        this.focalDistance = focalDistance;
+        this.aperture = aperture;
+        this.numOfRays = numOfRays;
+    }
+
     /**
      * builds a Ray from the camera point through a specific pixel on view plane
      *
@@ -93,4 +107,23 @@ public class Camera {
         return new Ray(p, vij.normalize());
     }
 
+    //TODO
+    public List<Ray> constructRaysThroughPixel(int nX, int nY, int col, int row, double dist, double width, double height) {
+        List<Ray> result = new LinkedList<>();
+        Ray ray = constructRayThroughPixel(nX, nY, col, row, dist, width, height);
+        result.add(ray);
+        Point3D pij = ray.getPoint(dist / (vTo.dotProduct(ray.getDirection())));
+        Point3D f = ray.getPoint((focalDistance + dist) / (vTo.dotProduct(ray.getDirection())));
+
+        for (int i = 0; i < numOfRays; i++) {
+            double x = Math.random() * aperture * 2 - aperture;
+            double temp = Math.sqrt(aperture - x * x);
+            double y = Math.random() * temp * 2 - temp;
+            Point3D p = pij.add(vRight.scale(x));
+            p = p.add(vUp.scale(y));
+            Ray focalRay = new Ray(p, f.subtract(p).normalize());
+            result.add(focalRay);
+        }
+        return result;
+    }
 }

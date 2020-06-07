@@ -1,18 +1,19 @@
 package unittests;
 
-import static org.junit.Assert.*;
-
-import geometries.*;
-import org.junit.Test;
-import geometries.Intersectable.GeoPoint;
-
 import elements.Camera;
+import geometries.Geometry;
+import geometries.Intersectable.GeoPoint;
+import geometries.Plane;
+import geometries.Sphere;
+import geometries.Triangle;
+import org.junit.Test;
 import primitives.Point3D;
 import primitives.Vector;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * tests for integration of rays from Camera and previous calculations

@@ -1,12 +1,13 @@
 package renderer;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.stream.FileImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.*;
-import javax.imageio.stream.*;
 
 /**
  * Image writer class combines accumulation of pixel color matrix and
@@ -26,6 +27,10 @@ public class ImageWriter {
 
     private String _imageName;
 
+    private double focalDistance;
+    private double aperture;
+    private int numOfRays;
+
     // ***************** Constructors ********************** //
 
     /**
@@ -43,7 +48,7 @@ public class ImageWriter {
         _imageHeight = height;
         _nX = nX;
         _nY = nY;
-
+        numOfRays = 1;
         _image = new BufferedImage(_nX, _nY, BufferedImage.TYPE_INT_RGB);
     }
 
@@ -84,6 +89,33 @@ public class ImageWriter {
     public int getNx() {
         return _nX;
     }
+
+    //TODO
+    public double getFocalDistance() {
+        return focalDistance;
+    }
+
+    //TODO
+    public void setFocalDistance(double focalDistance) {
+        this.focalDistance = focalDistance;
+    }
+
+    public void setNumOfRays(int numOfRays) {
+        this.numOfRays = numOfRays;
+    }
+
+    public int getNumOfRays() {
+        return numOfRays;
+    }
+
+    public double getAperture() {
+        return aperture;
+    }
+
+    public void setAperture(double aperture) {
+        this.aperture = aperture;
+    }
+
 
     // ***************** Operations ******************** //
 

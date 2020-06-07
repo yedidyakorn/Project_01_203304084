@@ -48,7 +48,6 @@ public class Render {
      */
     public void renderImage() {
         Camera camera = scene.getCamera();
-        //Intersectable geometries = scene.getGeometries();
         java.awt.Color background = scene.getBackground().getColor();
 
         // nX,nY number of pixels
@@ -62,10 +61,36 @@ public class Render {
         for (int i = 0; i < nX; i++) {
             for (int j = 0; j < nY; j++) {
                 Ray ray = camera.constructRayThroughPixel(nX, nY, i, j, distance, width, height);
-                GeoPoint intersectionPoint = findClosestIntersection(ray);
-                imageWriter.writePixel(i, j, intersectionPoint == null ? background : calcColor(intersectionPoint, ray).getColor());
+                if (imageWriter.getNumOfRays() > 1) {
+                    imageWriter.writePixel(i, j, beam(ray).getColor());
+                } else {
+                    GeoPoint intersectionPoint = findClosestIntersection(ray);
+                    imageWriter.writePixel(i, j, intersectionPoint == null ? background : calcColor(intersectionPoint, ray).getColor());
+                }
             }
         }
+    }
+
+    private Color beam(Ray ray) {
+        Color background = scene.getBackground();
+        Point3D pij = ray.getPoint(scene.getDistance() / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
+        Point3D f = ray.getPoint((imageWriter.getFocalDistance() + scene.getDistance()) / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
+        int num = imageWriter.getNumOfRays();
+        double size = imageWriter.getAperture();
+        GeoPoint intersectionPoint = findClosestIntersection(ray);
+        Color avg = intersectionPoint == null ? background : calcColor(intersectionPoint, ray);
+
+        for (int i = 0; i < num; i++) {
+            double x = Math.random() * size * 2 - size;
+            double temp = Math.sqrt(size - x * x);
+            double y = Math.random() * 2 * temp - temp;
+            Point3D p = pij.add(scene.getCamera().getvRight().scale(x));
+            p.add(scene.getCamera().getvTo().scale(y));
+            Ray focalRay = new Ray(pij, f.subtract(p));
+            intersectionPoint = findClosestIntersection(focalRay);
+            avg = avg.add(intersectionPoint == null ? background : calcColor(intersectionPoint, focalRay));
+        }
+        return avg.reduce(num);
     }
 
     /**

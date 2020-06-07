@@ -33,7 +33,6 @@ public class Scene {
     private double distance;
     private List<LightSource> lights;
 
-
     /**
      * ctor sets the name only
      *
@@ -161,4 +160,6 @@ public class Scene {
     public void addGeometries(Intersectable... geometries) {
         this.geometries.add(geometries);
     }
+
+
 }

@@ -3,19 +3,22 @@
  * @author Yedidya Korn, 203304084, yedidyas5@gmail.com
  */
 
-import elements.*;
-import primitives.*;
-
-import static java.lang.System.out;
-import static primitives.Util.*;
-
-import geometries.*;
+import elements.AmbientLight;
+import elements.Camera;
+import elements.DirectionalLight;
+import geometries.Geometries;
+import geometries.Intersectable;
+import geometries.Polygon;
+import geometries.Triangle;
+import primitives.Color;
+import primitives.Material;
+import primitives.Point3D;
+import primitives.Vector;
 import renderer.ImageWriter;
 import renderer.Render;
 import scene.Scene;
 
-import java.util.LinkedList;
-import java.util.List;
+import static java.lang.System.out;
 
 public final class Main {
 
@@ -80,7 +83,7 @@ public final class Main {
      */
     public static void main(String[] args) {
 
-        Scene scene = new Scene("road");
+        Scene scene = new Scene("road1");
         scene.setCamera(new Camera(new Point3D(1000, 0, 200), new Vector(-10, 0, -2), new Vector(-0.1, 0, 0.50)));
         scene.setDistance(1000);
         scene.setBackground(Color.BLACK);
@@ -96,7 +99,10 @@ public final class Main {
 
         scene.addLights(new DirectionalLight(new Color(500, 200, 300), new Vector(1, -100, -500)));
 
-        ImageWriter imageWriter = new ImageWriter("road", 150, 150, 500, 500);
+        ImageWriter imageWriter = new ImageWriter("road1", 150, 150, 500, 500);
+        imageWriter.setAperture(1);
+        imageWriter.setFocalDistance(200);
+        imageWriter.setNumOfRays(100);
         Render render = new Render(imageWriter, scene);
 
         render.renderImage();

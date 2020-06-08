@@ -105,18 +105,17 @@ public class Camera {
      * @return - a new Ray
      */
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight) {
-        Point3D pC = p.add(vTo.scale(screenDistance));
         double rY = screenHeight / nY;
         double rX = screenWidth / nX;
         double yi = ((i - (nY) / 2d) * rY + rY / 2d);
         double xj = ((j - (nX) / 2d) * rX + rX / 2d);
-        Point3D pij = pC;
+        Point3D pij = p.add(vTo.scale(screenDistance));
         if (!isZero(xj))
-            pij = pC.add(vRight.scale(xj));
+            pij = pij.add(vRight.scale(xj));
         if (!isZero(yi))
             pij = pij.add(vUp.scale(-yi));
         Vector vij = pij.subtract(p);
-        return new Ray(p, vij.normalize());
+        return new Ray(p, vij);
     }
 
     /**
@@ -135,16 +134,16 @@ public class Camera {
         List<Ray> result = new LinkedList<>();
         Ray ray = constructRayThroughPixel(nX, nY, j, i, screenDistance, screenWidth, screenHeight);
         Point3D pij = ray.getPoint(screenDistance / (vTo.dotProduct(ray.getDirection())));
-        Point3D f = ray.getPoint((focalDistance + screenDistance) / (vTo.dotProduct(ray.getDirection())));
+        Point3D f = ray.getPoint((focalDistance + screenDistance) / (vTo.dotProduct(ray.getDirection())));//focal point
         result.add(new Ray(pij, ray.getDirection()));
 
         for (int k = 0; k < numOfRays; k++) {
             double x = Math.random() * aperture * 2 - aperture;
-            double temp = Math.sqrt(aperture - x * x);
-            double y = Math.random() * temp * 2 - temp;
-            Point3D p = pij.add(vRight.scale(x));
-            p = p.add(vUp.scale(y));
-            Ray focalRay = new Ray(p, f.subtract(p).normalize());
+            double cosX = Math.sqrt(aperture - x * x);
+            double y = Math.random() * cosX * 2 - cosX;
+            Point3D pC = pij.add(vRight.scale(x));//a point on view plane around the pixel
+            pC = pC.add(vUp.scale(y));
+            Ray focalRay = new Ray(pC, f.subtract(pC));
             result.add(focalRay);
         }
         return result;

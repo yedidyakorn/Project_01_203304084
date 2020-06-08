@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Yedidya Korn & Eliezer Horowitz
  */
-public class beamTest {
+public class DepthOfFiledTests {
     /**
      * Produce a picture of a row of spheres lighted by a spot light.
      * with Depth of filed with focal distance of 10, aperture 0f 1 and than 0.5, and 15 rays in the beam
@@ -31,7 +31,6 @@ public class beamTest {
         scene.setDistance(1000);
         scene.setBackground(new Color(java.awt.Color.BLACK));
         scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
-        scene.getCamera().setDepthOfFiled(10, 1, 15);
         int x = 0, y = 10, z = 0;
         for (int i = 0; i < 7; i++) {
             scene.addGeometries(
@@ -46,15 +45,19 @@ public class beamTest {
         scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
                 0.0004, 0.0000006));
 
-
+        scene.getCamera().setDepthOfFiled(10, 1, 15);
         ImageWriter imageWriter = new ImageWriter("depth10_1", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);
+        render.setMultithreading(3);
+        render.setDebugPrint();
         render.renderImage();
         render.writeToImage();
 
         scene.getCamera().setDepthOfFiled(10, 0.5, 15);
         ImageWriter imageWriter1 = new ImageWriter("depth10_0.5", 30, 30, 500, 500);
         render = new Render(imageWriter1, scene);
+        render.setMultithreading(3);
+        render.setDebugPrint();
         render.renderImage();
         render.writeToImage();
     }
@@ -70,7 +73,6 @@ public class beamTest {
         scene.setDistance(1000);
         scene.setBackground(new Color(java.awt.Color.BLACK));
         scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
-        scene.getCamera().setDepthOfFiled(5, 1, 15);
         int x = 0, y = 10, z = 0;
         for (int i = 0; i < 7; i++) {
             scene.addGeometries(
@@ -85,15 +87,19 @@ public class beamTest {
         scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
                 0.0004, 0.0000006));
 
-
+        scene.getCamera().setDepthOfFiled(5, 1, 15);
         ImageWriter imageWriter = new ImageWriter("depth5_1", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);
+        render.setMultithreading(3);
+        render.setDebugPrint();
         render.renderImage();
         render.writeToImage();
 
         scene.getCamera().setDepthOfFiled(5, 0.5, 15);
         ImageWriter imageWriter1 = new ImageWriter("depth5_0.5", 30, 30, 500, 500);
         render = new Render(imageWriter1, scene);
+        render.setMultithreading(3);
+        render.setDebugPrint();
         render.renderImage();
         render.writeToImage();
     }
@@ -109,7 +115,6 @@ public class beamTest {
         scene.setDistance(1000);
         scene.setBackground(new Color(java.awt.Color.BLACK));
         scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
-        scene.getCamera().setDepthOfFiled(20, 1, 15);
         int x = 0, y = 10, z = 0;
         for (int i = 0; i < 7; i++) {
             scene.addGeometries(
@@ -124,14 +129,19 @@ public class beamTest {
         scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
                 0.0004, 0.0000006));
 
+        scene.getCamera().setDepthOfFiled(20, 1, 15);
         ImageWriter imageWriter = new ImageWriter("depth20_1", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);
+        render.setMultithreading(3);
+        render.setDebugPrint();
         render.renderImage();
         render.writeToImage();
 
         scene.getCamera().setDepthOfFiled(20, 0.5, 15);
         ImageWriter imageWriter1 = new ImageWriter("depth20_0.5", 30, 30, 500, 500);
         render = new Render(imageWriter1, scene);
+        render.setMultithreading(3);
+        render.setDebugPrint();
         render.renderImage();
         render.writeToImage();
     }
@@ -153,5 +163,6 @@ public class beamTest {
         for (Ray temp : rays)
             assertTrue(temp.getPoint().distance(pij) <= 1);
     }
+
 
 }

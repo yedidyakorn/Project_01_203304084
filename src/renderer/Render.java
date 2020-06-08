@@ -93,7 +93,7 @@ public class Render {
      */
     private Color calcColor(List<Ray> rays) {
         Color background = scene.getBackground();
-        Color avg = new Color(0, 0, 0);
+        Color avg = background;
         for (Ray ray : rays) {
             GeoPoint intersectionPoint = findClosestIntersection(ray);
             avg = avg.add(intersectionPoint == null ? background : calcColor(intersectionPoint, ray));

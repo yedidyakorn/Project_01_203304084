@@ -1,9 +1,12 @@
 package primitives;
 
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 import static primitives.Util.alignZero;
+import static primitives.Util.randomRange;
 
 /**
  * class Ray is the basic class representing a ray for Cartesian
@@ -57,6 +60,26 @@ public class Ray {
         this.p = new Point3D(other.p);
         this.v = new Vector(other.v);
     }
+
+    //TODO
+    public List<Ray> beam(Ray ray, double radius, double length, int numOfRays, Vector up, Vector right) {
+        List<Ray> result = new LinkedList<>();
+        Point3D pij = ray.getPoint();
+        Point3D f = ray.getPoint(length);
+        result.add(ray);
+
+        for (int k = 0; k < numOfRays; k++) {
+            double x = randomRange(-radius, radius);
+            double cosX = Math.sqrt(radius - x * x);
+            double y = randomRange(-cosX, cosX);
+            Point3D pC = pij.add(right.scale(x));//a point on view plane around the pixel
+            pC = pC.add(up.scale(y));
+            Ray temp = new Ray(pC, f.subtract(pC));
+            result.add(temp);
+        }
+        return result;
+    }
+
 
     /**
      * getter for beginning point

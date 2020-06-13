@@ -6,6 +6,7 @@ import geometries.Intersectable.GeoPoint;
 import primitives.*;
 import scene.Scene;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -81,6 +82,32 @@ public class Render {
             } catch (Exception e) {
             }
         if (_print) System.out.printf("\r100%%\n");
+    }
+
+    public Color superSampleing(Ray ray) {
+        Color background = scene.getBackground();
+        Color result = background;
+        result = result.add(rec(result, scene.getCamera().getAperture(), scene.getCamera().getNumOfRays(), ray.getPoint()));
+        return result.reduce(scene.getCamera().getNumOfRays());
+    }
+
+    private Color rec(Color background, double radius, int num, Point3D center) {
+        List<Color> list = new LinkedList<>();
+        Ray a = null;
+        Ray b = null;
+        Ray c = null;
+        Ray d = null;
+        Ray rCenter = null;
+        Color aa = calcColor(List.of(a));
+        Color bb = calcColor(List.of(b));
+        Color cc = calcColor(List.of(c));
+        Color dd = calcColor(List.of(d));
+        Color cCenter = calcColor(List.of(rCenter));
+        if (aa != cCenter)
+            return cCenter.add(rec(cCenter, radius / 2, num / 4, center.add(scene.getCamera().getvUp().scale(radius / 2))));
+        else
+            return cCenter.add(aa.scale(num / 4));
+
     }
 
     /**

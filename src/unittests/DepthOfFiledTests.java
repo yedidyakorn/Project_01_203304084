@@ -164,5 +164,4 @@ public class DepthOfFiledTests {
             assertTrue(temp.getPoint().distance(pij) <= 1);
     }
 
-
 }

@@ -40,4 +40,8 @@ public abstract class Util {
     public static double alignZero(double number) {
         return getExp(number) < ACCURACY ? 0.0 : number;
     }
+    
+    
+    public static double cordinatePoint(double min, double max) {return Math.random() * (max-min)+min;}
+}
 }

@@ -138,9 +138,9 @@ public class Camera {
         result.add(new Ray(pij, ray.getDirection()));
 
         for (int k = 0; k < numOfRays; k++) {
-            double x = Math.random() * aperture * 2 - aperture;
+            double x = cordinatePoint(-aperture, aperture);
             double cosX = Math.sqrt(aperture - x * x);
-            double y = Math.random() * cosX * 2 - cosX;
+            double y = cordinatePoint(-cosX, cosX);
             Point3D pC = pij.add(vRight.scale(x));//a point on view plane around the pixel
             pC = pC.add(vUp.scale(y));
             Ray focalRay = new Ray(pC, f.subtract(pC));

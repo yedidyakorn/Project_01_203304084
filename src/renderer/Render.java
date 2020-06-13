@@ -104,9 +104,26 @@ public class Render {
         Color dd = calcColor(List.of(d));
         Color cCenter = calcColor(List.of(rCenter));
         if (aa != cCenter)
-            return cCenter.add(rec(cCenter, radius / 2, num / 4, center.add(scene.getCamera().getvUp().scale(radius / 2))));
+             cCenter.add(rec(cCenter, radius / 2, num / 4, center.add(scene.getCamera().getvUp().scale(radius / 2))));
         else
-            return cCenter.add(aa.scale(num / 4));
+             cCenter.add(aa.scale(num / 4));
+
+        if (bb != cCenter)
+             cCenter.add(rec(cCenter,radius/2, num/4, center.add(scene.getCamera().getvRight().scale(radius/2))));
+        else
+             cCenter.add(bb.scale(num / 4));
+
+        if (cc != cCenter)
+            cCenter.add(rec(cCenter,radius/2, num/4, center.add(scene.getCamera().getvUp().scale(-radius / 2))));
+        else
+            cCenter.add(cc.scale(num / 4));
+
+        if (dd != cCenter)
+            cCenter.add(rec(cCenter,radius/2, num/4, center.add(scene.getCamera().getvRight().scale(-radius / 2))));
+        else
+            cCenter.add(dd.scale(num / 4));
+
+        return cCenter;
 
     }
 

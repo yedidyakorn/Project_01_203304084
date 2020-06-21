@@ -7,8 +7,8 @@ import primitives.Vector;
 import java.util.LinkedList;
 import java.util.List;
 
+import static primitives.Ray.rayRandomBeam;
 import static primitives.Util.isZero;
-import static primitives.Util.randomRange;
 
 /**
  * a class that represents a camera
@@ -153,15 +153,15 @@ public class Camera {
         Point3D f = ray.getPoint((focalDistance + screenDistance) / (vTo.dotProduct(ray.getDirection())));//focal point
         result.add(new Ray(pij, ray.getDirection()));
 
-        for (int k = 0; k < numOfRays; k++) {
-            double x = randomRange(-aperture, aperture);
-            double cosX = Math.sqrt(aperture - x * x);
-            double y = randomRange(-cosX, cosX);
-            Point3D pC = pij.add(vRight.scale(x));//a point on view plane around the pixel
-            pC = pC.add(vUp.scale(y));
-            Ray focalRay = new Ray(pC, f.subtract(pC));
-            result.add(focalRay);
-        }
-        return result;
+//        for (int k = 0; k < numOfRays; k++) {
+//            double x = randomRange(-aperture, aperture);
+//            double cosX = Math.sqrt(aperture - x * x);
+//            double y = randomRange(-cosX, cosX);
+//            Point3D pC = pij.add(vRight.scale(x));//a point on view plane around the pixel
+//            pC = pC.add(vUp.scale(y));
+//            Ray focalRay = new Ray(pC, f.subtract(pC));
+//            result.add(focalRay);
+//        }
+        return rayRandomBeam(pij, f, aperture, numOfRays, vRight, vUp);
     }
 }

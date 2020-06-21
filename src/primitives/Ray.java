@@ -97,11 +97,27 @@ public class Ray {
 
     /**
      * finds a point on the ray
+     *
      * @param t - the distance between the base point and the wanted point
      * @return the result point
      */
-    public Point3D getPoint(double t){
+    public Point3D getPoint(double t) {
         return p.add(v.scale(t));
+    }
+
+    //TODO
+    public static List<Ray> rayRandomBeam(Point3D center, Point3D target, double rad, int numOfRays, Vector vRight, Vector vUp) {
+        List<Ray> result = new LinkedList<>();
+        for (int k = 0; k < numOfRays; k++) {
+            double x = randomRange(-rad, rad);
+            double cosX = Math.sqrt(rad - x * x);
+            double y = randomRange(-cosX, cosX);
+            Point3D pC = center.add(vRight.scale(x));//a point on view plane around the pixel
+            pC = pC.add(vUp.scale(y));
+            Ray focalRay = new Ray(pC, target.subtract(pC));
+            result.add(focalRay);
+        }
+        return result;
     }
 
     @Override

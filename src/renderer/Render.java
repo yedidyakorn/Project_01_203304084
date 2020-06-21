@@ -6,9 +6,9 @@ import geometries.Intersectable.GeoPoint;
 import primitives.*;
 import scene.Scene;
 
-import java.util.LinkedList;
 import java.util.List;
 
+import static primitives.Ray.rayRandomBeam;
 import static primitives.Util.alignZero;
 
 /**
@@ -65,9 +65,12 @@ public class Render {
             threads[i] = new Thread(() -> {
                 Pixel pixel = new Pixel();
                 while (thePixel.nextPixel(pixel)) {
-                    List<Ray> rays = camera.constructRaysThroughPixel(nX, nY, pixel.col, pixel.row, //
-                            dist, width, height);
-                    imageWriter.writePixel(pixel.col, pixel.row, calcColor(rays).getColor());
+//                    List<Ray> rays = camera.constructRaysThroughPixel(nX, nY, pixel.col, pixel.row, //
+//                            dist, width, height);
+//                    imageWriter.writePixel(pixel.col, pixel.row, calcColor(rays).getColor());
+                    Ray ray = camera.constructRayThroughPixel(nX, nY, pixel.col, pixel.row, dist, width, height);
+                    imageWriter.writePixel(pixel.col, pixel.row, superSampling(ray).getColor());
+                    System.out.print("\n");
                 }
             });
         }
@@ -84,47 +87,100 @@ public class Render {
         if (_print) System.out.printf("\r100%%\n");
     }
 
-    public Color superSampleing(Ray ray) {
-        Color background = scene.getBackground();
-        Color result = background;
-        result = result.add(rec(result, scene.getCamera().getAperture(), scene.getCamera().getNumOfRays(), ray.getPoint()));
-        return result.reduce(scene.getCamera().getNumOfRays());
+    /**
+     * This function renders image's pixel color map from the scene included with
+     * the Renderer object
+     */
+    public void oldrenderImage() {
+        final int nX = imageWriter.getNx();
+        final int nY = imageWriter.getNy();
+        final double dist = scene.getDistance();
+        final double width = imageWriter.getWidth();
+        final double height = imageWriter.getHeight();
+        final Camera camera = scene.getCamera();
+
+        final Pixel thePixel = new Pixel(nY, nX);
+
+        // Generate threads
+        Thread[] threads = new Thread[_threads];
+        for (int i = _threads - 1; i >= 0; --i) {
+            threads[i] = new Thread(() -> {
+                Pixel pixel = new Pixel();
+                while (thePixel.nextPixel(pixel)) {
+                    List<Ray> rays = camera.constructRaysThroughPixel(nX, nY, pixel.col, pixel.row, //
+                            dist, width, height);
+                    imageWriter.writePixel(pixel.col, pixel.row, calcColor(rays).getColor());
+
+                }
+            });
+        }
+
+        // Start threads
+        for (Thread thread : threads) thread.start();
+
+        // Wait for all threads to finish
+        for (Thread thread : threads)
+            try {
+                thread.join();
+            } catch (Exception e) {
+            }
+        if (_print) System.out.printf("\r100%%\n");
     }
 
-    private Color rec(Color background, double radius, int num, Point3D center) {
-        List<Color> list = new LinkedList<>();
-        Ray a = null;
-        Ray b = null;
-        Ray c = null;
-        Ray d = null;
-        Ray rCenter = null;
-        Color aa = calcColor(List.of(a));
-        Color bb = calcColor(List.of(b));
-        Color cc = calcColor(List.of(c));
-        Color dd = calcColor(List.of(d));
+    //TODO
+    public Color superSampling(Ray ray) {
+        Color result = scene.getBackground();
+        Point3D pij = ray.getPoint(scene.getDistance() / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
+        Point3D f = ray.getPoint((scene.getCamera().getFocalDistance() + scene.getDistance()) / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));//focal point
+        Color color = rec(scene.getCamera().getAperture(), scene.getCamera().getNumOfRays(), pij, f, 3);
+        return result.add(color.reduce(scene.getCamera().getNumOfRays()));
+    }
+
+    //TODO
+    private Color rec(double radius, int num, Point3D center, Point3D target, int k) {
+        if (k == 0) {
+            System.out.print("$");
+            return addColors(rayRandomBeam(center, target, radius, num, scene.getCamera().getvRight(), scene.getCamera().getvUp()));
+        }
+        Ray a = new Ray(center.add(scene.getCamera().getvUp().scale(radius)), target.subtract(center.add(scene.getCamera().getvUp().scale(radius))));
+        Ray b = new Ray(center.add(scene.getCamera().getvRight().scale(radius)), target.subtract(center.add(scene.getCamera().getvRight().scale(radius))));
+        Ray c = new Ray(center.add(scene.getCamera().getvUp().scale(-radius)), target.subtract(center.add(scene.getCamera().getvUp().scale(-radius))));
+        Ray d = new Ray(center.add(scene.getCamera().getvRight().scale(-radius)), target.subtract(center.add(scene.getCamera().getvRight().scale(-radius))));
+        Ray rCenter = new Ray(center, target.subtract(center));
+        Color colorA = calcColor(List.of(a));
+        Color colorB = calcColor(List.of(b));
+        Color colorC = calcColor(List.of(c));
+        Color colorD = calcColor(List.of(d));
         Color cCenter = calcColor(List.of(rCenter));
-        if (aa != cCenter)
-             cCenter.add(rec(cCenter, radius / 2, num / 4, center.add(scene.getCamera().getvUp().scale(radius / 2))));
+        double newRad = radius / (1d + 1.414);
+        if (colorA != cCenter)
+            cCenter = cCenter.add(rec(newRad, num / 4, center.add(scene.getCamera().getvUp().scale(radius - newRad)), target, k - 1));
         else
-             cCenter.add(aa.scale(num / 4));
-
-        if (bb != cCenter)
-             cCenter.add(rec(cCenter,radius/2, num/4, center.add(scene.getCamera().getvRight().scale(radius/2))));
+            cCenter = cCenter.add(colorA.scale(num / 4));
+        if (colorB != cCenter)
+            cCenter = cCenter.add(rec(newRad, num / 4, center.add(scene.getCamera().getvRight().scale(radius - newRad)), target, k - 1));
         else
-             cCenter.add(bb.scale(num / 4));
-
-        if (cc != cCenter)
-            cCenter.add(rec(cCenter,radius/2, num/4, center.add(scene.getCamera().getvUp().scale(-radius / 2))));
+            cCenter = cCenter.add(colorB.scale(num / 4));
+        if (colorC != cCenter)
+            cCenter = cCenter.add(rec(newRad, num / 4, center.add(scene.getCamera().getvUp().scale(-(radius - newRad))), target, k - 1));
         else
-            cCenter.add(cc.scale(num / 4));
-
-        if (dd != cCenter)
-            cCenter.add(rec(cCenter,radius/2, num/4, center.add(scene.getCamera().getvRight().scale(-radius / 2))));
+            cCenter = cCenter.add(colorC.scale(num / 4));
+        if (colorD != cCenter)
+            cCenter = cCenter.add(rec(newRad, num / 4, center.add(scene.getCamera().getvRight().scale(-(radius - newRad))), target, k - 1));
         else
-            cCenter.add(dd.scale(num / 4));
-
+            cCenter = cCenter.add(colorD.scale(num / 4));
         return cCenter;
+    }
 
+    //TODO
+    private Color addColors(List<Ray> rays) {
+        Color background = scene.getBackground();
+        Color sum = background;
+        for (Ray ray : rays) {
+            GeoPoint intersectionPoint = findClosestIntersection(ray);
+            sum = sum.add(intersectionPoint == null ? background : calcColor(intersectionPoint, ray));
+        }
+        return sum;
     }
 
     /**
@@ -136,13 +192,7 @@ public class Render {
      * @return - the average color from all rays- the final color that will be whited.
      */
     private Color calcColor(List<Ray> rays) {
-        Color background = scene.getBackground();
-        Color avg = background;
-        for (Ray ray : rays) {
-            GeoPoint intersectionPoint = findClosestIntersection(ray);
-            avg = avg.add(intersectionPoint == null ? background : calcColor(intersectionPoint, ray));
-        }
-        return avg.reduce(rays.size());
+        return addColors(rays).reduce(rays.size());
     }
 
     /**

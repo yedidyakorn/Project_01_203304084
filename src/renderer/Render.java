@@ -158,6 +158,7 @@ public class Render {
             return addColors(rayRandomBeam(center, target, radius, num, right, up)).add(colorA, colorB, colorC, colorD, cCenter);
         }
         mone += 5;
+        //ccenter big big problem!!!!
         double newRad = radius / (2.414213562);         //R=r(1+√2)
         if (!(colorA.equals(cCenter)))
             cCenter = cCenter.add(rec(newRad, (num / 4), center.add(up.scale(radius - newRad)), target, k - 1));

@@ -44,7 +44,7 @@ public class DepthOfFiledTests {
         scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
                 0.0004, 0.0000006));
 
-        scene.getCamera().setDepthOfFiled(10, 1, 75);
+        scene.getCamera().setDepthOfFiled(10, 1, 100);
         ImageWriter imageWriter = new ImageWriter("depth10_1", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);
         render.setMultithreading(3);

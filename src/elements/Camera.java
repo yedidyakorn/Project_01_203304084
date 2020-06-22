@@ -4,7 +4,6 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Ray.rayRandomBeam;
@@ -63,17 +62,23 @@ public class Camera {
         return vUp;
     }
 
-    //TODO
+    /**
+     * getter for aperture size
+     */
     public double getAperture() {
         return aperture;
     }
 
-    //TODO
+    /**
+     * getter for the number of rays
+     */
     public int getNumOfRays() {
         return numOfRays;
     }
 
-    //TODO
+    /**
+     * getter for the focal distance
+     */
     public double getFocalDistance() {
         return focalDistance;
     }
@@ -147,21 +152,11 @@ public class Camera {
      * @return - a list of rays that contains the beam of rays
      */
     public List<Ray> constructRaysThroughPixel(int nX, int nY, int j, int i, double screenDistance, double screenWidth, double screenHeight) {
-        List<Ray> result = new LinkedList<>();
         Ray ray = constructRayThroughPixel(nX, nY, j, i, screenDistance, screenWidth, screenHeight);
         Point3D pij = ray.getPoint(screenDistance / (vTo.dotProduct(ray.getDirection())));
         Point3D f = ray.getPoint((focalDistance + screenDistance) / (vTo.dotProduct(ray.getDirection())));//focal point
+        List<Ray> result = rayRandomBeam(pij, f, aperture, numOfRays, vRight, vUp);
         result.add(new Ray(pij, ray.getDirection()));
-
-//        for (int k = 0; k < numOfRays; k++) {
-//            double x = randomRange(-aperture, aperture);
-//            double cosX = Math.sqrt(aperture - x * x);
-//            double y = randomRange(-cosX, cosX);
-//            Point3D pC = pij.add(vRight.scale(x));//a point on view plane around the pixel
-//            pC = pC.add(vUp.scale(y));
-//            Ray focalRay = new Ray(pC, f.subtract(pC));
-//            result.add(focalRay);
-//        }
-        return rayRandomBeam(pij, f, aperture, numOfRays, vRight, vUp);
+        return result;
     }
 }

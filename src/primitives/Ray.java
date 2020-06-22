@@ -61,26 +61,6 @@ public class Ray {
         this.v = new Vector(other.v);
     }
 
-    //TODO
-    public List<Ray> beam(Ray ray, double radius, double length, int numOfRays, Vector up, Vector right) {
-        List<Ray> result = new LinkedList<>();
-        Point3D pij = ray.getPoint();
-        Point3D f = ray.getPoint(length);
-        result.add(ray);
-
-        for (int k = 0; k < numOfRays; k++) {
-            double x = randomRange(-radius, radius);
-            double cosX = Math.sqrt(radius - x * x);
-            double y = randomRange(-cosX, cosX);
-            Point3D pC = pij.add(right.scale(x));//a point on view plane around the pixel
-            pC = pC.add(up.scale(y));
-            Ray temp = new Ray(pC, f.subtract(pC));
-            result.add(temp);
-        }
-        return result;
-    }
-
-
     /**
      * getter for beginning point
      */
@@ -105,7 +85,17 @@ public class Ray {
         return p.add(v.scale(t));
     }
 
-    //TODO
+    /**
+     * function that creates a beam of rays in random positions. all the rays point to one point
+     *
+     * @param center    - the center of the base of the beam
+     * @param target    - the target point that all rays point to
+     * @param rad       - the radius of the base of the beam
+     * @param numOfRays - number of rays that will be created
+     * @param vRight    - a vector orthogonal to the original ray
+     * @param vUp       -  a vector orthogonal to the original ray and the right vector
+     * @return - a list that contains all the new rays
+     */
     public static List<Ray> rayRandomBeam(Point3D center, Point3D target, double rad, int numOfRays, Vector vRight, Vector vUp) {
         List<Ray> result = new LinkedList<>();
         for (int k = 0; k < numOfRays; k++) {

@@ -2,9 +2,12 @@ package unittests;
 
 import elements.AmbientLight;
 import elements.Camera;
+import elements.PointLight;
+import geometries.Polygon;
 import geometries.Sphere;
 import org.junit.Test;
 import primitives.Color;
+import primitives.Material;
 import primitives.Point3D;
 import primitives.Vector;
 import renderer.ImageWriter;
@@ -40,14 +43,14 @@ public class superSamplingTests {
 //        render.setDebugPrint();
 //        render.renderImage();
 //        render.writeToImage();
-//
-////        scene.getCamera().setDepthOfFiled(10, 0.5, 15);
-////        ImageWriter imageWriter1 = new ImageWriter("SSAdepth10_0.5", 30, 30, 500, 500);
-////        render = new Render(imageWriter1, scene);
-////        render.setMultithreading(3);
-////        render.setDebugPrint();
-////        render.renderImage();
-////        render.writeToImage();
+
+//        scene.getCamera().setDepthOfFiled(10, 0.5, 15);
+//        ImageWriter imageWriter1 = new ImageWriter("SSAdepth10_0.5", 30, 30, 500, 500);
+//        render = new Render(imageWriter1, scene);
+//        render.setMultithreading(3);
+//        render.setDebugPrint();
+//        render.renderImage();
+//        render.writeToImage();
 //    }
 
     public void superSampling1() {
@@ -57,8 +60,11 @@ public class superSamplingTests {
         scene.setBackground(new Color(java.awt.Color.BLACK));
         scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
 
-        scene.addGeometries(new Sphere(new Color(java.awt.Color.magenta), new Point3D(0, 0, 10), 1));
+        scene.addGeometries(new Sphere(new Color(java.awt.Color.magenta), new Material(0.4, 0.3, 100, 0.3, 0), new Point3D(0, 0, 1000), 10),
+                new Polygon(new Color(java.awt.Color.BLUE), new Material(0.4, 0.3, 100, 0.3, 0), new Point3D(-200, -200, 10), new Point3D(200, -200, 10), new Point3D(200, 200, 10), new Point3D(-200, 200, 10)));
 
+        scene.addLights(new PointLight(new Color(1000, 600, 0), new Point3D(10, -10, 0), 1, 0.0004, 0.0000006),
+                new PointLight(new Color(10, 30, 300), new Point3D(-10, -10, 0), 1, 0.0004, 0.0000006));
         scene.getCamera().setDepthOfFiled(10, 1, 100);
         ImageWriter imageWriter = new ImageWriter("SSAblank", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);

@@ -70,7 +70,8 @@ public class Render {
 //                    imageWriter.writePixel(pixel.col, pixel.row, calcColor(rays).getColor());
                     Ray ray = camera.constructRayThroughPixel(nX, nY, pixel.col, pixel.row, dist, width, height);
                     imageWriter.writePixel(pixel.col, pixel.row, superSampling(ray).getColor());
-                    System.out.print("\n");
+                    System.out.println(mone);
+                    mone = 0;
                 }
             });
         }
@@ -136,52 +137,68 @@ public class Render {
         return result.add(color.reduce(scene.getCamera().getNumOfRays()));
     }
 
+    static int mone = 0;
     //TODO
     private Color rec(double radius, int num, Point3D center, Point3D target, int k) {
-        if (k == 0 || num <= 4) {
-            System.out.print("$");
-            return addColors(rayRandomBeam(center, target, radius, num, scene.getCamera().getvRight(), scene.getCamera().getvUp()));
-        }
-        Ray a = new Ray(center.add(scene.getCamera().getvUp().scale(radius)), target.subtract(center.add(scene.getCamera().getvUp().scale(radius))));
-        Ray b = new Ray(center.add(scene.getCamera().getvRight().scale(radius)), target.subtract(center.add(scene.getCamera().getvRight().scale(radius))));
-        Ray c = new Ray(center.add(scene.getCamera().getvUp().scale(-radius)), target.subtract(center.add(scene.getCamera().getvUp().scale(-radius))));
-        Ray d = new Ray(center.add(scene.getCamera().getvRight().scale(-radius)), target.subtract(center.add(scene.getCamera().getvRight().scale(-radius))));
+        Vector up = scene.getCamera().getvUp();
+        Vector right = scene.getCamera().getvRight();
+        Ray a = new Ray(center.add(up.scale(radius)), target.subtract(center.add(up.scale(radius))));
+        Ray b = new Ray(center.add(right.scale(radius)), target.subtract(center.add(right.scale(radius))));
+        Ray c = new Ray(center.add(up.scale(-radius)), target.subtract(center.add(up.scale(-radius))));
+        Ray d = new Ray(center.add(right.scale(-radius)), target.subtract(center.add(right.scale(-radius))));
         Ray rCenter = new Ray(center, target.subtract(center));
         Color colorA = calcColor(a);
         Color colorB = calcColor(b);
         Color colorC = calcColor(c);
         Color colorD = calcColor(d);
         Color cCenter = calcColor(rCenter);
-        double newRad = radius / (1d + 1.414);
-        if (!colorA.equals(cCenter))
-            cCenter = cCenter.add(rec(newRad, num / 4, center.add(scene.getCamera().getvUp().scale(radius - newRad)), target, k - 1));
+        num = num - 5;
+        if (k == 0 || num <= 20) {
+            mone += num;
+            return addColors(rayRandomBeam(center, target, radius, num, right, up)).add(colorA, colorB, colorC, colorD, cCenter);
+        }
+        mone += 5;
+        double newRad = radius / (2.414213562);         //R=r(1+√2)
+        if (!(colorA.equals(cCenter)))
+            cCenter = cCenter.add(rec(newRad, (num / 4), center.add(up.scale(radius - newRad)), target, k - 1));
         else
             cCenter = cCenter.add(colorA.scale(num / 4));
         if (!colorB.equals(cCenter))
-            cCenter = cCenter.add(rec(newRad, num / 4, center.add(scene.getCamera().getvRight().scale(radius - newRad)), target, k - 1));
+            cCenter = cCenter.add(rec(newRad, num / 4, center.add(right.scale(radius - newRad)), target, k - 1));
         else
             cCenter = cCenter.add(colorB.scale(num / 4));
         if (!colorC.equals(cCenter))
-            cCenter = cCenter.add(rec(newRad, num / 4, center.add(scene.getCamera().getvUp().scale(-(radius - newRad))), target, k - 1));
+            cCenter = cCenter.add(rec(newRad, num / 4, center.add(up.scale(-(radius - newRad))), target, k - 1));
         else
             cCenter = cCenter.add(colorC.scale(num / 4));
         if (!colorD.equals(cCenter))
-            cCenter = cCenter.add(rec(newRad, num / 4, center.add(scene.getCamera().getvRight().scale(-(radius - newRad))), target, k - 1));
+            cCenter = cCenter.add(rec(newRad, num / 4, center.add(right.scale(-(radius - newRad))), target, k - 1));
         else
             cCenter = cCenter.add(colorD.scale(num / 4));
-        return cCenter;
+        return cCenter.add(colorA, colorB, colorC, colorD);
     }
 
-    //TODO
+    /**
+     * function that sums up the color from  a list of rays
+     *
+     * @param rays - a list of rays
+     * @return a Color with the sum value of all rays in the list
+     */
     private Color addColors(List<Ray> rays) {
-        Color background = scene.getBackground();
-        Color sum = background;
+        Color sum = scene.getBackground();
         for (Ray ray : rays) {
             sum = sum.add(calcColor(ray));
         }
         return sum;
     }
 
+    /**
+     * a function that checks if a single ray has a intersection Point,
+     * and calculates the color if positive.
+     *
+     * @param ray - a ray
+     * @return - the value of the color
+     */
     private Color calcColor(Ray ray) {
         GeoPoint intersectionPoint = findClosestIntersection(ray);
         return intersectionPoint == null ? scene.getBackground() : calcColor(intersectionPoint, ray);

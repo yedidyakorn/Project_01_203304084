@@ -65,9 +65,6 @@ public class Render {
             threads[i] = new Thread(() -> {
                 Pixel pixel = new Pixel();
                 while (thePixel.nextPixel(pixel)) {
-//                    List<Ray> rays = camera.constructRaysThroughPixel(nX, nY, pixel.col, pixel.row, //
-//                            dist, width, height);
-//                    imageWriter.writePixel(pixel.col, pixel.row, calcColor(rays).getColor());
                     Ray ray = camera.constructRayThroughPixel(nX, nY, pixel.col, pixel.row, dist, width, height);
                     imageWriter.writePixel(pixel.col, pixel.row, superSampling(ray).getColor());
                     System.out.println(mone);
@@ -130,14 +127,15 @@ public class Render {
 
     //TODO
     public Color superSampling(Ray ray) {
-        Color result = scene.getBackground();
+        Color result = new Color(scene.getBackground());
         Point3D pij = ray.getPoint(scene.getDistance() / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
         Point3D f = ray.getPoint((scene.getCamera().getFocalDistance() + scene.getDistance()) / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));//focal point
         Color color = rec(scene.getCamera().getAperture(), scene.getCamera().getNumOfRays(), pij, f, 3);
-        return result.add(color.reduce(scene.getCamera().getNumOfRays()));
+        result = result.add(color.reduce(mone));
+        return result;
     }
 
-    static int mone = 0;
+    int mone = 0;
     //TODO
     private Color rec(double radius, int num, Point3D center, Point3D target, int k) {
         Vector up = scene.getCamera().getvUp();
@@ -146,37 +144,41 @@ public class Render {
         Ray b = new Ray(center.add(right.scale(radius)), target.subtract(center.add(right.scale(radius))));
         Ray c = new Ray(center.add(up.scale(-radius)), target.subtract(center.add(up.scale(-radius))));
         Ray d = new Ray(center.add(right.scale(-radius)), target.subtract(center.add(right.scale(-radius))));
-        Ray rCenter = new Ray(center, target.subtract(center));
+
+        Ray centerRay = new Ray(center, target.subtract(center));
         Color colorA = calcColor(a);
         Color colorB = calcColor(b);
         Color colorC = calcColor(c);
         Color colorD = calcColor(d);
-        Color cCenter = calcColor(rCenter);
+        Color centerColor = calcColor(centerRay);
+        Color result = new Color(centerColor);
         num = num - 5;
+        mone += 5;
         if (k == 0 || num <= 20) {
             mone += num;
-            return addColors(rayRandomBeam(center, target, radius, num, right, up)).add(colorA, colorB, colorC, colorD, cCenter);
+            result = addColors(rayRandomBeam(center, target, radius, num, right, up));
+            result = result.add(colorA, colorB, colorC, colorD, centerColor);
+            return result;
         }
-        mone += 5;
-        //ccenter big big problem!!!!
         double newRad = radius / (2.414213562);         //R=r(1+√2)
-        if (!(colorA.equals(cCenter)))
-            cCenter = cCenter.add(rec(newRad, (num / 4), center.add(up.scale(radius - newRad)), target, k - 1));
+        if (!(colorA.equals(centerColor)))
+            result = result.add(rec(newRad, (num / 4), center.add(up.scale(radius - newRad)), target, k - 1));
         else
-            cCenter = cCenter.add(colorA.scale(num / 4));
-        if (!colorB.equals(cCenter))
-            cCenter = cCenter.add(rec(newRad, num / 4, center.add(right.scale(radius - newRad)), target, k - 1));
+            result = result.add(colorA.scale(num / 4));
+        if (!colorB.equals(centerColor))
+            result = result.add(rec(newRad, num / 4, center.add(right.scale(radius - newRad)), target, k - 1));
         else
-            cCenter = cCenter.add(colorB.scale(num / 4));
-        if (!colorC.equals(cCenter))
-            cCenter = cCenter.add(rec(newRad, num / 4, center.add(up.scale(-(radius - newRad))), target, k - 1));
+            result = result.add(colorB.scale(num / 4));
+        if (!colorC.equals(centerColor))
+            result = result.add(rec(newRad, num / 4, center.add(up.scale(-(radius - newRad))), target, k - 1));
         else
-            cCenter = cCenter.add(colorC.scale(num / 4));
-        if (!colorD.equals(cCenter))
-            cCenter = cCenter.add(rec(newRad, num / 4, center.add(right.scale(-(radius - newRad))), target, k - 1));
+            result = result.add(colorC.scale(num / 4));
+        if (!colorD.equals(centerColor))
+            result = result.add(rec(newRad, num / 4, center.add(right.scale(-(radius - newRad))), target, k - 1));
         else
-            cCenter = cCenter.add(colorD.scale(num / 4));
-        return cCenter.add(colorA, colorB, colorC, colorD);
+            result = result.add(colorD.scale(num / 4));
+        result = result.add(colorA, colorB, colorC, colorD);
+        return result;
     }
 
     /**
@@ -186,7 +188,7 @@ public class Render {
      * @return a Color with the sum value of all rays in the list
      */
     private Color addColors(List<Ray> rays) {
-        Color sum = scene.getBackground();
+        Color sum = new Color(scene.getBackground());
         for (Ray ray : rays) {
             sum = sum.add(calcColor(ray));
         }
@@ -241,7 +243,7 @@ public class Render {
      * @return - color value
      */
     private Color calcColor(GeoPoint geoPoint, Ray inRay, int level, double k) {
-        Color result = geoPoint.geometry.getEmission();
+        Color result = new Color(geoPoint.geometry.getEmission());
         Point3D p = geoPoint.point;
 
         Vector v = inRay.getDirection();

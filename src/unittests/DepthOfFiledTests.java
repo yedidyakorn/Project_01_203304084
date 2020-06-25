@@ -52,14 +52,15 @@ public class DepthOfFiledTests {
         render.oldrenderImage();
         render.writeToImage();
 
-//        scene.getCamera().setDepthOfFiled(10, 0.5, 15);
-//        ImageWriter imageWriter1 = new ImageWriter("depth10_0.5", 30, 30, 500, 500);
-//        render = new Render(imageWriter1, scene);
-//        render.setMultithreading(3);
-//        render.setDebugPrint();
-//        render.oldrenderImage();
-//        render.writeToImage();
+        scene.getCamera().setDepthOfFiled(10, 0.5, 100);
+        ImageWriter imageWriter1 = new ImageWriter("depth10_0.5", 30, 30, 500, 500);
+        render = new Render(imageWriter1, scene);
+        render.setMultithreading(3);
+        render.setDebugPrint();
+        render.oldrenderImage();
+        render.writeToImage();
     }
+
 
 //    /**
 //     * Produce a picture of a row of spheres lighted by a spot light.

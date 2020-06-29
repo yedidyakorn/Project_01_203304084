@@ -71,7 +71,7 @@ public class Vector {
      * @return a new vector
      */
     public Vector subtract(Vector other) {
-        return this.endPoint.subtract(other.endPoint);
+        return endPoint.subtract(other.endPoint);
     }
 
     /**
@@ -89,9 +89,9 @@ public class Vector {
      * @return a new vector
      */
     public Vector scale(double num) {
-        double x = this.endPoint.getX().get() * num;
-        double y = this.endPoint.getY().get() * num;
-        double z = this.endPoint.getZ().get() * num;
+        double x = endPoint.getX().get() * num;
+        double y = endPoint.getY().get() * num;
+        double z = endPoint.getZ().get() * num;
         return new Vector(x, y, z);
     }
 
@@ -102,9 +102,9 @@ public class Vector {
      * @return a number
      */
     public double dotProduct(Vector other) {
-        double xx = this.endPoint.getX().get() * other.endPoint.getX().get();
-        double yy = this.endPoint.getY().get() * other.endPoint.getY().get();
-        double zz = this.endPoint.getZ().get() * other.endPoint.getZ().get();
+        double xx = endPoint.getX().get() * other.endPoint.getX().get();
+        double yy = endPoint.getY().get() * other.endPoint.getY().get();
+        double zz = endPoint.getZ().get() * other.endPoint.getZ().get();
         return xx + yy + zz;
     }
 
@@ -115,9 +115,9 @@ public class Vector {
      * @return a Vector
      */
     public Vector crossProduct(Vector other) {
-        double thisX = this.endPoint.getX().get();
-        double thisY = this.endPoint.getY().get();
-        double thisZ = this.endPoint.getZ().get();
+        double thisX = endPoint.getX().get();
+        double thisY = endPoint.getY().get();
+        double thisZ = endPoint.getZ().get();
         double otherX = other.endPoint.getX().get();
         double otherY = other.endPoint.getY().get();
         double otherZ = other.endPoint.getZ().get();
@@ -130,9 +130,9 @@ public class Vector {
      * @return the calculation
      */
     public double lengthSquared() {
-        double x = this.endPoint.getX().get();
-        double y = this.endPoint.getY().get();
-        double z = this.endPoint.getZ().get();
+        double x = endPoint.getX().get();
+        double y = endPoint.getY().get();
+        double z = endPoint.getZ().get();
         return x * x + y * y + z * z;
     }
 
@@ -142,7 +142,7 @@ public class Vector {
      * @return the calculation
      */
     public double length() {
-        return Math.sqrt(this.lengthSquared());
+        return Math.sqrt(lengthSquared());
     }
 
     /**
@@ -153,10 +153,10 @@ public class Vector {
      */
     public Vector normalize() {
         double length = this.length();
-        double x = this.endPoint.getX().get() / length;
-        double y = this.endPoint.getY().get() / length;
-        double z = this.endPoint.getZ().get() / length;
-        this.endPoint = new Point3D(x, y, z);
+        double x = endPoint.getX().get() / length;
+        double y = endPoint.getY().get() / length;
+        double z = endPoint.getZ().get() / length;
+        endPoint = new Point3D(x, y, z);
         return this;
     }
 

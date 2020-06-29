@@ -9,6 +9,7 @@ import scene.Scene;
 import java.util.List;
 
 import static primitives.Ray.rayRandomBeam;
+import static primitives.Ray.rayRandomBeamQuarter;
 import static primitives.Util.alignZero;
 
 /**
@@ -127,6 +128,8 @@ public class Render {
 
     //TODO
     public Color superSampling(Ray ray) {
+        if (scene.getCamera().getNumOfRays() <= 1)
+            return calcColor(ray);
         Color result = new Color(scene.getBackground());
         Point3D pij = ray.getPoint(scene.getDistance() / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
         Point3D f = ray.getPoint((scene.getCamera().getFocalDistance() + scene.getDistance()) / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));//focal point
@@ -140,46 +143,79 @@ public class Render {
     private Color rec(double radius, int num, Point3D center, Point3D target, int k) {
         Vector up = scene.getCamera().getvUp();
         Vector right = scene.getCamera().getvRight();
-        Ray a = new Ray(center.add(up.scale(radius)), target.subtract(center.add(up.scale(radius))));
-        Ray b = new Ray(center.add(right.scale(radius)), target.subtract(center.add(right.scale(radius))));
-        Ray c = new Ray(center.add(up.scale(-radius)), target.subtract(center.add(up.scale(-radius))));
-        Ray d = new Ray(center.add(right.scale(-radius)), target.subtract(center.add(right.scale(-radius))));
+//        Ray a = new Ray(center.add(up.scale(radius)), target.subtract(center.add(up.scale(radius))));
+//        Ray b = new Ray(center.add(right.scale(radius)), target.subtract(center.add(right.scale(radius))));
+//        Ray c = new Ray(center.add(up.scale(-radius)), target.subtract(center.add(up.scale(-radius))));
+//        Ray d = new Ray(center.add(right.scale(-radius)), target.subtract(center.add(right.scale(-radius))));
+//        Ray ab= new Ray(center.add(up.scale(radius/1.414)).add(right.scale(radius/1.414)),target.subtract(center.add(up.scale(radius/1.414)).add(right.scale(radius/1.414))));
+//        Ray bc= new Ray(center.add(up.scale(-radius/1.414)).add(right.scale(radius/1.414)),target.subtract(center.add(up.scale(-radius/1.414)).add(right.scale(radius/1.414))));
+//        Ray cd= new Ray(center.add(up.scale(-radius/1.414)).add(right.scale(-radius/1.414)),target.subtract(center.add(up.scale(-radius/1.414)).add(right.scale(-radius/1.414))));
+//        Ray da= new Ray(center.add(up.scale(radius/1.414)).add(right.scale(-radius/1.414)),target.subtract(center.add(up.scale(radius/1.414)).add(right.scale(-radius/1.414))));
+
+        List<Ray> aa = rayRandomBeamQuarter(center, target, radius, 3, right, up);
+        List<Ray> bb = rayRandomBeamQuarter(center, target, radius, 3, right.scale(-1), up);
+        List<Ray> cc = rayRandomBeamQuarter(center, target, radius, 3, right.scale(-1), up.scale(-1));
+        List<Ray> dd = rayRandomBeamQuarter(center, target, radius, 3, right, up.scale(-1));
 
         Ray centerRay = new Ray(center, target.subtract(center));
-        Color colorA = calcColor(a);
-        Color colorB = calcColor(b);
-        Color colorC = calcColor(c);
-        Color colorD = calcColor(d);
+//        Color colorA = calcColor(a);
+//        Color colorB = calcColor(b);
+//        Color colorC = calcColor(c);
+//        Color colorD = calcColor(d);
+//        Color colorAB = calcColor(ab);
+//        Color colorBC = calcColor(bc);
+//        Color colorCD = calcColor(cd);
+//        Color colorDA = calcColor(da);
+
         Color centerColor = calcColor(centerRay);
         Color result = new Color(centerColor);
-        num = num - 5;
-        mone += 5;
-        if (k == 0 || num <= 20) {
+        result = result.add(addColors(aa), addColors(bb), addColors(cc), addColors(dd));
+        num = num - 13;
+        mone += 13;
+        if (k == 0 || num <= 52) {
             mone += num;
             result = addColors(rayRandomBeam(center, target, radius, num, right, up));
-            result = result.add(colorA, colorB, colorC, colorD, centerColor);
+//            result = result.add(colorA, colorB, colorC, colorD, centerColor);
             return result;
         }
         double newRad = radius / (2.414213562);         //R=r(1+√2)
-        if (!(colorA.equals(centerColor)))
-            result = result.add(rec(newRad, (num / 4), center.add(up.scale(radius - newRad)), target, k - 1));
-        else
-            result = result.add(colorA.scale(num / 4));
-        if (!colorB.equals(centerColor))
-            result = result.add(rec(newRad, num / 4, center.add(right.scale(radius - newRad)), target, k - 1));
-        else
-            result = result.add(colorB.scale(num / 4));
-        if (!colorC.equals(centerColor))
-            result = result.add(rec(newRad, num / 4, center.add(up.scale(-(radius - newRad))), target, k - 1));
-        else
-            result = result.add(colorC.scale(num / 4));
-        if (!colorD.equals(centerColor))
-            result = result.add(rec(newRad, num / 4, center.add(right.scale(-(radius - newRad))), target, k - 1));
-        else
-            result = result.add(colorD.scale(num / 4));
-        result = result.add(colorA, colorB, colorC, colorD);
+        if (!equalColor(aa, centerColor)) {
+            result = result.add(rec(newRad, (num / 4), center.add(up.scale(newRad)).add(right.scale(newRad)), target, k - 1));
+        } else
+            result = result.add(centerColor.scale(num / 4));
+        if (!equalColor(bb, centerColor)) {
+            result = result.add(rec(newRad, num / 4, center.add(right.scale(-newRad)).add(up.scale(newRad)), target, k - 1));
+        } else
+            result = result.add(centerColor.scale(num / 4));
+        if (!equalColor(cc, centerColor)) {
+            result = result.add(rec(newRad, num / 4, center.add(up.scale(-newRad)).add(right.scale(-newRad)), target, k - 1));
+
+        } else
+            result = result.add(centerColor.scale(num / 4));
+        if (!equalColor(dd, centerColor)) {
+            result = result.add(rec(newRad, num / 4, center.add(right.scale(newRad)).add(up.scale(-newRad)), target, k - 1));
+        } else
+            result = result.add(centerColor.scale(num / 4));
+        result = result.add(addColors(aa), addColors(bb), addColors(cc), addColors(dd));
+//        result = result.add(colorA, colorB, colorC, colorD);
         return result;
     }
+
+    /**
+     * //TODO
+     *
+     * @param list
+     * @param color
+     * @return
+     */
+    private boolean equalColor(List<Ray> list, Color color) {
+        for (Ray ray : list) {
+            if (!calcColor(ray).equals(color))
+                return false;
+        }
+        return true;
+    }
+
 
     /**
      * function that sums up the color from  a list of rays

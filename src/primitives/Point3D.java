@@ -44,9 +44,9 @@ public class Point3D {
      * @param other is a Point3D
      */
     public Point3D(Point3D other) {
-        this.x = other.x;
-        this.y = other.y;
-        this.z = other.z;
+        x = other.x;
+        y = other.y;
+        z = other.z;
     }
 
     /**
@@ -83,9 +83,9 @@ public class Point3D {
      * @return a vector that starts from the given point to this point
      */
     public Vector subtract(Point3D other) {
-        double a = this.x.get() - other.x.get();
-        double b = this.y.get() - other.y.get();
-        double c = this.z.get() - other.z.get();
+        double a = x.get() - other.x.get();
+        double b = y.get() - other.y.get();
+        double c = z.get() - other.z.get();
         return new Vector(a, b, c);
     }
 
@@ -96,9 +96,9 @@ public class Point3D {
      * @return a new point after adding the vector
      */
     public Point3D add(Vector vec) {
-        double a = vec.getEndPoint().x.get() + this.x.get();
-        double b = vec.getEndPoint().y.get() + this.y.get();
-        double c = vec.getEndPoint().z.get() + this.z.get();
+        double a = vec.getEndPoint().x.get() + x.get();
+        double b = vec.getEndPoint().y.get() + y.get();
+        double c = vec.getEndPoint().z.get() + z.get();
         return new Point3D(a, b, c);
     }
 
@@ -109,9 +109,9 @@ public class Point3D {
      * @return the calculation
      */
     public double distanceSquared(Point3D other) {
-        double deltaX = other.x.get() - this.x.get();
-        double deltaY = other.y.get() - this.y.get();
-        double deltaZ = other.z.get() - this.z.get();
+        double deltaX = other.x.get() - x.get();
+        double deltaY = other.y.get() - y.get();
+        double deltaZ = other.z.get() - z.get();
         return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
     }
 

@@ -1,7 +1,5 @@
 package primitives;
 
-import static primitives.Util.isZero;
-
 /**
  * Wrapper class for java.jwt.Color The constructors operate with any
  * non-negative RGB values. The colors are maintained without upper limit of
@@ -16,6 +14,7 @@ public class Color {
      * whatever...
      */
     private double _r = 0.0, _g = 0.0, _b = 0.0;
+    private final double delta = 0.05;
 
     public final static Color BLACK = new Color();
 
@@ -182,9 +181,9 @@ public class Color {
         if (o == null) return false;
         if (!(o instanceof Color)) return false;
         Color color = (Color) o;
-        return isZero(color._r - _r) &&
-                isZero(color._g - _g) &&
-                isZero(color._b - _b);
+        return !(color._r - _r > delta || _r - color._r > delta ||
+                color._g - _g > delta || _g - color._g > delta ||
+                color._b - _b > delta || _b - color._b > delta);
     }
 
 }

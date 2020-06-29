@@ -103,12 +103,12 @@ public class superSamplingTests {
 
         scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
                 0.0004, 0.0000006));
-        scene.getCamera().setDepthOfFiled(10, 1, 200);
-        ImageWriter imageWriter = new ImageWriter("SSAblank", 30, 30, 500, 500);
+        scene.getCamera().setDepthOfFiled(10, 1, 100);
+        ImageWriter imageWriter = new ImageWriter("SSAblankk", 30, 30, 500, 500);
         Render render = new Render(imageWriter, scene);
-        //render.setMultithreading(3);
+        render.setMultithreading(3);
         render.setDebugPrint();
-        render.renderImage();
+        render.oldrenderImage();
         render.writeToImage();
 
     }
@@ -142,64 +142,64 @@ public class superSamplingTests {
         render.writeToImage();
 
     }
-
-    @Test
-    public void superSampling12() {
-        Scene scene = new Scene("Test scene");
-        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
-        scene.setDistance(1000);
-        scene.setBackground(new Color(java.awt.Color.BLACK));
-        scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
-        int x = 0, y = 10, z = 0;
-        for (int i = 0; i < 7; i++) {
-            scene.addGeometries(
-                    new Sphere(new Color(java.awt.Color.MAGENTA), new Material(0.4, 0.3, 100, 0.3, 0),
-                            new Point3D(x, y - 2 * i, z + i * 5), 2),
-                    new Sphere(new Color(java.awt.Color.BLUE), new Material(0.4, 0.3, 100, 0.3, 0),
-                            new Point3D(x + 3, y - 2 * i, z + i * 5), 2),
-                    new Sphere(new Color(java.awt.Color.GREEN), new Material(0.4, 0.3, 100, 0.3, 0),
-                            new Point3D(x - 3, y - 2 * i, z + i * 5), 2));
-        }
-
-        scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
-                0.0004, 0.0000006));
-        scene.getCamera().setDepthOfFiled(10, 1, 200);
-        ImageWriter imageWriter = new ImageWriter("SSAblank", 30, 30, 500, 500);
-        Render render = new Render(imageWriter, scene);
-        //render.setMultithreading(3);
-        render.setDebugPrint();
-        render.oldrenderImage();
-        render.writeToImage();
-
-    }
-
-    @Test
-    public void superSampling112() {
-        Scene scene = new Scene("Test scene");
-        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
-        scene.setDistance(1000);
-        scene.setBackground(new Color(java.awt.Color.BLACK));
-        scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
-        int x = 0, y = 10, z = 0;
-        for (int i = 0; i < 7; i++) {
-            scene.addGeometries(
-                    new Sphere(new Color(java.awt.Color.MAGENTA), new Material(0.4, 0.3, 100, 0.3, 0),
-                            new Point3D(x, y - 2 * i, z + i * 5), 2),
-                    new Sphere(new Color(java.awt.Color.BLUE), new Material(0.4, 0.3, 100, 0.3, 0),
-                            new Point3D(x + 3, y - 2 * i, z + i * 5), 2),
-                    new Sphere(new Color(java.awt.Color.GREEN), new Material(0.4, 0.3, 100, 0.3, 0),
-                            new Point3D(x - 3, y - 2 * i, z + i * 5), 2));
-        }
-
-        scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
-                0.0004, 0.0000006));
-        scene.getCamera().setDepthOfFiled(10, 1, 200);
-        ImageWriter imageWriter = new ImageWriter("SSAblankk", 30, 30, 500, 500);
-        Render render = new Render(imageWriter, scene);
-        render.setMultithreading(3);
-        render.setDebugPrint();
-        render.oldrenderImage();
-        render.writeToImage();
-
-    }
+//
+//    @Test
+//    public void superSampling12() {
+//        Scene scene = new Scene("Test scene");
+//        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
+//        scene.setDistance(1000);
+//        scene.setBackground(new Color(java.awt.Color.BLACK));
+//        scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
+//        int x = 0, y = 10, z = 0;
+//        for (int i = 0; i < 7; i++) {
+//            scene.addGeometries(
+//                    new Sphere(new Color(java.awt.Color.MAGENTA), new Material(0.4, 0.3, 100, 0.3, 0),
+//                            new Point3D(x, y - 2 * i, z + i * 5), 2),
+//                    new Sphere(new Color(java.awt.Color.BLUE), new Material(0.4, 0.3, 100, 0.3, 0),
+//                            new Point3D(x + 3, y - 2 * i, z + i * 5), 2),
+//                    new Sphere(new Color(java.awt.Color.GREEN), new Material(0.4, 0.3, 100, 0.3, 0),
+//                            new Point3D(x - 3, y - 2 * i, z + i * 5), 2));
+//        }
+//
+//        scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
+//                0.0004, 0.0000006));
+//        scene.getCamera().setDepthOfFiled(10, 1, 200);
+//        ImageWriter imageWriter = new ImageWriter("SSAblank", 30, 30, 500, 500);
+//        Render render = new Render(imageWriter, scene);
+//        //render.setMultithreading(3);
+//        render.setDebugPrint();
+//        render.oldrenderImage();
+//        render.writeToImage();
+//
+//    }
+//
+//    @Test
+//    public void superSampling112() {
+//        Scene scene = new Scene("Test scene");
+//        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
+//        scene.setDistance(1000);
+//        scene.setBackground(new Color(java.awt.Color.BLACK));
+//        scene.setAmbientLight(new AmbientLight(Color.BLACK, 0));
+//        int x = 0, y = 10, z = 0;
+//        for (int i = 0; i < 7; i++) {
+//            scene.addGeometries(
+//                    new Sphere(new Color(java.awt.Color.MAGENTA), new Material(0.4, 0.3, 100, 0.3, 0),
+//                            new Point3D(x, y - 2 * i, z + i * 5), 2),
+//                    new Sphere(new Color(java.awt.Color.BLUE), new Material(0.4, 0.3, 100, 0.3, 0),
+//                            new Point3D(x + 3, y - 2 * i, z + i * 5), 2),
+//                    new Sphere(new Color(java.awt.Color.GREEN), new Material(0.4, 0.3, 100, 0.3, 0),
+//                            new Point3D(x - 3, y - 2 * i, z + i * 5), 2));
+//        }
+//
+//        scene.addLights(new SpotLight(new Color(1000, 600, 0), new Point3D(-100, 100, -500), new Vector(-1, 1, 2), 1,
+//                0.0004, 0.0000006));
+//        scene.getCamera().setDepthOfFiled(10, 1, 200);
+//        ImageWriter imageWriter = new ImageWriter("SSAblankk", 30, 30, 500, 500);
+//        Render render = new Render(imageWriter, scene);
+//        render.setMultithreading(3);
+//        render.setDebugPrint();
+//        render.oldrenderImage();
+//        render.writeToImage();
+//
+//    }
 }

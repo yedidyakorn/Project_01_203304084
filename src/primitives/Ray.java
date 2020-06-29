@@ -110,6 +110,31 @@ public class Ray {
         return result;
     }
 
+    /**
+     * function that creates a beam of rays in random positions in a quarter of a circle. all the rays point to one point
+     *
+     * @param center    - the center of the base of the beam
+     * @param target    - the target point that all rays point to
+     * @param rad       - the radius of the base of the beam
+     * @param numOfRays - number of rays that will be created
+     * @param vRight    - a vector orthogonal to the original ray
+     * @param vUp       -  a vector orthogonal to the original ray and the right vector
+     * @return - a list that contains all the new rays
+     */
+    public static List<Ray> rayRandomBeamQuarter(Point3D center, Point3D target, double rad, int numOfRays, Vector vRight, Vector vUp) {
+        List<Ray> result = new LinkedList<>();
+        for (int k = 0; k < numOfRays; k++) {
+            double x = randomRange(0, rad);
+            double cosX = Math.sqrt(rad - x * x);
+            double y = randomRange(0, cosX);
+            Point3D pC = center.add(vRight.scale(x));//a point on view plane around the pixel
+            pC = pC.add(vUp.scale(y));
+            Ray focalRay = new Ray(pC, target.subtract(pC));
+            result.add(focalRay);
+        }
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -95,7 +95,43 @@ public class Chess {
         render.renderImage();
         render.writeToImage();
     }
+    @Test
+    public void cubics2() {
+        Scene scene = new Scene("chess sphere");
+        scene.setCamera(new Camera(new Point3D(210, 0, -1800), new Vector(-0.1, 0, 0.9), new Vector(0, -1, 0)));
+        scene.setDistance(1000);
+        scene.setBackground(new Color(java.awt.Color.BLACK));
+        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
 
+        scene.addGeometries(cubic(new Point3D(0, 0, 30), 2, new Color(java.awt.Color.red), new Material(0.4, 0.3, 100, 0.8, 0)),
+                cubic(new Point3D(0, 8, 30), 2, new Color(java.awt.Color.blue), new Material(0.4, 0.3, 100, 0.8, 0)),
+                cubic(new Point3D(8, 0, 30), 2, new Color(java.awt.Color.blue), new Material(0.4, 0.3, 100, 0.8, 0)),
+                cubic(new Point3D(0, -8, 30), 2, new Color(java.awt.Color.blue), new Material(0.4, 0.3, 100, 0.8, 0)),
+                cubic(new Point3D(-8, 0, 30), 2, new Color(java.awt.Color.blue), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,cubic(new Point3D(-8, -8, 30), 2, new Color(java.awt.Color.yellow), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,cubic(new Point3D(8, -8, 30), 2, new Color(java.awt.Color.yellow), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,cubic(new Point3D(-8, 8, 30), 2, new Color(java.awt.Color.yellow), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,cubic(new Point3D(8, 8, 30), 2, new Color(java.awt.Color.yellow), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,cubic(new Point3D(0, -16, 30), 2, new Color(java.awt.Color.yellow), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,cubic(new Point3D(0, 16, 30), 2, new Color(java.awt.Color.yellow), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,cubic(new Point3D(16, 0, 30), 2, new Color(java.awt.Color.yellow), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,cubic(new Point3D(-16, 0, 30), 2, new Color(java.awt.Color.yellow), new Material(0.4, 0.3, 100, 0.8, 0))
+                ,  new Polygon(new Color(java.awt.Color.black), new Material(0.4, 0.3, 100, 00, 1), new Point3D(-50, 25, -10), new Point3D(50, 25, -10), new Point3D(50, 20, 100), new Point3D(-50, 20, 100))
+//                cubic(new Point3D(-7, 7, 5),1,2, new Color(java.awt.Color.BLUE), new Material(0.4, 0.3, 100, 00, 1))
+        );
+
+        scene.addLights(new PointLight(new Color(100, 300, 12), new Point3D(50, -50, -50), 1,
+                0.0004, 0.0000006));
+
+//        scene.getCamera().setDepthOfFiled(10, 1, 15);
+        ImageWriter imageWriter = new ImageWriter("cubic2", 40, 40, 300, 300);
+        Render render = new Render(imageWriter, scene);
+//        render.setMultithreading(3);
+        render.setDebugPrint();
+        render.renderImage();
+        render.writeToImage();
+    }
+    
     private Intersectable cubic(Point3D point, double size, Color color, Material material) {
         Geometries list = new Geometries();
         double x = point.getX().get();

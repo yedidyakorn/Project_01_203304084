@@ -9,7 +9,6 @@ import scene.Scene;
 import java.util.List;
 
 import static primitives.Ray.rayRandomBeam;
-import static primitives.Ray.rayRandomBeamQuarter;
 import static primitives.Util.alignZero;
 
 /**
@@ -18,7 +17,7 @@ import static primitives.Util.alignZero;
  * @author Yedidya Korn & Eliezer Horowitz
  */
 public class Render {
-    /**
+    /*
      * imageWriter- the image that we are printing to
      * scene- the scene that the camera is looking at
      */
@@ -27,6 +26,8 @@ public class Render {
     private int _threads = 1;
     private final int SPARE_THREADS = 2;
     private boolean _print = false;
+    private int calcColorCounter = 0;
+
 
     /**
      * MAX_CALC_COLOR_LEVEL - the maximum level of color
@@ -68,8 +69,8 @@ public class Render {
                 while (thePixel.nextPixel(pixel)) {
                     Ray ray = camera.constructRayThroughPixel(nX, nY, pixel.col, pixel.row, dist, width, height);
                     imageWriter.writePixel(pixel.col, pixel.row, superSampling(ray).getColor());
-                    System.out.println(mone);
-                    mone = 0;
+                    System.out.println(calcColorCounter);
+                    calcColorCounter = 0;
                 }
             });
         }
@@ -126,7 +127,12 @@ public class Render {
         if (_print) System.out.printf("\r100%%\n");
     }
 
-    //TODO
+    /**
+     * function that gets a ray and sends to the recursive function
+     *
+     * @param ray - a ray from camera to a pixel
+     * @return - the average color of all relevant rays.
+     */
     public Color superSampling(Ray ray) {
         if (scene.getCamera().getNumOfRays() <= 1)
             return calcColor(ray);
@@ -134,88 +140,74 @@ public class Render {
         Point3D pij = ray.getPoint(scene.getDistance() / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));
         Point3D f = ray.getPoint((scene.getCamera().getFocalDistance() + scene.getDistance()) / (scene.getCamera().getvTo().dotProduct(ray.getDirection())));//focal point
         Color color = rec(scene.getCamera().getAperture(), scene.getCamera().getNumOfRays(), pij, f, 3);
-        result = result.add(color.reduce(mone));
-        return result;
-    }
-
-    int mone = 0;
-    //TODO
-    private Color rec(double radius, int num, Point3D center, Point3D target, int k) {
-        Vector up = scene.getCamera().getvUp();
-        Vector right = scene.getCamera().getvRight();
-//        Ray a = new Ray(center.add(up.scale(radius)), target.subtract(center.add(up.scale(radius))));
-//        Ray b = new Ray(center.add(right.scale(radius)), target.subtract(center.add(right.scale(radius))));
-//        Ray c = new Ray(center.add(up.scale(-radius)), target.subtract(center.add(up.scale(-radius))));
-//        Ray d = new Ray(center.add(right.scale(-radius)), target.subtract(center.add(right.scale(-radius))));
-//        Ray ab= new Ray(center.add(up.scale(radius/1.414)).add(right.scale(radius/1.414)),target.subtract(center.add(up.scale(radius/1.414)).add(right.scale(radius/1.414))));
-//        Ray bc= new Ray(center.add(up.scale(-radius/1.414)).add(right.scale(radius/1.414)),target.subtract(center.add(up.scale(-radius/1.414)).add(right.scale(radius/1.414))));
-//        Ray cd= new Ray(center.add(up.scale(-radius/1.414)).add(right.scale(-radius/1.414)),target.subtract(center.add(up.scale(-radius/1.414)).add(right.scale(-radius/1.414))));
-//        Ray da= new Ray(center.add(up.scale(radius/1.414)).add(right.scale(-radius/1.414)),target.subtract(center.add(up.scale(radius/1.414)).add(right.scale(-radius/1.414))));
-
-        List<Ray> aa = rayRandomBeamQuarter(center, target, radius, 3, right, up);
-        List<Ray> bb = rayRandomBeamQuarter(center, target, radius, 3, right.scale(-1), up);
-        List<Ray> cc = rayRandomBeamQuarter(center, target, radius, 3, right.scale(-1), up.scale(-1));
-        List<Ray> dd = rayRandomBeamQuarter(center, target, radius, 3, right, up.scale(-1));
-
-        Ray centerRay = new Ray(center, target.subtract(center));
-//        Color colorA = calcColor(a);
-//        Color colorB = calcColor(b);
-//        Color colorC = calcColor(c);
-//        Color colorD = calcColor(d);
-//        Color colorAB = calcColor(ab);
-//        Color colorBC = calcColor(bc);
-//        Color colorCD = calcColor(cd);
-//        Color colorDA = calcColor(da);
-
-        Color centerColor = calcColor(centerRay);
-        Color result = new Color(centerColor);
-        result = result.add(addColors(aa), addColors(bb), addColors(cc), addColors(dd));
-        num = num - 13;
-        mone += 13;
-        if (k == 0 || num <= 52) {
-            mone += num;
-            result = addColors(rayRandomBeam(center, target, radius, num, right, up));
-//            result = result.add(colorA, colorB, colorC, colorD, centerColor);
-            return result;
-        }
-        double newRad = radius / (2.414213562);         //R=r(1+√2)
-        if (!equalColor(aa, centerColor)) {
-            result = result.add(rec(newRad, (num / 4), center.add(up.scale(newRad)).add(right.scale(newRad)), target, k - 1));
-        } else
-            result = result.add(centerColor.scale(num / 4));
-        if (!equalColor(bb, centerColor)) {
-            result = result.add(rec(newRad, num / 4, center.add(right.scale(-newRad)).add(up.scale(newRad)), target, k - 1));
-        } else
-            result = result.add(centerColor.scale(num / 4));
-        if (!equalColor(cc, centerColor)) {
-            result = result.add(rec(newRad, num / 4, center.add(up.scale(-newRad)).add(right.scale(-newRad)), target, k - 1));
-
-        } else
-            result = result.add(centerColor.scale(num / 4));
-        if (!equalColor(dd, centerColor)) {
-            result = result.add(rec(newRad, num / 4, center.add(right.scale(newRad)).add(up.scale(-newRad)), target, k - 1));
-        } else
-            result = result.add(centerColor.scale(num / 4));
-        result = result.add(addColors(aa), addColors(bb), addColors(cc), addColors(dd));
-//        result = result.add(colorA, colorB, colorC, colorD);
+        result = result.add(color.reduce(calcColorCounter));
         return result;
     }
 
     /**
-     * //TODO
+     * recursive function that divides the aperture circle in to small circles in order to avoid calculating colors that are not relevant
      *
-     * @param list
-     * @param color
-     * @return
+     * @param radius - the radius of  current circle
+     * @param num    - maximum number of rays to calculate in current circle
+     * @param center - center point of current circle
+     * @param target - focal point
+     * @param k      - recursive degree
+     * @return - the sum of the colors for a specific pixel
      */
-    private boolean equalColor(List<Ray> list, Color color) {
-        for (Ray ray : list) {
-            if (!calcColor(ray).equals(color))
-                return false;
-        }
-        return true;
-    }
+    private Color rec(double radius, int num, Point3D center, Point3D target, int k) {
+        Vector up = scene.getCamera().getvUp();
+        Vector right = scene.getCamera().getvRight();
+        double move = radius / 1.414;
+        Ray a = new Ray(center.add(up.scale(radius)), target.subtract(center.add(up.scale(radius))));
+        Ray b = new Ray(center.add(right.scale(radius)), target.subtract(center.add(right.scale(radius))));
+        Ray c = new Ray(center.add(up.scale(-radius)), target.subtract(center.add(up.scale(-radius))));
+        Ray d = new Ray(center.add(right.scale(-radius)), target.subtract(center.add(right.scale(-radius))));
+        Ray ab = new Ray(center.add(up.scale(move)).add(right.scale(move)), target.subtract(center.add(up.scale(move)).add(right.scale(move))));
+        Ray bc = new Ray(center.add(up.scale(-move)).add(right.scale(move)), target.subtract(center.add(up.scale(-move)).add(right.scale(move))));
+        Ray cd = new Ray(center.add(up.scale(-move)).add(right.scale(-move)), target.subtract(center.add(up.scale(-move)).add(right.scale(-move))));
+        Ray da = new Ray(center.add(up.scale(move)).add(right.scale(-move)), target.subtract(center.add(up.scale(move)).add(right.scale(-move))));
+        Ray centerRay = new Ray(center, target.subtract(center));
 
+        Color colorA = calcColor(a);
+        Color colorB = calcColor(b);
+        Color colorC = calcColor(c);
+        Color colorD = calcColor(d);
+        Color colorAB = calcColor(ab);
+        Color colorBC = calcColor(bc);
+        Color colorCD = calcColor(cd);
+        Color colorDA = calcColor(da);
+
+        Color centerColor = calcColor(centerRay);
+        Color result = new Color(centerColor);
+        result = result.add(colorA, colorB, colorC, colorD, colorAB, colorBC, colorCD, colorDA, centerColor);
+        num = num - 9;
+        calcColorCounter += 9;
+        if (k == 0 || num <= 36) {
+            calcColorCounter += num;
+            result = addColors(rayRandomBeam(center, target, radius, num, right, up));
+            return result;
+        }
+        double newRad = radius / (2.414213562);         //R=r(1+√2)
+        if (!(colorA.equals(centerColor)) || !(colorAB.equals(centerColor)) || !(colorDA.equals(centerColor)))
+            result = result.add(rec(newRad, (num / 4), center.add(up.scale(radius - newRad)), target, k - 1));
+        else
+            result = result.add(colorA.scale(num / 4));
+        if (!colorB.equals(centerColor) || !colorBC.equals(centerColor) || !colorAB.equals(centerColor))
+            result = result.add(rec(newRad, num / 4, center.add(right.scale(radius - newRad)), target, k - 1));
+        else
+            result = result.add(colorB.scale(num / 4));
+        if (!colorC.equals(centerColor) || !colorCD.equals(centerColor) || !colorBC.equals(centerColor))
+            result = result.add(rec(newRad, num / 4, center.add(up.scale(-(radius - newRad))), target, k - 1));
+        else
+            result = result.add(colorC.scale(num / 4));
+        if (!colorD.equals(centerColor) || !colorDA.equals(centerColor) || !colorCD.equals(centerColor))
+            result = result.add(rec(newRad, num / 4, center.add(right.scale(-(radius - newRad))), target, k - 1));
+        else
+            result = result.add(colorD.scale(num / 4));
+        result = result.add(colorA, colorB, colorC, colorD, colorAB, colorBC, colorCD, colorDA, centerColor);
+
+        return result;
+    }
 
     /**
      * function that sums up the color from  a list of rays

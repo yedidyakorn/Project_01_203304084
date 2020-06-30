@@ -142,7 +142,7 @@ public class superSamplingTests {
         render.writeToImage();
 
     }
-//
+
 //    @Test
 //    public void superSampling12() {
 //        Scene scene = new Scene("Test scene");

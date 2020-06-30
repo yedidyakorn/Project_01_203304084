@@ -125,7 +125,7 @@ public class Chess {
         scene.addLights(new PointLight(new Color(100, 300, 12), new Point3D(50, -50, -50), 1,
                 0.0004, 0.0000006));
 
-        scene.getCamera().setDepthOfFiled(800, 1, 100);
+        scene.getCamera().setDepthOfFiled(30, 1, 100);
         ImageWriter imageWriter = new ImageWriter("cubic2", 40, 40, 300, 300);
         Render render = new Render(imageWriter, scene);
         render.setMultithreading(3);
@@ -162,7 +162,7 @@ public class Chess {
         scene.addLights(new PointLight(new Color(100, 300, 12), new Point3D(50, -50, -50), 1,
                 0.0004, 0.0000006));
 
-        scene.getCamera().setDepthOfFiled(800, 1, 100);
+        scene.getCamera().setDepthOfFiled(30, 1, 100);
         ImageWriter imageWriter = new ImageWriter("cubic2", 40, 40, 300, 300);
         Render render = new Render(imageWriter, scene);
         render.setMultithreading(3);

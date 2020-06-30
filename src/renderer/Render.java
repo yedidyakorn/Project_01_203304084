@@ -128,7 +128,8 @@ public class Render {
     /**
      * function that gets a ray and sends to the recursive function
      *
-     * @param ray - a ray from camera to a pixel
+     * @param ray   - a ray from camera to a pixel
+     * @param pixel - the current pixel
      * @return - the average color of all relevant rays.
      */
     public Color superSampling(Ray ray, Pixel pixel) {
@@ -150,36 +151,28 @@ public class Render {
      * @param center - center point of current circle
      * @param target - focal point
      * @param k      - recursive degree
+     * @param pixel  - the current pixel
      * @return - the sum of the colors for a specific pixel
      */
     private Color rec(double radius, int num, Point3D center, Point3D target, int k, Pixel pixel) {
         Vector up = scene.getCamera().getvUp();
         Vector right = scene.getCamera().getvRight();
         double move = radius / 1.414;
-        Ray a = new Ray(center.add(up.scale(radius)), target.subtract(center.add(up.scale(radius))));
-        Ray b = new Ray(center.add(right.scale(radius)), target.subtract(center.add(right.scale(radius))));
-        Ray c = new Ray(center.add(up.scale(-radius)), target.subtract(center.add(up.scale(-radius))));
-        Ray d = new Ray(center.add(right.scale(-radius)), target.subtract(center.add(right.scale(-radius))));
-        Ray ab = new Ray(center.add(up.scale(move)).add(right.scale(move)), target.subtract(center.add(up.scale(move)).add(right.scale(move))));
-        Ray bc = new Ray(center.add(up.scale(-move)).add(right.scale(move)), target.subtract(center.add(up.scale(-move)).add(right.scale(move))));
-        Ray cd = new Ray(center.add(up.scale(-move)).add(right.scale(-move)), target.subtract(center.add(up.scale(-move)).add(right.scale(-move))));
-        Ray da = new Ray(center.add(up.scale(move)).add(right.scale(-move)), target.subtract(center.add(up.scale(move)).add(right.scale(-move))));
-        Ray centerRay = new Ray(center, target.subtract(center));
+        Color colorA = calcColor(new Ray(center.add(up.scale(radius)), target.subtract(center.add(up.scale(radius)))));
+        Color colorB = calcColor(new Ray(center.add(right.scale(radius)), target.subtract(center.add(right.scale(radius)))));
+        Color colorC = calcColor(new Ray(center.add(up.scale(-radius)), target.subtract(center.add(up.scale(-radius)))));
+        Color colorD = calcColor(new Ray(center.add(right.scale(-radius)), target.subtract(center.add(right.scale(-radius)))));
+        Color colorAB = calcColor(new Ray(center.add(up.scale(move)).add(right.scale(move)), target.subtract(center.add(up.scale(move)).add(right.scale(move)))));
+        Color colorBC = calcColor(new Ray(center.add(up.scale(-move)).add(right.scale(move)), target.subtract(center.add(up.scale(-move)).add(right.scale(move)))));
+        Color colorCD = calcColor(new Ray(center.add(up.scale(-move)).add(right.scale(-move)), target.subtract(center.add(up.scale(-move)).add(right.scale(-move)))));
+        Color colorDA = calcColor(new Ray(center.add(up.scale(move)).add(right.scale(-move)), target.subtract(center.add(up.scale(move)).add(right.scale(-move)))));
+        Color centerColor = calcColor(new Ray(center, target.subtract(center)));
 
-        Color colorA = calcColor(a);
-        Color colorB = calcColor(b);
-        Color colorC = calcColor(c);
-        Color colorD = calcColor(d);
-        Color colorAB = calcColor(ab);
-        Color colorBC = calcColor(bc);
-        Color colorCD = calcColor(cd);
-        Color colorDA = calcColor(da);
-
-        Color centerColor = calcColor(centerRay);
         Color result = new Color(centerColor);
-        result = result.add(colorA, colorB, colorC, colorD, colorAB, colorBC, colorCD, colorDA, centerColor);
+        result = result.add(colorA, colorB, colorC, colorD, colorAB, colorBC, colorCD, colorDA);
         num = num - 9;
         pixel.setCalcColorCounter(pixel.getCalcColorCounter() + 9);
+
         if (k == 0 || num <= 36) {
             pixel.setCalcColorCounter(pixel.getCalcColorCounter() + num);
             result = addColors(rayRandomBeam(center, target, radius, num, right, up));
@@ -188,21 +181,28 @@ public class Render {
         double newRad = radius / (2.414213562);         //R=r(1+√2)
         if (!(colorA.equals(centerColor)) || !(colorAB.equals(centerColor)) || !(colorDA.equals(centerColor)))
             result = result.add(rec(newRad, (num / 4), center.add(up.scale(radius - newRad)), target, k - 1, pixel));
-        else
+        else {
             result = result.add(colorA.scale(num / 4));
+            pixel.setCalcColorCounter(pixel.getCalcColorCounter() + num / 4);
+        }
         if (!colorB.equals(centerColor) || !colorBC.equals(centerColor) || !colorAB.equals(centerColor))
             result = result.add(rec(newRad, num / 4, center.add(right.scale(radius - newRad)), target, k - 1, pixel));
-        else
+        else {
             result = result.add(colorB.scale(num / 4));
+            pixel.setCalcColorCounter(pixel.getCalcColorCounter() + num / 4);
+        }
         if (!colorC.equals(centerColor) || !colorCD.equals(centerColor) || !colorBC.equals(centerColor))
             result = result.add(rec(newRad, num / 4, center.add(up.scale(-(radius - newRad))), target, k - 1, pixel));
-        else
+        else {
             result = result.add(colorC.scale(num / 4));
+            pixel.setCalcColorCounter(pixel.getCalcColorCounter() + num / 4);
+        }
         if (!colorD.equals(centerColor) || !colorDA.equals(centerColor) || !colorCD.equals(centerColor))
             result = result.add(rec(newRad, num / 4, center.add(right.scale(-(radius - newRad))), target, k - 1, pixel));
-        else
+        else {
             result = result.add(colorD.scale(num / 4));
-        result = result.add(colorA, colorB, colorC, colorD, colorAB, colorBC, colorCD, colorDA, centerColor);
+            pixel.setCalcColorCounter(pixel.getCalcColorCounter() + num / 4);
+        }
 
         return result;
     }
